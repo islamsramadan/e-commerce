@@ -33,6 +33,11 @@ const orderItemSchema = mongoose.Schema({
     _id: false
 })
 
+// const reviewSchema = mongoose.Schema({
+//     review: String,
+//     rate: String
+// }, { _id: false })
+
 const orderSchema = mongoose.Schema(
     {
         _id: {
@@ -49,7 +54,7 @@ const orderSchema = mongoose.Schema(
             type: orderItemSchema,
             required: true,
         }],
-        shippingAddress: {
+        address: {
             type: addressSchema,
             required: true,
         },
@@ -84,6 +89,7 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: false,
         },
+        // review: reviewSchema,
         deliveredAt: Date,
         paidAt: Date,
 
