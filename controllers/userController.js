@@ -38,3 +38,13 @@ module.exports.updateUser = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.removeUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return next(new Error("Couldn't find a user with that id."));
+    res.status(200).json({ success: true, message: "Deleted Successfully!" });
+  } catch (e) {
+    next(e);
+  }
+};

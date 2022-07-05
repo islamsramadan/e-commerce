@@ -34,6 +34,15 @@ router
     ],
     validationMW,
     controller.updateUser
+  )
+  .delete(
+    [
+      param("id")
+        .isMongoId()
+        .withMessage("User'is id should be a valid MongoID"),
+    ],
+    validationMW,
+    controller.removeUser
   );
 
 module.exports = router;
