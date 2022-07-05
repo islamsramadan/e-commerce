@@ -54,10 +54,6 @@ const orderSchema = mongoose.Schema(
             type: orderItemSchema,
             required: true,
         }],
-        address: {
-            type: addressSchema,
-            required: true,
-        },
         paymentMethod: {
             type: String,
             enum: ['COD', 'Credit Card', 'Paypal'],
@@ -99,4 +95,4 @@ const orderSchema = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('order', orderSchema)
+module.exports = mongoose.model('orders', orderSchema)

@@ -1,0 +1,3 @@
+MONGO_CONNECTION = "mongodb+srv://shams:ahmedbasher1998@cluster0.jar8w.mongodb.net/Ecommerce-project?retryWrites=true&w=majority"
+JWT_SECRET_KEY = "veryVeryVeryLongText"
+SEND_GRID_KEY = "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"
