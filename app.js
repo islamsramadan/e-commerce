@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const authRouter = require('./routes/auth')
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/userRoute");
 
 const app = express();
 
@@ -22,16 +23,19 @@ mongoose
 app.use(express.json());
 
 // routers
-app.use('/auth', authRouter)
-
+app.use("/auth", authRouter);
+app.use(userRouter);
 // not found middleware
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: "your request url is NOT FOUND" });
+  res
+    .status(404)
+    .json({ success: false, message: "your request url is NOT FOUND" });
 });
 
 // error middleware
 app.use((error, req, res, next) => {
   let status = error.status || 500;
-  console.log(`error`);
-  res.status(status).json({ success: false, message: "Internal Error" });
-})
+  res
+    .status(status)
+    .json({ success: false, message: "Internal Error" + error });
+});
