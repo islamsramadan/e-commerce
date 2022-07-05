@@ -20,13 +20,21 @@ module.exports.getOrderById=(req,res)=>{
     res.status(200).send("Get single order ")
 }
 
-module.exports.addOrders=(req,res)=>{
+module.exports.addOrders=(req,res,next)=>{
     const order = new orders({
         userId : req.body.id,
         orderItems : req.body.orderItems,
         paymentMethod:req.body.paymentMethod,
-        
+        paymentResult : req.body.paymentResult,
+        shippingPrice: req.body.shippingPrice,
+        totalPrice:req.body.totalPrice,
+        isPaid:req.body.isPaid,
+        status:req.body.status
     })
+    order.save() .then(data=>{
+        res.status(201).json({data:"added"});
+      })
+      .catch(error=>next(error))
 }
 module.exports.updateOrderToPaid=(req,res)=>{
 

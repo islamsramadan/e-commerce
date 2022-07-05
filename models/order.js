@@ -54,6 +54,10 @@ const orderSchema = mongoose.Schema(
             type: orderItemSchema,
             required: true,
         }],
+     address: {
+            type: addressSchema,
+            required: true,
+        },
         paymentMethod: {
             type: String,
             enum: ['COD', 'Credit Card', 'Paypal'],
@@ -80,10 +84,11 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: false,
         },
-        isDelivered: {
-            type: Boolean,
+        status: {
+            type: String,
+            enum :["Delivered","Shipped","payed"],
             required: true,
-            default: false,
+            default: "payed",
         },
         // review: reviewSchema,
         deliveredAt: Date,

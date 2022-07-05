@@ -5,6 +5,7 @@ require("dotenv").config();
 const authRouter = require('./routes/auth')
 
 const app = express();
+console.log(process.env.MONGO_CONNECTION)
 
 mongoose
   .connect(process.env.MONGO_CONNECTION)
