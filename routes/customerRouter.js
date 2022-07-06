@@ -4,6 +4,9 @@ const router = express.Router();
 const { body, param } = require("express-validator");
 const validationMW = require("../middlewares/validationMW");
 
+/**HELPERS */
+// const { route } = require("../e-commerce/routes/customerRouter");
+
 router
   .route("/customers/:id/cart")
   .post(
@@ -32,6 +35,21 @@ router
     ],
     validationMW,
     controller.removeFromCart
+  );
+
+router
+  .route("/customers/:id/cart/increment")
+  .put(
+    [
+      param("id")
+        .isMongoId()
+        .withMessage("Customer id should be a valid MongoID."),
+      body("productId")
+        .isMongoId()
+        .withMessage("Product id should be a valid MongoID."),
+    ],
+    validationMW,
+    controller.incrementProductInCart
   );
 
 module.exports = router;
