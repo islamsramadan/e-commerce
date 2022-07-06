@@ -34,4 +34,31 @@ router
     controller.removeFromCart
   );
 
+router.put(
+  "/customers/:id/cart/increment",
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Customer id should be a valid MongoID."),
+    body("productId")
+      .isMongoId()
+      .withMessage("Product id should be a valid MongoID."),
+  ],
+  validationMW,
+  controller.incrementProductInCart
+);
+
+router.put(
+  "/customers/:id/cart/decrement",
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Customer id should be a valid MongoID."),
+    body("productId")
+      .isMongoId()
+      .withMessage("Product id should be a valid MongoID."),
+  ],
+  validationMW,
+  controller.decrementProductInCart
+);
 module.exports = router;

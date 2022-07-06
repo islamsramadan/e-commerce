@@ -5,14 +5,14 @@ const Customer = mongoose.model("customer");
 const Product = mongoose.model("product");
 
 module.exports.addToCart = async (req, res, next) => {
-  const customer = await Customer.findById(req.params.id, {
-    cart: 1,
-  });
-
-  if (!customer)
-    return next(new Error("Couldn't find a customer with that id."));
-
   try {
+    const customer = await Customer.findById(req.params.id, {
+      cart: 1,
+    });
+
+    if (!customer)
+      return next(new Error("Couldn't find a customer with that id."));
+
     const product = await Product.findById(req.body.productId, {
       price: 1,
       quantity: 1,
@@ -45,10 +45,8 @@ module.exports.addToCart = async (req, res, next) => {
 
     cart.totalPrice += productPrice * req.body.quantity;
 
-    product.quantity -= req.body.quantity;
     customer.cart = cart;
 
-    await product.save();
     await customer.save();
     res.status(201).json({
       success: true,
@@ -89,18 +87,114 @@ module.exports.removeFromCart = async (req, res, next) => {
     cart.totalPrice -=
       productPrice * cart.products[removedProductIndex].quantity;
 
-    product.quantity += cart.products[removedProductIndex].quantity;
-
     cart.products.splice(removedProductIndex, 1);
 
     customer.cart = cart;
 
-    await product.save();
     await customer.save();
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Product(s) removed from cart successfully!",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.incrementProductInCart = async (req, res, next) => {
+  try {
+    const customer = await Customer.findById(req.params.id, {
+      cart: 1,
+    });
+
+    if (!customer)
+      return next(new Error("Couldn't find a customer with that id."));
+
+    const product = await Product.findById(req.body.productId, {
+      price: 1,
+      quantity: 1,
+    });
+
+    if (!product)
+      return next(new Error("Couldn't find a product with that id."));
+
+    const { price: productPrice, quantity: productQuantity } = product;
+
+    const cart = customer.cart;
+
+    const productInCartIndex = cart.products.findIndex(
+      (product) => product.productId == req.body.productId
+    );
+
+    if (productInCartIndex === -1)
+      return next(new Error("Cannot increment, product is not in cart"));
+
+    if (productQuantity < cart.products[productInCartIndex].quantity + 1)
+      return next(
+        new Error(
+          `Cannot increment, product max quantity in stock is ${productQuantity}`
+        )
+      );
+
+    cart.products[productInCartIndex].quantity++;
+    cart.totalPrice += productPrice;
+
+    customer.cart = cart;
+
+    await customer.save();
+    res.status(200).json({
+      success: true,
+      message: "Product incremented successfully!",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.decrementProductInCart = async (req, res, next) => {
+  try {
+    const customer = await Customer.findById(req.params.id, {
+      cart: 1,
+    });
+
+    if (!customer)
+      return next(new Error("Couldn't find a customer with that id."));
+
+    const product = await Product.findById(req.body.productId, {
+      price: 1,
+    });
+
+    if (!product)
+      return next(new Error("Couldn't find a product with that id."));
+
+    const { price: productPrice } = product;
+
+    const cart = customer.cart;
+
+    const productInCartIndex = cart.products.findIndex(
+      (product) => product.productId == req.body.productId
+    );
+
+    if (productInCartIndex === -1)
+      return next(new Error("Cannot decrement, product is not in cart"));
+
+    if (cart.products[productInCartIndex].quantity == 1)
+      return next(
+        new Error(
+          `Cannot decrement less than 1, you can remove the item instead`
+        )
+      );
+
+    cart.products[productInCartIndex].quantity--;
+    cart.totalPrice -= productPrice;
+
+    customer.cart = cart;
+
+    await customer.save();
+    res.status(200).json({
+      success: true,
+      message: "Product decremented successfully!",
     });
   } catch (e) {
     next(e);
