@@ -15,9 +15,11 @@ module.exports.getOrders=(req,res)=>{
             .catch(error=>next(error))
 }
 
-module.exports.getOrderById=(req,res)=>{
-
-    res.status(200).send("Get single order ")
+module.exports.getOrderById=(req,res,next)=>{
+    orders.find({_id:req.params.id}).then(data=>{
+        if(data==null) next(new Error(" orders not found"))
+        res.status(200).json(data);
+    }).catch(err=>next(err))
 }
 
 module.exports.addOrders=(req,res,next)=>{
