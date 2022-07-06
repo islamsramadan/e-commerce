@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/userRoute");
+const customerRouter = require("./routes/customerRouter");
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(express.json());
 // routers
 app.use("/auth", authRouter);
 app.use(userRouter);
+app.use(customerRouter);
+
 // not found middleware
 app.use((req, res) => {
   res
