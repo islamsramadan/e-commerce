@@ -20,6 +20,18 @@ router
     ],
     validationMW,
     controller.addToCart
+  )
+  .delete(
+    [
+      param("id")
+        .isMongoId()
+        .withMessage("Customer id should be a valid MongoID."),
+      body("productId")
+        .isMongoId()
+        .withMessage("Product id should be a valid MongoID."),
+    ],
+    validationMW,
+    controller.removeFromCart
   );
 
 module.exports = router;
