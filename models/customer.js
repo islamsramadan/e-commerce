@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
+
 const { nameSchema } = require("./common");
+
 
 const productsSchema = mongoose.Schema(
   {
@@ -43,7 +45,9 @@ const customerSchema = mongoose.Schema({
   userId: {
     type: mongoose.Types.ObjectId,
     ref: "user",
-    required: true,
+    unique: true,
+    required: true
+
   },
   name: {
     type: nameSchema,
@@ -55,4 +59,4 @@ const customerSchema = mongoose.Schema({
   },
 });
 
-mongoose.model("customer", customerSchema);
+module.exports = mongoose.model("customer", customerSchema);
