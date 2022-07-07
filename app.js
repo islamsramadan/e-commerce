@@ -5,7 +5,10 @@ require('dotenv').config();
 
 const authRouter = require("./routes/auth");
 const businessRoute = require("./routes/business");
+const userRouter = require("./routes/userRoute");
+const customerRouter = require("./routes/customerRouter");
 const fileUpload = require('./middlewares/filesUpload');
+
 const orderRoutes = require('./routes/order');
 
 
@@ -28,9 +31,9 @@ mongoose
 app.use(express.json());
 
 // routers
-
 app.use('/auth', authRouter);
-
+app.use(userRouter);
+app.use(customerRouter);
 app.use(orderRoutes);
 app.use(businessRoute);
 app.post('/uploadImg', fileUpload.single('image'));
@@ -43,7 +46,10 @@ app.use((req, res) => {
 
 // error middleware
 app.use((error, req, res, next) => {
-	let status = error.status || 500;
-	console.log(`error : ${error}`);
-	res.status(status).json({ success: false, message: 'Internal Error' });
+
+  let status = error.status || 500;
+  res
+    .status(status)
+    .json({ success: false, message: "Internal Error" + error });
+
 });
