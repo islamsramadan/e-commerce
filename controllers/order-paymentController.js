@@ -3,9 +3,9 @@ require("../models/order");
 const orders = mongoose.model("orders")
 
 
-module.exports.getOrders=(req,res)=>{
+module.exports.getOrders=(req,res,next)=>{
     orders.find().populate({path:"userId"})
-    // .populate({path:"productId"}).populate({path:"businessId"})
+   //  .populate({path:"productId"}).populate({path:"businessId"})
     //{name:1,email:1}        
     .then(data=>{
               console.log();
@@ -15,34 +15,78 @@ module.exports.getOrders=(req,res)=>{
             .catch(error=>next(error))
 }
 
-module.exports.getOrderById=(req,res,next)=>{
-    orders.find({_id:req.params.id}).then(data=>{
-        if(data==null) next(new Error(" orders not found"))
-        res.status(200).json(data);
-    }).catch(err=>next(err))
+module.exports.getOrderById=async(req,res,next)=>{
+
+    const order = await orders.findById(req.params.id).populate({path:"userId",select:{"email":1,_id:0}})
+    
+      if (order) {
+        res.json(order)
+      } else {
+        res.status(404)
+        throw new Error('Order not found')
+      }
+    // orders.find({_id:req.params.id}).then(data=>{
+    //     if(data==null) next(new Error(" orders not found"))
+    //     res.status(200).json(data);
+    // }).catch(err=>next(err))
 }
 
 module.exports.addOrders=(req,res,next)=>{
     const order = new orders({
-        userId : req.body.id,
+        userId : req.body.userId,
         orderItems : req.body.orderItems,
         paymentMethod:req.body.paymentMethod,
         paymentResult : req.body.paymentResult,
         shippingPrice: req.body.shippingPrice,
         totalPrice:req.body.totalPrice,
-        isPaid:req.body.isPaid,
-        status:req.body.status
     })
     order.save() .then(data=>{
         res.status(201).json({data:"added"});
       })
       .catch(error=>next(error))
 }
-module.exports.updateOrderToPaid=(req,res)=>{
+module.exports.updateOrderToPaid=async(req,res)=>{
+    const order = await orders.findById(req.params.id)
 
-    res.status(200).send("Update order To paid")
+    if (order) {
+      order.isPaid = true
+      order.paidAt = Date.now()
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      }
+  
+      const updatedOrder = await order.save()
+  
+      res.json(updatedOrder)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
 }
-module.exports.updateOrderToDelivered=(req,res)=>{
+module.exports.updateOrderToDelivered=async(req,res)=>{
+    const order = await orders.findById(req.params.id)
 
-    res.status(200).send(" update order to delivered")
+    if (order) {
+      order.isDelivered = true
+      order.deliveredAt = Date.now()
+  
+      const updatedOrder = await order.save()
+  
+      res.json(updatedOrder)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+}
+module.exports.getMyOrder=(req,res,next)=>{
+   orders.findOne({userId:req.params.id},{orderItems:1}).then(data=>{
+    res.status(200).json(data)
+   })
+   .catch(err=>{next(err)
+   console.log(err)}
+   )
+ 
 }

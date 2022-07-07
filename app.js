@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const authRouter = require('./routes/auth')
+const orderRoutes = require('./routes/order');
 
 const app = express();
 console.log(process.env.MONGO_CONNECTION)
@@ -23,7 +24,8 @@ mongoose
 app.use(express.json());
 
 // routers
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
+app.use(orderRoutes);
 
 // not found middleware
 app.use((req, res) => {

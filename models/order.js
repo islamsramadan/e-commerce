@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require("mongoose");
 
 const { addressSchema } = require('./common')
 
@@ -50,13 +50,12 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'user',
         },
-        orderItems: [{
+        orderItems: {
             type: orderItemSchema,
             required: true,
-        }],
+        },
      address: {
             type: addressSchema,
-            required: true,
         },
         paymentMethod: {
             type: String,
@@ -86,9 +85,9 @@ const orderSchema = mongoose.Schema(
         },
         status: {
             type: String,
-            enum :["Delivered","Shipped","payed"],
+            enum :["Delivered","Shipped","order"],
             required: true,
-            default: "payed",
+            default: "order",
         },
         // review: reviewSchema,
         deliveredAt: Date,
