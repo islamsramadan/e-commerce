@@ -2,6 +2,7 @@ const express = require("express");
 const businessRoute = express.Router();
 const { body, query, param } = require("express-validator");
 const mongoose = require("mongoose");
+const validationMW = require("../middlewares/validationMW");
 
 // ----------Testing
 require("../models/business");
@@ -18,7 +19,7 @@ const multer = require("multer");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "images/business");
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split("/")[1];
@@ -35,7 +36,7 @@ const {
   getBusinessById,
   addBusiness,
   updateBusiness,
-  uploadImage,
+  updateImage,
 } = require("../controllers/business");
 
 businessRoute
@@ -45,15 +46,28 @@ businessRoute
   .put(
     [
       param("id").notEmpty().isMongoId(),
-      body("name").optional().isString(),
-      body("description").optional().isString(),
+      body("name").optional().isString().withMessage("name should be a string"),
+      body("description")
+        .optional()
+        .isString()
+        .withMessage("description should be string"),
     ],
+    validationMW,
     updateBusiness
   );
 
 businessRoute
   .route("/business/:id")
-  .get([param("id").notEmpty().isMongoId()], getBusinessById);
+  .get(
+    [
+      param("id")
+        .notEmpty()
+        .isMongoId()
+        .withMessage("User'is id should be a valid MongoID"),
+    ],
+    validationMW,
+    getBusinessById
+  );
 
 businessRoute.route("/business/upload/:id").put(
   (req, res, next) => {
@@ -71,7 +85,7 @@ businessRoute.route("/business/upload/:id").put(
     next();
   },
   upload.single("photo"),
-  uploadImage
+  updateImage
 );
 
 module.exports = businessRoute;

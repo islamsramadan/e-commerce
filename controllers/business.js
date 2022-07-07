@@ -59,7 +59,7 @@ module.exports.updateBusiness = (req, res, next) => {
   // res.status(200).json("business has been updated");
 };
 
-module.exports.uploadImage = (req, res, next) => {
+module.exports.updateImage = (req, res, next) => {
   console.log("req file", req.file);
   Business.findOne({ _id: req.params.id })
     .then((data) => {
