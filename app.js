@@ -1,15 +1,15 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
-const fileUpload = require('./middlewares/filesUpload');
 require('dotenv').config();
 
-
-const authRouter = require('./routes/auth')
+const authRouter = require("./routes/auth");
+const businessRoute = require("./routes/business");
+const fileUpload = require('./middlewares/filesUpload');
 const orderRoutes = require('./routes/order');
 
 
 const app = express();
-console.log(process.env.MONGO_CONNECTION)
 
 mongoose
 	.connect(process.env.MONGO_CONNECTION)
@@ -24,13 +24,15 @@ mongoose
 		console.log(`an error has occured, ${err}`);
 	});
 
+
 app.use(express.json());
 
 // routers
+
 app.use('/auth', authRouter);
 
 app.use(orderRoutes);
-
+app.use(businessRoute);
 app.post('/uploadImg', fileUpload.single('image'));
 
 
