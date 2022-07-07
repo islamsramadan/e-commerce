@@ -5,7 +5,12 @@ const verificationSchema = mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
-      // reauired: true,
+
+    },
+    adminId: {
+      type: mongoose.Types.ObjectId,
+      ref: "admin",
+
     },
     // adminId: {
     //   type: mongoose.Types.ObjectId,
@@ -41,10 +46,10 @@ const businessSchema = mongoose.Schema({
     required: true,
   },
   verification: {
+
     type: verificationSchema,
-    // required: true,
   },
   description: String,
 });
 
-mongoose.model("business", businessSchema);
+module.exports = mongoose.model("business", businessSchema);

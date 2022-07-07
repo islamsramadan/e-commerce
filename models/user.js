@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
   phone: String,
+  resetToken: String,
+  resetTokenExpiration: Date,
 });
 
 module.exports = mongoose.model("users", userSchema);
