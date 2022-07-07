@@ -1,37 +1,43 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv").config();
-
-const authRouter = require('./routes/auth')
-
+const authRouter = require("./routes/auth");
+const businessRoute = require("./routes/business");
 const app = express();
+require("dotenv").config();
 
 mongoose
   .connect(process.env.MONGO_CONNECTION)
   .then(() => {
-    console.log("Connected to database successfuly");
-    const port = process.env.PORT || 8080;
-    app.listen(port, () => {
-      console.log(`API server is listining on port ${port}`);
+    app.listen(process.env.PORT || 3000, () => {
+      console.log("server is listening");
     });
+    console.log("db is connected ");
   })
-  .catch((err) => {
-    console.log(`an error has occured, ${err}`);
-  });
+  .catch((error) => console.log("error: ", error));
+
+// require("./models/user");
+
+// testing file upload
+// ---------------------------------
+
+// ---------------------------------
 
 app.use(express.json());
 
 // routers
-app.use('/auth', authRouter)
+// app.use("/auth", authRouter);
+app.use(businessRoute);
 
 // not found middleware
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: "your request url is NOT FOUND" });
-});
+// app.use((req, res) => {
+//   res
+//     .status(404)
+//     .json({ success: false, message: "your request url is NOT FOUND" });
+// });
 
-// error middleware
-app.use((error, req, res, next) => {
-  let status = error.status || 500;
-  console.log(`error`);
-  res.status(status).json({ success: false, message: "Internal Error" });
-})
+// // error middleware
+// app.use((error, req, res, next) => {
+//   let status = error.status || 500;
+//   console.log(`error`);
+//   res.status(status).json({ success: false, message: "Internal Error" });
+// });
