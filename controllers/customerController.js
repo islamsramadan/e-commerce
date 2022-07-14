@@ -38,12 +38,23 @@ module.exports.addToCart = async (req, res, next) => {
     );
 
     if (duplicateProductIndex >= 0) {
+      if (
+        productQuantity <
+        req.body.quantity + cart.products[duplicateProductIndex].quantity
+      )
+        return next(
+          new Error(`Max item quantity in stock is : ${productQuantity}`)
+        );
+
       cart.products[duplicateProductIndex].quantity += addedProduct.quantity;
     } else {
       cart.products.push(addedProduct);
     }
 
-    cart.totalPrice += productPrice * req.body.quantity;
+    cart.totalPrice = (
+      cart.totalPrice +
+      productPrice * req.body.quantity
+    ).toFixed(2);
 
     customer.cart = cart;
 
@@ -74,7 +85,7 @@ module.exports.removeFromCart = async (req, res, next) => {
     if (!product)
       return next(new Error("Couldn't find a product with that id."));
 
-    const { price: productPrice, quantity: productQuantity } = product;
+    const { price: productPrice } = product;
     const cart = customer.cart;
 
     const removedProductIndex = cart.products.findIndex(
@@ -84,8 +95,10 @@ module.exports.removeFromCart = async (req, res, next) => {
     if (removedProductIndex === -1)
       return next(new Error("Couldn't find this product in the cart"));
 
-    cart.totalPrice -=
-      productPrice * cart.products[removedProductIndex].quantity;
+    cart.totalPrice = (
+      cart.totalPrice -
+      productPrice * cart.products[removedProductIndex].quantity
+    ).toFixed(2);
 
     cart.products.splice(removedProductIndex, 1);
 
@@ -138,7 +151,7 @@ module.exports.incrementProductInCart = async (req, res, next) => {
       );
 
     cart.products[productInCartIndex].quantity++;
-    cart.totalPrice += productPrice;
+    cart.totalPrice = (cart.totalPrice + productPrice).toFixed(2);
 
     customer.cart = cart;
 
@@ -187,7 +200,7 @@ module.exports.decrementProductInCart = async (req, res, next) => {
       );
 
     cart.products[productInCartIndex].quantity--;
-    cart.totalPrice -= productPrice;
+    cart.totalPrice = (cart.totalPrice - productPrice).toFixed(2);
 
     customer.cart = cart;
 
