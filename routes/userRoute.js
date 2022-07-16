@@ -1,16 +1,14 @@
 const express = require("express");
 const controller = require("../controllers/userController");
 const router = express.Router();
-const { body, param } = require("express-validator");
+const { body } = require("express-validator");
 const validationMW = require("../middlewares/validationMW");
-
+const authMW = require("../middlewares/isAuthenticated");
 router
-  .route("/users/:id")
+  .route("/users")
   .put(
+    authMW,
     [
-      param("id")
-        .isMongoId()
-        .withMessage("User'is id should be a valid MongoID"),
       body("email")
         .optional()
         .isEmail()
@@ -35,14 +33,6 @@ router
     validationMW,
     controller.updateUser
   )
-  .delete(
-    [
-      param("id")
-        .isMongoId()
-        .withMessage("User'is id should be a valid MongoID"),
-    ],
-    validationMW,
-    controller.removeUser
-  );
+  .delete(authMW, validationMW, controller.removeUser);
 
 module.exports = router;

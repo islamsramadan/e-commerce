@@ -25,8 +25,8 @@ module.exports.updateUser = async (req, res, next) => {
 
   if (!isValidUpdate) return next(new Error("Invalid update field(s)."));
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return next(new Error("Couldn't find a user with that id."));
+    const user = await User.findById(req.id);
+    // if (!user) return next(new Error("Couldn't find a user with that id.")); DONT NEED TO CHECK AFTER ADDING AUTH
 
     const address = ["city", "street", "building", "floor"];
 
@@ -46,15 +46,15 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.removeUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return next(new Error("Couldn't find a user with that id."));
+    const user = await User.findByIdAndDelete(req.id);
+    // if (!user) return next(new Error("Couldn't find a user with that id.")); DONT NEED TO CHECK AFTER ADDING AUTH
 
     switch (user.role) {
       case "customer":
-        await Customer.findOneAndDelete({ userId: req.params.id });
+        await Customer.findOneAndDelete({ userId: req.id });
         break;
       case "business":
-        await Business.findOneAndDelete({ userId: req.params.id });
+        await Business.findOneAndDelete({ userId: req.id });
         break;
     }
     res.status(200).json({ success: true, message: "Deleted Successfully!" });
