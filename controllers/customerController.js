@@ -167,9 +167,12 @@ module.exports.incrementProductInCart = async (req, res, next) => {
 
 module.exports.decrementProductInCart = async (req, res, next) => {
   try {
-    const customer = await Customer.findById(req.params.id, {
-      cart: 1,
-    });
+    const customer = await Customer.findOne(
+      { userId: req.id },
+      {
+        cart: 1,
+      }
+    );
 
     if (!customer)
       return next(new Error("Couldn't find a customer with that id."));

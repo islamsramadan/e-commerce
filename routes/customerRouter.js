@@ -44,11 +44,9 @@ router.put(
 );
 
 router.put(
-  "/customers/:id/cart/decrement",
+  "/customers/cart/decrement",
+  authMW,
   [
-    param("id")
-      .isMongoId()
-      .withMessage("Customer id should be a valid MongoID."),
     body("productId")
       .isMongoId()
       .withMessage("Product id should be a valid MongoID."),
