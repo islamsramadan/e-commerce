@@ -50,10 +50,11 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'user',
         },
-        orderItems: {
+        orderItems: [{
+            
             type: orderItemSchema,
             required: true,
-        },
+        }],
      address: {
             type: addressSchema,
         },
