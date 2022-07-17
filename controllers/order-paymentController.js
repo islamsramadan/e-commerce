@@ -5,7 +5,9 @@ const orders = mongoose.model("orders")
 
 module.exports.getOrders=(req,res,next)=>{
     orders.find().populate({path:"userId"})
-   //  .populate({path:"productId"}).populate({path:"businessId"})
+    .populate({path:"orderItems",populate:{path:"productId",model:"product"}})
+    .populate({path:"orderItems",populate:{path:"businessId",model:"user"}})
+
     //{name:1,email:1}        
     .then(data=>{
               console.log();
@@ -82,7 +84,10 @@ module.exports.updateOrderToDelivered=async(req,res)=>{
     }
 }
 module.exports.getMyOrder=(req,res,next)=>{
-   orders.findOne({userId:req.params.id},{orderItems:1}).then(data=>{
+  
+  
+   orders.findOne({userId:req.id},{orderItems:1}).then(data=>{
+    console.log(req.id)
     res.status(200).json(data)
    })
    .catch(err=>{next(err)

@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 require("../models/user");
+require("../models/customer");
+require("../models/business");
 
 const User = mongoose.model("user");
+const Customer = mongoose.model("customer");
+const Business = mongoose.model("business");
 
 module.exports.updateUser = async (req, res, next) => {
   const updateFields = Object.keys(req.body);
@@ -10,6 +14,7 @@ module.exports.updateUser = async (req, res, next) => {
     "city",
     "street",
     "building",
+    "floor",
     "phone",
     "isVerified",
   ];
@@ -20,10 +25,10 @@ module.exports.updateUser = async (req, res, next) => {
 
   if (!isValidUpdate) return next(new Error("Invalid update field(s)."));
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return next(new Error("Couldn't find a user with that id."));
+    const user = await User.findById(req.id);
+    // if (!user) return next(new Error("Couldn't find a user with that id.")); DONT NEED TO CHECK AFTER ADDING AUTH
 
-    const address = ["city", "street", "building"];
+    const address = ["city", "street", "building", "floor"];
 
     updateFields.forEach((updateField) => {
       if (address.includes(updateField)) {
@@ -41,8 +46,17 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.removeUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return next(new Error("Couldn't find a user with that id."));
+    const user = await User.findByIdAndDelete(req.id);
+    // if (!user) return next(new Error("Couldn't find a user with that id.")); DONT NEED TO CHECK AFTER ADDING AUTH
+
+    switch (user.role) {
+      case "customer":
+        await Customer.findOneAndDelete({ userId: req.id });
+        break;
+      case "business":
+        await Business.findOneAndDelete({ userId: req.id });
+        break;
+    }
     res.status(200).json({ success: true, message: "Deleted Successfully!" });
   } catch (e) {
     next(e);
