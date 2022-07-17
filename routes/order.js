@@ -18,8 +18,8 @@ body("orderItems")
 body("paymentMethod")
 .isString()
 .withMessage("paymentMethod should be a String"),
-body("paymentResult").isObject()
-.withMessage('paymentMethod  should be a valid Object.'),
+body("paymentResult").isObject().optional()
+.withMessage('paymentResult  should be a valid Object.'),
 body("shippingPrice").isNumeric()
 .withMessage('shippingPrice  should be a valid Number.'),
 body("totalPrice").isNumeric()
