@@ -3,13 +3,16 @@ const router = express.Router();
 
 const controller = require("../controllers/categoryController");
 
-const validationMW = require("./../middleWares/validationMW");
 const { body, param } = require("express-validator");
+const validationMW = require("./../middleWares/validationMW");
+
+const authMW = require("../middlewares/isAuthenticated");
 
 router
   .route("/categories")
   .get(controller.getAllCategories)
   .post(
+    authMW,
     [
       body("name").isString().withMessage("category name should be characters"),
       body("description")
@@ -20,6 +23,7 @@ router
     controller.addCategory
   )
   .put(
+    authMW,
     [
       body("id").notEmpty().isMongoId().withMessage("id"),
       body("name").optional().isString().withMessage("name"),
@@ -37,6 +41,7 @@ router
     controller.getOneCategory
   )
   .delete(
+    authMW,
     [param("id").notEmpty().isMongoId()],
     validationMW,
     controller.deleteOneCategory
