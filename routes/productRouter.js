@@ -5,6 +5,7 @@ const controller = require("../controllers/productController");
 
 const validationMW = require("./../middleWares/validationMW");
 const { body, param } = require("express-validator");
+const filesUpload = require("../middlewares/filesUpload");
 
 router
   .route("/products")
@@ -24,11 +25,7 @@ router
         .withMessage("product category should be mongo ID"),
       body("businessId")
         .isMongoId()
-        .withMessage("product businessId should be mongo ID"),
-      body("imageLink")
-        .optional()
-        .isString()
-        .withMessage("image link should be string"),
+        .withMessage("product businessId should be mongo ID")
     ],
     validationMW,
     controller.addProduct
@@ -94,5 +91,16 @@ router
     validationMW,
     controller.deleteOneProduct
   );
+
+
+router.route('/products/addimages/:id').post(
+  controller.checkForBusinessValidity,
+  filesUpload.array('image')
+)
+
+router.route('/products/removeimage/:id').delete(
+  controller.checkForBusinessValidity,
+  controller.deleteimage
+)
 
 module.exports = router;

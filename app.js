@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth");
-const businessRoute = require("./routes/business");
+const businessRouter = require("./routes/business");
 const userRouter = require("./routes/userRoute");
 const customerRouter = require("./routes/customerRouter");
 const categoryRouter = require("./routes/categoryRouter");
@@ -28,15 +28,20 @@ mongoose
   });
 
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
 // routers
 app.use("/auth", authRouter);
 app.use(userRouter);
 app.use(customerRouter);
 app.use(orderRoutes);
-app.use(businessRoute);
+app.use(businessRouter);
 app.use(categoryRouter);
+app.use(productRouter);
 app.post("/uploadImg", fileUpload.single("image"));
+
+// for development only
+app.use('/development', require('./routes/development'));
 
 // not found middleware
 app.use((req, res) => {
