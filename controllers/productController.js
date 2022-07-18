@@ -16,43 +16,56 @@ Products.find({})
 };
 
 module.exports.addProduct = (req, res, next) => {
-	    if (req.role === "admin" || req.role === "business") {
-      let newProduct = new Products({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        quantity: req.body.quantity,
-        businessId: req.body.businessId,
-        category: req.body.category,
-      });
-      newProduct
-        .save()
-        .then((data) => {
-          res.status(201).json({ status: "success", message: "product added" });
-        })
-        .catch((err) => next(err));
-    }
+  if (req.role === "admin" || req.role === "business") {
+    let newProduct = new Products({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      // imageLink: req.body.image,
+      businessId: req.body.businessId,
+      category: req.body.category,
+    });
+    newProduct
+      .save()
+      .then((data) => {
+        res.status(201).json({ status: "success", message: "product added" });
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
+  }
 };
 
-module.exports.updateProduct = (req, res, next) => {
+module.exports.updateProduct = async (req, res, next) => {
+  const toUpdateProduct = await Products.find({ _id: req.body.id });
+  try {
     if (
       req.role === "admin" ||
-      (req.role === "business" && req.id == req.body.id)
+      (req.role === "business" && req.id == toUpdateProduct.businessId)
     ) {
-      Products.findOne({ _id: req.body.id })
-        .then((data) => {
-          for (prop in req.body) {
-            data[prop] = req.body[prop];
-          }
-          return data.save().then((data) => {
-            res.status(200).json({
-              status: "success",
-              message: "product updated",
-            });
-          });
-        })
-        .catch((err) => next(err));
+      for (prop in req.body) {
+        toUpdateProduct[prop] = req.body[prop];
+      }
+      return toUpdateProduct.save().then(() => {
+        res.status(200).json({
+          status: "success",
+          message: "product updated",
+        });
+      });
+    } else {
+      res.status(401).json({
+        status: false,
+        message: "You are not authorized",
+      });
     }
+  } catch (err) {
+    next(err);
+  }
+
 };
 
 module.exports.getOneProduct = (req, res, next) => {
@@ -64,17 +77,22 @@ module.exports.getOneProduct = (req, res, next) => {
 };
 
 module.exports.deleteOneProduct = (req, res, next) => {
-    if (
-      req.role === "admin" ||
-      (req.role === "business" && req.id == req.params.id)
-    ) {
-      Products.deleteOne({ _id: req.params.id })
-        .then((data) => {
-          res.status(200).json({ status: "success", message: "product deleted" });
-        })
-        .catch((err) => next(err));
-    }
-};
+
+  if (
+    req.role === "admin" ||
+    (req.role === "business" && req.id == req.params.id)
+  ) {
+    Products.deleteOne({ _id: req.params.id })
+      .then((data) => {
+        res.status(200).json({ status: "success", message: "product deleted" });
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
+  }
 
 module.exports.checkForBusinessValidity = async (req, res, next) => {
 	const productId = req.params.id;
