@@ -8,7 +8,7 @@ module.exports = (request, response, next) => {
       ""
     );
     let error = new Error(message);
-    error.status = 442;
+    error.status = 400;
     throw error;
   }
   next();

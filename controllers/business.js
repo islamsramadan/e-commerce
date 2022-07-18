@@ -25,6 +25,7 @@ module.exports.getBusinessById = (req, res, next) => {
 };
 
 module.exports.addBusiness = (req, res, next) => {
+
 	let business = new Business({
 		userId: req.body.userId,
 		name: req.body.name,
@@ -34,6 +35,7 @@ module.exports.addBusiness = (req, res, next) => {
 		},
 		description: req.body.description,
 	});
+
 
 	business
 		.save()
@@ -70,6 +72,7 @@ module.exports.deleteProfileImage = (req, res, next) => {
 			next(err);
 		});
 	next();
+
 };
 
 module.exports.updateProfileImageLink = (req, res, next) => {
