@@ -25,6 +25,11 @@ module.exports.addCategory = (req, res, next) => {
         res.status(200).json({ status: "success", message: "Product added" })
       )
       .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
   }
 };
 
@@ -43,6 +48,11 @@ module.exports.updateCategory = (req, res, next) => {
         )
         .catch((err) => next(err));
     });
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
   }
 };
 
@@ -59,5 +69,10 @@ module.exports.deleteOneCategory = (req, res, next) => {
         res.status(200).json({ status: "success", message: "category deleted" })
       )
       .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
   }
 };

@@ -29,27 +29,38 @@ module.exports.addProduct = (req, res, next) => {
         res.status(201).json({ status: "success", message: "product added" });
       })
       .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
   }
 };
 
-module.exports.updateProduct = (req, res, next) => {
-  if (
-    req.role === "admin" ||
-    (req.role === "business" && req.id == req.body.id)
-  ) {
-    Products.findOne({ _id: req.body.id })
-      .then((data) => {
-        for (prop in req.body) {
-          data[prop] = req.body[prop];
-        }
-        return data.save().then((data) => {
-          res.status(200).json({
-            status: "success",
-            message: "product updated",
-          });
+module.exports.updateProduct = async (req, res, next) => {
+  const toUpdateProduct = await Products.find({ _id: req.body.id });
+  try {
+    if (
+      req.role === "admin" ||
+      (req.role === "business" && req.id == toUpdateProduct.businessId)
+    ) {
+      for (prop in req.body) {
+        toUpdateProduct[prop] = req.body[prop];
+      }
+      return toUpdateProduct.save().then(() => {
+        res.status(200).json({
+          status: "success",
+          message: "product updated",
         });
-      })
-      .catch((err) => next(err));
+      });
+    } else {
+      res.status(401).json({
+        status: false,
+        message: "You are not authorized",
+      });
+    }
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -73,5 +84,10 @@ module.exports.deleteOneProduct = (req, res, next) => {
         res.status(200).json({ status: "success", message: "product deleted" });
       })
       .catch((err) => next(err));
+  } else {
+    res.status(401).json({
+      status: false,
+      message: "You are not authorized",
+    });
   }
 };
