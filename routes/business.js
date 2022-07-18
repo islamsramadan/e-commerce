@@ -3,6 +3,7 @@ const businessRoute = express.Router();
 const { body, query, param } = require("express-validator");
 const mongoose = require("mongoose");
 const validationMW = require("../middlewares/validationMW");
+const authMW = require("../middlewares/isAuthenticated");
 
 // ----------Testing
 require("../models/business");
@@ -23,7 +24,7 @@ const multerStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split("/")[1];
-    cb(null, `business-${req.params.id + "-" + Date.now()}.${ext}`);
+    cb(null, `business-${req.id + "-" + Date.now()}.${ext}`);
   },
 });
 
@@ -42,10 +43,10 @@ const {
 businessRoute
   .route("/business")
   .get(getAllBusinesses)
-  .post(addBusiness)
+  .post(authMW, addBusiness)
   .put(
+    authMW,
     [
-      param("id").notEmpty().isMongoId(),
       body("name").optional().isString().withMessage("name should be a string"),
       body("description")
         .optional()
@@ -59,6 +60,7 @@ businessRoute
 businessRoute
   .route("/business/:id")
   .get(
+    authMW,
     [
       param("id")
         .notEmpty()
@@ -69,14 +71,11 @@ businessRoute
     getBusinessById
   );
 
-businessRoute.route("/business/upload/:id").put(
+businessRoute.route("/business/upload").put(
+  authMW,
   (req, res, next) => {
-    console.log(req.params.id);
-    Business.findById({ _id: req.params.id })
+    Business.findOne({ userId: req.id })
       .then(async (data) => {
-        console.log("data -----------> ", data);
-        // if (data.imageLink.indexOf("business")) {
-        // }
         await unlinkAsync(data.imageLink);
       })
       .catch((err) => {
