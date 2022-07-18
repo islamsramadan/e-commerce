@@ -46,7 +46,6 @@ module.exports.login = function login(req, res, next) {
 							success: true,
 							message: 'successful login',
 							token: token,
-							expireIn: '3600',
 						});
 					}
 				});
@@ -234,9 +233,9 @@ function addCustomerData(userId, data) {
 }
 
 function addBusinessData(userId, data) {
-	fs.readFile(path.join(__dirname, '..', 'images', 'business', 'default.webp'), function (err, data) {
+	fs.readFile(path.join('images', 'business', 'default.webp'), function (err, data) {
 		if (err) throw err;
-		fs.writeFile(path.join(__dirname, '../', 'images', 'business', userId + '.webp'), data, function (err) {
+		fs.writeFile(path.join('images', 'business', userId + '.webp'), data, function (err) {
 			if (err) throw err;
 		});
 	});
@@ -244,6 +243,7 @@ function addBusinessData(userId, data) {
 		userId: userId,
 		name: data.name,
 		description: data.description,
-		imageLink: path.join(__dirname, '../', 'images', 'business', userId + '.webp'),
+		imageLink: path.join('images', 'business', userId + '.webp'),
 	}).save();
 }
+

@@ -2,10 +2,13 @@ const mongoose=require("mongoose");
 require("../models/order");
 const orders = mongoose.model("orders")
 
+const business = mongoose.model("business")
 
 module.exports.getOrders=(req,res,next)=>{
     orders.find().populate({path:"userId"})
-   //  .populate({path:"productId"}).populate({path:"businessId"})
+    .populate({path:"orderItems",populate:{path:"productId",model:"product"}})
+    .populate({path:"orderItems",populate:{path:"businessId",model:"user"}})
+
     //{name:1,email:1}        
     .then(data=>{
               console.log();
@@ -66,23 +69,37 @@ module.exports.updateOrderToPaid=async(req,res)=>{
       throw new Error('Order not found')
     }
 }
-module.exports.updateOrderToDelivered=async(req,res)=>{
-    const order = await orders.findById(req.params.id)
+module.exports.updateOrderToDelivered=async(req,res,next)=>{
 
+ 
+    const order = await orders.findById(req.params.id)
+    const BusinessId =  order.orderItems[0].businessId.toString();
+    
     if (order) {
-      order.isDelivered = true
+      order.status = "Delivered"
       order.deliveredAt = Date.now()
-  
-      const updatedOrder = await order.save()
-  
-      res.json(updatedOrder)
-    } else {
+       order.save()
+       res.status(200).json(order)
+    const Business =   await business.findOne({userId:BusinessId})
+    if(Business){
+      Business.balance = order.totalPrice - (order.totalPrice*.15) ;
+        return Business.save()
+    }
+    else{
+      res.status(404)
+      throw new Error('Business not found')
+    }
+    } 
+    else {
       res.status(404)
       throw new Error('Order not found')
     }
 }
 module.exports.getMyOrder=(req,res,next)=>{
-   orders.findOne({userId:req.params.id},{orderItems:1}).then(data=>{
+  
+  
+   orders.findOne({userId:req.id},{orderItems:1}).then(data=>{
+   
     res.status(200).json(data)
    })
    .catch(err=>{next(err)

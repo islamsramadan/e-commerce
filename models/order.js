@@ -21,10 +21,6 @@ const orderItemSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    imageLink: {
-        type: String,
-        required: true
-    },
     unitPrice: {
         type: Number,
         required: true
@@ -50,10 +46,11 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'user',
         },
-        orderItems: {
+        orderItems: [{
+            
             type: orderItemSchema,
             required: true,
-        },
+        }],
      address: {
             type: addressSchema,
         },
@@ -83,6 +80,7 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: false,
         },
+
         status: {
             type: String,
             enum :["Delivered","Shipped","order"],

@@ -45,9 +45,14 @@ const businessSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  balance: {
+    type: Number,
+    required: true,
+    default:0
+  },
   verification: {
-
     type: verificationSchema,
+    default:{}
   },
   description: String,
 });

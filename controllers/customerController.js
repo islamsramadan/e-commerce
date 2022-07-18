@@ -6,12 +6,12 @@ const Product = mongoose.model("product");
 
 module.exports.addToCart = async (req, res, next) => {
   try {
-    const customer = await Customer.findById(req.params.id, {
-      cart: 1,
-    });
-
-    if (!customer)
-      return next(new Error("Couldn't find a customer with that id."));
+    const customer = await Customer.findOne(
+      { userId: req.id },
+      {
+        cart: 1,
+      }
+    );
 
     const product = await Product.findById(req.body.productId, {
       price: 1,
@@ -69,12 +69,12 @@ module.exports.addToCart = async (req, res, next) => {
 };
 
 module.exports.removeFromCart = async (req, res, next) => {
-  const customer = await Customer.findById(req.params.id, {
-    cart: 1,
-  });
-
-  if (!customer)
-    return next(new Error("Couldn't find a customer with that id."));
+  const customer = await Customer.findOne(
+    { userId: req.id },
+    {
+      cart: 1,
+    }
+  );
 
   try {
     const product = await Product.findById(req.body.productId, {
@@ -117,12 +117,12 @@ module.exports.removeFromCart = async (req, res, next) => {
 
 module.exports.incrementProductInCart = async (req, res, next) => {
   try {
-    const customer = await Customer.findById(req.params.id, {
-      cart: 1,
-    });
-
-    if (!customer)
-      return next(new Error("Couldn't find a customer with that id."));
+    const customer = await Customer.findOne(
+      { userId: req.id },
+      {
+        cart: 1,
+      }
+    );
 
     const product = await Product.findById(req.body.productId, {
       price: 1,
@@ -167,9 +167,12 @@ module.exports.incrementProductInCart = async (req, res, next) => {
 
 module.exports.decrementProductInCart = async (req, res, next) => {
   try {
-    const customer = await Customer.findById(req.params.id, {
-      cart: 1,
-    });
+    const customer = await Customer.findOne(
+      { userId: req.id },
+      {
+        cart: 1,
+      }
+    );
 
     if (!customer)
       return next(new Error("Couldn't find a customer with that id."));
