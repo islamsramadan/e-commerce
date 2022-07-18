@@ -3,13 +3,16 @@ const router = express.Router();
 
 const controller = require("../controllers/productController");
 
-const validationMW = require("./../middleWares/validationMW");
 const { body, param } = require("express-validator");
+const validationMW = require("./../middleWares/validationMW");
+
+const authMW = require("../middlewares/isAuthenticated");
 
 router
   .route("/products")
   .get(controller.getAllProducts)
   .post(
+    authMW,
     [
       body("name").isString().withMessage("product name should be characters"),
       body("description")
@@ -34,6 +37,7 @@ router
     controller.addProduct
   )
   .put(
+    authMW,
     [
       body("id")
         .notEmpty()
@@ -85,6 +89,7 @@ router
     controller.getOneProduct
   )
   .delete(
+    authMW,
     [
       param("id")
         .notEmpty()

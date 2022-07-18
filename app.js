@@ -36,6 +36,7 @@ app.use(customerRouter);
 app.use(orderRoutes);
 app.use(businessRoute);
 app.use(categoryRouter);
+app.use(productRouter);
 app.post("/uploadImg", fileUpload.single("image"));
 
 // not found middleware
