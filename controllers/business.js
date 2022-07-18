@@ -27,7 +27,7 @@ module.exports.addBusiness = (req, res, next) => {
   let business = new Business({
     userId: req.body.userId,
     name: req.body.name,
-    imageLink: req.body.imageLink,
+    // imageLink: req.body.imageLink,
     verification: {
       comRegImgLink: req.body.comRegImgLink,
     },
@@ -47,7 +47,7 @@ module.exports.addBusiness = (req, res, next) => {
 // Update Business
 
 module.exports.updateBusiness = (req, res, next) => {
-  Business.findOne({ _id: req.body.id }).then((data) => {
+  Business.findOne({ userId: req.id }).then((data) => {
     data.name = req.body.name;
     // update here
     data.description = req.body.description;
@@ -60,8 +60,7 @@ module.exports.updateBusiness = (req, res, next) => {
 };
 
 module.exports.updateImage = (req, res, next) => {
-  console.log("req file", req.file);
-  Business.findOne({ _id: req.params.id })
+  Business.findOne({ userId: req.id })
     .then((data) => {
       data.imageLink = req.file.path;
       return data.save().then((data) => {
