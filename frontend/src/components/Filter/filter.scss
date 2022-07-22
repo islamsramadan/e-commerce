@@ -1,0 +1,17 @@
+.filter {
+  padding: 10px;
+  background-color: #fafafa;
+  // border-radius: 0px 10px 10px 0px;
+  border-radius: 10px;
+
+  &-section {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    > div {
+      padding-bottom: 10px;
+    }
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}

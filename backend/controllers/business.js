@@ -25,7 +25,6 @@ module.exports.getBusinessById = (req, res, next) => {
 };
 
 module.exports.addBusiness = (req, res, next) => {
-
 	let business = new Business({
 		userId: req.body.userId,
 		name: req.body.name,
@@ -35,7 +34,6 @@ module.exports.addBusiness = (req, res, next) => {
 		},
 		description: req.body.description,
 	});
-
 
 	business
 		.save()
@@ -72,7 +70,6 @@ module.exports.deleteProfileImage = (req, res, next) => {
 			next(err);
 		});
 	next();
-
 };
 
 module.exports.updateProfileImageLink = (req, res, next) => {
@@ -88,7 +85,6 @@ module.exports.updateProfileImageLink = (req, res, next) => {
 		});
 };
 
-
 module.exports.deleteComRegImage = (req, res, next) => {
 	const userId = req.params.id;
 	Business.findOne({ userId: userId })
@@ -103,7 +99,7 @@ module.exports.deleteComRegImage = (req, res, next) => {
 
 module.exports.uploadComRegImg = (req, res, next) => {
 	res.status(200).json({ message: 'img updated' });
-}
+};
 
 // module.exports.updateComRegImageLink = (req, res, next) => {
 // 	Business.findOne({ userId: req.params.id })
@@ -117,7 +113,6 @@ module.exports.uploadComRegImg = (req, res, next) => {
 // 			next(err);
 // 		});
 // };
-
 
 // module.exports.updateBusiness = (req, res, next) => {
 //   Business.findOne({ _id: req.params.id }).then((data) => {

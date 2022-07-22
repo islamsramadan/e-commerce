@@ -8,13 +8,12 @@ const fs = require('fs');
 
 const validationMW = require('../middlewares/validationMW');
 const uploadFileMW = require('../middlewares/filesUpload');
-const authMW = require("../middlewares/isAuthenticated");
-const validationMW = require("../middlewares/validationMW");
+const authMW = require('../middlewares/isAuthenticated');
+const validationMW = require('../middlewares/validationMW');
 
 // ----------Testing
 require('../models/business');
-let Business = mongoose.model("business");
-
+let Business = mongoose.model('business');
 
 const {
 	getAllBusinesses,
@@ -28,9 +27,9 @@ const {
 
 businessRoute
 	.route('/business')
-	.get( authMW,getAllBusinesses)
+	.get(authMW, getAllBusinesses)
 	.put(
-    authMW,
+		authMW,
 		[
 			param('id').notEmpty().isMongoId(),
 			body('name').optional().isString().withMessage('name should be a string'),
@@ -43,7 +42,7 @@ businessRoute
 businessRoute
 	.route('/business/:id')
 	.get(
-    authMW,
+		authMW,
 		[param('id').notEmpty().isMongoId().withMessage("User'is id should be a valid MongoID")],
 		validationMW,
 		getBusinessById
@@ -51,11 +50,10 @@ businessRoute
 
 businessRoute
 	.route('/business/updateProfileImg/:id')
-	.put(authMW,deleteProfileImage, uploadFileMW.single('image'), updateProfileImageLink);
+	.put(authMW, deleteProfileImage, uploadFileMW.single('image'), updateProfileImageLink);
 
 businessRoute
 	.route('/business/uploadComReg/:id')
-	.post(authMW,uploadFileMW.single('image'), uploadComRegImg);
-
+	.post(authMW, uploadFileMW.single('image'), uploadComRegImg);
 
 module.exports = businessRoute;
