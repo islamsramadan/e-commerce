@@ -1,6 +1,6 @@
 .outer {
   width: 100%;
-  max-width: 300px;
+  max-width: 220px;
   margin: auto;
   padding: 0px 10px 20px 10px;
 }
@@ -15,13 +15,38 @@
   &:hover {
     transform: translateY(-5px);
   }
+  &-header {
+    position: relative;
+    &_imgsDiv {
+      img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: center;
+        display: none;
+        &.active {
+          display: block;
+        }
+      }
+    }
 
-  &-imgDiv {
-    img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      object-position: center;
+    &_dotsDiv {
+      display: flex;
+      width: max-content;
+      margin: 5px auto;
+      border-radius: 5px;
+      padding: 5px;
+      div {
+        width: 7px;
+        height: 7px;
+        border-radius: 10px;
+        background-color: #aaa;
+        margin: 0px 5px;
+        &.active {
+          width: 10px;
+          background-color: #888;
+        }
+      }
     }
   }
 
@@ -40,6 +65,23 @@
       &:hover {
         color: darkcyan;
       }
+    }
+  }
+}
+
+@media (max-width: 567px) {
+  .outer {
+    width: 50%;
+    max-width: unset;
+    margin: 0;
+    padding: 0px;
+  }
+  .productCard {
+    box-shadow: none;
+    border: 1px solid #eee;
+    border-radius: 0;
+    &:hover {
+      transform: none;
     }
   }
 }

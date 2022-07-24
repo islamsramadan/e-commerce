@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import NavbarComp from "./components/Navabar/Navbar";
 import SearchPage from "./Pages/Search";
 

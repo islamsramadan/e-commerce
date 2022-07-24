@@ -1,0 +1,14 @@
+button{
+    display: block;
+    margin:5px !important;
+    border: none;
+    background-color: #ccc;
+    border-radius: 5px !important;
+    padding: 3px 7px;
+    transition: all .2s ease-in-out;
+
+    &:hover{
+        background: cadetblue;
+        color:#fff
+    }
+}

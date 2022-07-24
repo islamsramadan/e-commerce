@@ -1,3 +1,48 @@
-.search{
+.SearchPageContainer {
+    display: flex;
+}
+.filterSortToggle {
+    width: max-content;
+    z-index: 10;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: darkcyan;
+    box-shadow: 0px 2px 5px #555;
+    border-radius: 5px;
+    overflow: hidden;
+
+    button {
+        border: none;
+        background-color: transparent;
+        font-size: 1rem;
+        padding: 5px 10px;
+        display: inline-block;
+        color: #fff;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #057676;
+        }
+
+        svg {
+            font-size: 1.5rem;
+            margin-right: 5px;
+        }
+    }
+}
+
+.offcanvas {
+    background-color: #f5f5f5 !important;
+}
+
+.productsListDiv {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 20px;
+}
+
+.offcanvas {
+    max-width: 300px !important;
 }
