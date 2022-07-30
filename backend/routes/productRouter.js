@@ -105,4 +105,5 @@ router
 router
   .route('/products/removeimage/:id')
   .delete(controller.checkForBusinessValidity, controller.deleteimage);
+router.route('/:id/reviews').post(authMW, controller.createProductReview);
 module.exports = router;

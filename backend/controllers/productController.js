@@ -1,9 +1,11 @@
 require('../models/product');
 
 const mongoose = require('mongoose');
+
 let Products = mongoose.model('product');
 const fs = require('fs');
 const path = require('path');
+const asyncHandler = require('express-async-handler');
 
 module.exports.getAllProducts = (req, res, next) => {
   Products.find({})
@@ -96,3 +98,41 @@ module.exports.deleteimage = (req, res, next) => {
   );
   fs.unlinkSync(imagePath, (err) => console.log('error : ', err));
 };
+
+module.exports.createProductReview = asyncHandler(async (req, res, next) => {
+  const { rating, comment } = req.body;
+
+  const product = await Products.findById(req.params.id);
+
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error('Product already reviewed');
+    }
+    console.log(req.id);
+    const review = {
+      name: req.body.name,
+      rating: Number(rating),
+      comment,
+      user: req.id,
+    };
+
+    product.reviews.push(review);
+
+    product.numReviews = product.reviews.length;
+
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+
+    await product.save();
+    res.status(201).json({ message: 'Review added' });
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
