@@ -6,7 +6,7 @@ let Products = mongoose.model("product");
 const fs = require("fs");
 const path = require("path");
 const asyncHandler = require("express-async-handler");
-const { match } = require("assert");
+const Category = require("../models/category");
 
 module.exports.getAllProducts = (req, res, next) => {
   Products.find({})
@@ -140,7 +140,7 @@ module.exports.createProductReview = asyncHandler(async (req, res, next) => {
 
 exports.searchProduct = async (req, res, next) => {
   try {
-    const searchQuery = req.query.q.trim();
+    const searchQuery = req.query.q?.trim();
     if (!searchQuery) throw new Error("Search Query must not be empty.");
 
     const matchingProducts = await Products.find(
@@ -153,10 +153,71 @@ exports.searchProduct = async (req, res, next) => {
     if (!matchingProducts.length)
       throw new Error("Sorry! Couldnt find a product with that name");
 
-    res.json({ msg: "success", matchingProducts });
+    const maxPrice = findMaxPrice(matchingProducts);
+    res.json({ msg: "success", matchingProducts, maxPrice });
   } catch (error) {
     if (error.message.includes("empty")) error.status = 400;
     if (error.message.includes("Couldnt find")) error.status = 404;
     next(error);
   }
+};
+
+exports.filterProducts = async (req, res, next) => {
+  try {
+    const filterKey = Object.keys(req.query)[0]?.toLowerCase().trim();
+    if (!filterKey)
+      throw new Error("Filter criteria must be Category, Price or Rating");
+
+    const filterValue = req.query[filterKey];
+    if (!filterValue) throw new Error("Filter value must not be empty");
+
+    let matchingProducts;
+    switch (filterKey) {
+      case "category":
+        const matchingCategory = await Category.findOne(
+          { name: req.query.category },
+          { _id: 1 }
+        );
+        if (!matchingCategory)
+          throw new Error("Couldnt find category with that name!");
+
+        matchingProducts = await Products.find(
+          { category: matchingCategory._id.toString() },
+          { name: 1, price: 1, rating: 1 }
+        );
+        break;
+
+      case "price":
+        if (isNaN(req.query.price)) throw new Error("Price must be a number!");
+        matchingProducts = await Products.find(
+          { price: { $lte: req.query.price } },
+          { name: 1, price: 1, rating: 1 }
+        );
+        break;
+
+      case "rating":
+        if (isNaN(req.query.rating))
+          throw new Error("Rating must be a number!");
+        matchingProducts = await Products.find(
+          { rating: req.query.rating },
+          { name: 1, price: 1, rating: 1 }
+        );
+    }
+
+    if (!matchingProducts.length)
+      throw new Error("Couldnt find products with that filter value");
+
+    const maxPrice = findMaxPrice(matchingProducts);
+    res.json({ data: matchingProducts, maxPrice });
+  } catch (error) {
+    if (error.message.includes("Couldnt find")) error.status = 404;
+    if (error.message.includes("must be")) error.status = 400;
+    next(error);
+  }
+};
+
+const findMaxPrice = (products) => {
+  let maxPrice = Number.MIN_SAFE_INTEGER;
+  products.forEach((product) => (maxPrice = Math.max(product.price, maxPrice)));
+  return maxPrice;
 };

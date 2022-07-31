@@ -108,5 +108,6 @@ router
 router.route("/:id/reviews").post(authMW, controller.createProductReview);
 
 router.get("/search", controller.searchProduct);
+router.get("/filterBy", controller.filterProducts);
 
 module.exports = router;
