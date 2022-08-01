@@ -7,7 +7,7 @@ export default function SortBy() {
   return (
     <div className="SortBy">
         <h6> <TbArrowsSort/> Sort by</h6>
-        <button className='btn btn-custom'>price : low to high</button>
+        <button className='active'>price : low to high</button>
         <button>price : high to low</button>
         <button>rate : high to low</button>
         <button>new arrival</button>

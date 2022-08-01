@@ -1,0 +1,171 @@
+@import '../../colors';
+@import '../../mixins';
+
+.product {
+    &-mainData {
+        display: flex;
+        align-items: flex-start;
+
+        &_imgDiv {
+            margin-right: 20px;
+            position: relative;
+            display: flex;
+
+            &-imgs {
+                margin-right: 20px;
+                position: relative;
+                max-height: 400px;
+                overflow: hidden;
+
+                img {
+                    display: block;
+                    margin-bottom: 10px;
+                    width: 80px;
+                    cursor: pointer;
+                    border-radius: 5px;
+
+                    &.active {
+                        border: 1px solid #ccc;
+                    }
+                }
+
+                button {
+                    border: none;
+                    background: none;
+                    position: absolute;
+                    left: 0;
+                    width: 100%;
+                    font-size: 20px;
+                    transition: all 0.2s ease-in-out;
+
+                    &:hover {
+                        background-color: #fff;
+                    }
+                }
+                .topBtn {
+                    top: 0px;
+                    background: linear-gradient(-0deg, transparent, #fff);
+                    border-radius: 5px 5px 0 0;
+                }
+
+                .bottomBtn {
+                    bottom: 0px;
+                    background: linear-gradient(0deg, #fff, transparent);
+                    border-radius: 0 0 5px 5px;
+                }
+            }
+
+            & > img {
+                width: 400px;
+                height: 400px;
+                border-radius: 10px;
+                object-fit: cover;
+            }
+        }
+
+        &_data {
+            &-name {
+                margin: 0;
+                color: #333;
+            }
+
+            &-author {
+                margin: 0;
+                color: #888;
+            }
+
+            &-rate {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                span {
+                    margin-left: 10px;
+                    color: #888;
+                }
+            }
+
+            &-priceDiv {
+                margin: 15px 0;
+
+                &_before {
+                    font-size: 17px;
+                    text-decoration: line-through;
+                    color: #555;
+                    margin-right: 15px;
+                }
+
+                &_after,
+                &_price {
+                    font-size: 22px;
+                    font-weight: 600;
+                    color: $primary;
+                }
+            }
+
+            &-description {
+                color: #555;
+            }
+
+            &-btn {
+                @include btnFormatter($primary, #fff);
+                margin-top: 10px;
+                width: 140px;
+                height: 25px;
+                text-align: center;
+
+                span {
+                    font-size: 16px;
+                    color: #eee;
+                }
+                img {
+                    height: 100%;
+                    display: block;
+                    margin: auto;
+                }
+
+                &.remove {
+                    @include btnFormatter(sred, #fff);
+                    margin-top: 10px;
+                    width: 140px;
+                    height: 25px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .product {
+        &-mainData {
+            flex-wrap: wrap;
+
+            &_imgDiv {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+                background-size: cover !important;
+                background-position: center !important;
+                position: relative;
+
+                img {
+                    position: relative;
+                    margin: 20px auto;
+                    display: block;
+                    box-shadow: 0px 0px 5px #555;
+                }
+            }
+
+            & > * {
+                text-align: center;
+            }
+
+            &_data {
+                &-rate {
+                    flex-direction: column;
+                    margin: 10px;
+                }
+            }
+        }
+    }
+}
