@@ -1,0 +1,14 @@
+.primary-heading::after {
+    content: "";
+    border-radius: 5px;
+    position: absolute;
+    bottom: -15px;
+    left: 30px;
+    width: 8rem;
+    height: 5px;
+    background-image: linear-gradient(to right, #e9485e, #e9cf3c);
+}
+
+// .primary-heading.alone::after {
+//     width:14%;
+// }
