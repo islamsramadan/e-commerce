@@ -1,0 +1,42 @@
+.home-slider .slick-arrow {
+  display: none !important;
+}
+
+.home-slider h1 {
+  font-size: 45px;
+  line-height: 55px;
+  margin: 50px 0 20px 0;
+}
+.home-slider p {
+  margin: 20px 0;
+}
+.home-slider ul {
+  position: relative;
+  bottom: 20px;
+  margin-top: 1rem;
+}
+.home-slider ul li {
+  border: 2px solid #b8b7b7;
+  border-radius: 50%;
+  padding: 10px;
+}
+.home-slider ul li button {
+  background: transparent !important;
+  color: transparent !important;
+}
+.home-slider ul li button::before {
+  font-size: 15px !important;
+  color: #0f3460;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  margin: auto;
+}
+
+/*  handing dots on mobile screen*/
+
+@media screen and (max-width: 600px) {
+  .slick-dots {
+    margin-top: 3rem !important;
+  }
+}

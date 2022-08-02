@@ -33,7 +33,7 @@ export default function SearchPage() {
             <div className="filterSortToggle d-lg-none">
                 <button onClick={handleShow}>
                     <VscSettings/>
-                    Sort & filter 
+                    Sort & Filter 
                 </button>
             </div>
 

@@ -1,0 +1,20 @@
+.category-preview {
+  margin: 9rem 0;
+}
+
+.category-preview .slick-dots {
+  display: none !important;
+}
+
+.category-preview .slick-arrow {
+  /* left: -50px !important; */
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+}
+
+.category-preview .slick-prev::before,
+.slick-next::before {
+  color: #e94d5a !important;
+  font-size: 2.5rem !important;
+}

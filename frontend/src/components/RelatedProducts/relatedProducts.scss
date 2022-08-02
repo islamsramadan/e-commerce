@@ -1,0 +1,81 @@
+@import "../../colors";
+
+.productItem {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 20px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+
+  >img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin-right: 5px;
+    transition: all .1s ease-in-out;
+  }
+
+  &-data {
+    &_title {
+      margin: 0px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    &_author {
+      margin: 0;
+      color: #666666;
+      font-weight: 600;
+    }
+
+    &_priceDiv {
+      margin-top: 10px;
+
+      &-before {
+        font-size: 15px;
+        text-decoration: line-through;
+        color: #555;
+        margin-right: 15px;
+      }
+
+      &-after,
+      &-price {
+        font-size: 15px;
+        font-weight: 600;
+        color: $primary;
+      }
+    }
+  }
+  &:hover {
+    .book-img {
+      transform: translateY(-3px);
+      box-shadow: 0px 7px 11px -5px #888;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .sectionTitle {
+    margin: 20px 0 0 0;
+  }
+
+  .booksContainer {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: auto;
+  }
+
+  .book {
+    flex-direction: column;
+    margin: 0px 10px 10px 0px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 130px;
+
+    &-data {
+      text-align: center;
+    }
+  }
+}

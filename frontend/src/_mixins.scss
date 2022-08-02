@@ -1,0 +1,31 @@
+@mixin btnFormatter($backColor, $textColor, $backState:false) {
+    all: unset;
+    border-radius: 10px;
+    color: $textColor;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all .15s ease-in-out;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0px 7px 5px -5px #aaa;
+    }
+
+    &:active {
+        // background-color: darken($color: $backColor, $amount: 10) ;
+        color: #fff;
+    }
+
+
+    @if $backState==false {
+        background-color: $backColor;
+        border: none;
+    }
+
+    @else {
+        background-color: transparent;
+        border: 1px solid $backColor
+    }
+
+
+}
