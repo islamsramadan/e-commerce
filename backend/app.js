@@ -1,23 +1,24 @@
-const express = require("express");
-const mongoose = require("mongoose");
-require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-const authRouter = require("./routes/auth");
-const businessRouter = require("./routes/business");
-const userRouter = require("./routes/userRoute");
-const customerRouter = require("./routes/customerRouter");
-const categoryRouter = require("./routes/categoryRouter");
-const productRouter = require("./routes/productRouter");
-const fileUpload = require("./middlewares/filesUpload");
+const authRouter = require('./routes/auth');
+const businessRouter = require('./routes/business');
+const userRouter = require('./routes/userRoute');
+const customerRouter = require('./routes/customerRouter');
+const categoryRouter = require('./routes/categoryRouter');
+const productRouter = require('./routes/productRouter');
+const fileUpload = require('./middlewares/filesUpload');
+const adminRouter = require('./routes/admin');
 
-const orderRoutes = require("./routes/order");
+const orderRoutes = require('./routes/order');
 
 const app = express();
 
 mongoose
   .connect(process.env.MONGO_CONNECTION)
   .then(() => {
-    console.log("Connected to database successfuly");
+    console.log('Connected to database successfuly');
     const port = process.env.PORT || 8080;
     app.listen(port, () => {
       console.log(`API server is listining on port ${port}`);
@@ -28,17 +29,18 @@ mongoose
   });
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 
 // routers
-app.use("/auth", authRouter);
+app.use('/auth', authRouter);
 app.use(userRouter);
 app.use(customerRouter);
 app.use(orderRoutes);
 app.use(businessRouter);
 app.use(categoryRouter);
 app.use(productRouter);
-app.post("/uploadImg", fileUpload.single("image"));
+app.use(adminRouter);
+app.post('/uploadImg', fileUpload.single('image'));
 
 // for development only
 app.use('/development', require('./routes/development'));
@@ -47,7 +49,7 @@ app.use('/development', require('./routes/development'));
 app.use((req, res) => {
   res
     .status(404)
-    .json({ success: false, message: "your request url is NOT FOUND" });
+    .json({ success: false, message: 'your request url is NOT FOUND' });
 });
 
 // error middleware
@@ -55,5 +57,5 @@ app.use((error, req, res, next) => {
   let status = error.status || 500;
   res
     .status(status)
-    .json({ success: false, message: "Internal Error" + error });
+    .json({ success: false, message: 'Internal Error' + error });
 });

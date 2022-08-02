@@ -9,6 +9,7 @@ const asyncHandler = require('express-async-handler');
 const Category = require('../models/category');
 
 module.exports.getAllProducts = (req, res, next) => {
+
   Products.find({})
     .then((data) => {
       res.status(200).json({ status: 'success', data });
