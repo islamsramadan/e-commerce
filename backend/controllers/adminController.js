@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 require('../models/product');
 require('../models/user');
-require('../models/customer');
-require('../models/business');
 require('../models/order');
 const orders = mongoose.model('orders');
 const Products = mongoose.model('product');
@@ -33,5 +31,20 @@ module.exports.getNumberOfUsers = async (req, res) => {
     numOfUsers: numOfUsers,
     numOfCustomers: numOfCustomers,
     numOfbusiness: numOfbusiness,
+  });
+};
+
+module.exports.getTotalOrders = async (req, res) => {
+  const numOfDelivered = await orders.count({
+    status: 'Delivered',
+  });
+  const numOfOnDelivery = await orders.count({
+    status: 'order',
+  });
+  const totalNumofOrders = await orders.count({});
+  res.json({
+    totalNumofOrders: totalNumofOrders,
+    numOfOnDelivery: numOfOnDelivery,
+    numOfDelivered: numOfDelivered,
   });
 };
