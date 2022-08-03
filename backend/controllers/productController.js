@@ -245,7 +245,7 @@ exports.getRelatedProducts = async (req, res, next) => {
   try {
     const relatedProducts = await Products.find(
       {
-        category: req.body.category,
+        category: req.params.category,
       },
       { category: 1 }
     ).limit(5);
