@@ -111,4 +111,14 @@ router.get("/search", controller.searchProduct);
 router.get("/filterBy", controller.filterProducts);
 router.get("/toprated", controller.getTopProducts);
 router.get("/lastAdded", controller.getLastAdded);
+router.get(
+  "/relatedProducts",
+  [
+    body("category")
+      .isMongoId()
+      .withMessage("Please provide a valid MongoId for the categoryId"),
+  ],
+  validationMW,
+  controller.getRelatedProducts
+);
 module.exports = router;

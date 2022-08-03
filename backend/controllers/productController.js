@@ -240,3 +240,21 @@ exports.getLastAdded = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getRelatedProducts = async (req, res, next) => {
+  try {
+    const relatedProducts = await Products.find(
+      {
+        category: req.body.category,
+      },
+      { category: 1 }
+    ).limit(5);
+    if (!relatedProducts.length)
+      throw new Error("Couldnt find products in that category!");
+
+    res.json({ msg: "success", relatedProducts });
+  } catch (error) {
+    if (error.message.includes("Couldnt find")) error.status = 404;
+    next(error);
+  }
+};
