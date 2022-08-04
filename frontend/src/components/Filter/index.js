@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import {BiCategoryAlt} from 'react-icons/bi'
 
 import SortBy from '../SortBy';
 import './filter.scss';
@@ -11,9 +12,9 @@ export default function Filter() {
                 <SortBy></SortBy>
             </div>
             <div className="filter-section">
-                <h6>Category</h6>
+                <h6><BiCategoryAlt/> Category</h6>
                 <div>
-                    <Form.Check id="1" label="category 1" />
+                    <Form.Check id="1" label="category 1"/>
                     <Form.Check id="2" label="category 2" />
                     <Form.Check id="3" label="category 3" />
                     <Form.Check id="4" label="category 4" />
@@ -21,7 +22,7 @@ export default function Filter() {
                 </div>
             </div>
             <div className="filter-section">
-                <h6>Brand</h6>
+                <h6><BiCategoryAlt/> Brand</h6>
                 <div>
                     <Form.Check label="brand 1" />
                     <Form.Check label="brand 2" />
@@ -31,7 +32,7 @@ export default function Filter() {
                 </div>
             </div>
             <div className="filter-section">
-                <h6>Seller</h6>
+                <h6><BiCategoryAlt/> Seller</h6>
                 <div>
                     <Form.Check label="seller 1" />
                     <Form.Check label="seller 2" />

@@ -1,7 +1,8 @@
+import { Routes, Route } from 'react-router-dom';
+
 import './App.scss';
 import SearchPage from './Pages/Search';
 import Search from './common/Header/Search/Search';
-import { Routes, Route } from 'react-router-dom';
 import Footer from './common/Footer/Footer';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
@@ -9,6 +10,9 @@ import SignUp from './Pages/SignUp/SignUp';
 import Profile from './Pages/Profile/Profile';
 import Orders from './Pages/Orders/Orders';
 import Cart from './Pages/Cart/Cart';
+import NavbarComp from './components/Navabar/Navbar';
+import ProductDetailsPage from './Pages/ProductDetails';
+// import SearchPage from './Pages/Search';
 
 function App() {
     return (
@@ -21,7 +25,11 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/search" element={<SearchPage />} />
+<<<<<<< HEAD
                 <Route path="/cart" element={<Cart />} />
+=======
+                <Route path="/product/:id" element={<ProductDetailsPage />} />
+>>>>>>> test
                 <Route path="*" element={<h1>can't find this page </h1>} />
             </Routes>
             <Footer />

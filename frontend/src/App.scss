@@ -53,7 +53,17 @@ $theme-colors: (
   box-sizing: border-box;
   font-family: "Raleway";
 }
+$primary: #e9475e;
 
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+body {
+    line-height: unset !important;
+}
+
+input:focus {
+    outline: none !important;
+}
 /* ----------------------utilities------------- */
 /* :root {
   --color-primary: 

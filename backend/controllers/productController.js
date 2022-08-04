@@ -221,3 +221,40 @@ const findMaxPrice = (products) => {
   products.forEach((product) => (maxPrice = Math.max(product.price, maxPrice)));
   return maxPrice;
 };
+
+module.exports.getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Products.find({}).sort({ rating: -1 }).limit(5);
+  res.json(products);
+});
+
+exports.getLastAdded = async (req, res, next) => {
+  try {
+    const lastAdded = await Products.find(
+      {},
+      { name: 1, price: 1, category: 1, rating: 1, createdAt: 1 }
+    )
+      .sort({ createdAt: -1 })
+      .limit(5);
+    res.json({ msg: "success", lastAdded });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getRelatedProducts = async (req, res, next) => {
+  try {
+    const relatedProducts = await Products.find(
+      {
+        category: req.params.category,
+      },
+      { category: 1 }
+    ).limit(5);
+    if (!relatedProducts.length)
+      throw new Error("Couldnt find products in that category!");
+
+    res.json({ msg: "success", relatedProducts });
+  } catch (error) {
+    if (error.message.includes("Couldnt find")) error.status = 404;
+    next(error);
+  }
+};
