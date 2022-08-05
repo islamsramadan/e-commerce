@@ -25,11 +25,8 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/search" element={<SearchPage />} />
-<<<<<<< HEAD
                 <Route path="/cart" element={<Cart />} />
-=======
                 <Route path="/product/:id" element={<ProductDetailsPage />} />
->>>>>>> test
                 <Route path="*" element={<h1>can't find this page </h1>} />
             </Routes>
             <Footer />
