@@ -11,8 +11,9 @@ import Profile from './Pages/Profile/Profile';
 import Orders from './Pages/Orders/Orders';
 import Cart from './Pages/Cart/Cart';
 import NavbarComp from './components/Navabar/Navbar';
+// import NavbarComp from './components/Navabar/Navbar';
 import ProductDetailsPage from './Pages/ProductDetails';
-// import SearchPage from './Pages/Search';
+import AdminPage from './Pages/Admin';
 
 function App() {
     return (
@@ -27,7 +28,8 @@ function App() {
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/product/:id" element={<ProductDetailsPage />} />
-                <Route path="*" element={<h1>can't find this page </h1>} />
+                <Route path="/admin/*" element={<AdminPage />} />
+                    <Route path="*" element={<h1>can't find this page </h1>} />
             </Routes>
             <Footer />
         </div>

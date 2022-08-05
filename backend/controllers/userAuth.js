@@ -24,7 +24,7 @@ module.exports.login = function login(req, res, next) {
 					message: 'invalid email or password',
 				});
 			} else {
-				bcrypt.compare(password, user.password).then((isEqual) => {
+				bcrypt.compare(password, user.password).then(async (isEqual) => {
 					if (!isEqual) {
 						// password is incorrect
 						return res.status(401).json({
@@ -42,10 +42,14 @@ module.exports.login = function login(req, res, next) {
 							process.env.JWT_SECRET_KEY,
 							{ expiresIn: '1h' }
 						);
+
+						const userData = await getUserData(user);
+
 						res.status(200).json({
 							success: true,
 							message: 'successful login',
 							token: token,
+							user: userData,
 						});
 					}
 				});
@@ -247,3 +251,24 @@ function addBusinessData(userId, data) {
 	}).save();
 }
 
+async function getUserData(user) {
+	try {
+		let userData = user.toObject();
+
+		if (user.role == 'customer') {
+			const customer = await Customer.findOne({ userId: user._id });
+			userData = { ...userData, ...customer.toJSON() };
+		} else {
+			const business = await Business.findOne({ userId: user._id });
+			userData = { ...userData, ...business.toJSON() };
+		}
+		delete userData.password;
+		delete userData.__v;
+		delete userData.userId;
+
+		return userData;
+
+	} catch (err) {
+		throw new Error('an error ocured', err);
+	}
+}
