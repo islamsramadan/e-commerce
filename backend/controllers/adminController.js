@@ -48,3 +48,19 @@ module.exports.getTotalOrders = async (req, res) => {
     numOfDelivered: numOfDelivered,
   });
 };
+
+module.exports.getCustomerData = (req, res, next) => {
+  orders
+    .findOne({ userId: req.params.id }, { status: 1 })
+    .populate({
+      path: 'orderItems.productId',
+      select: 'name reviews',
+    })
+    .populate({ path: 'userId', select: ' email isVerified phone address' })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
