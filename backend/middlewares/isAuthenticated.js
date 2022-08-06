@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 module.exports = async (req, res, next) => {
   let decodedToken = null;
   try {
-    let token = req.get('Authorization')?.split(' ')[1];
-    if (!token) throw new Error('Unauthorized Operation!');
+    let token = req.get("Authorization")?.split(" ")[1];
+    if (!token) throw new Error("Unauthorized Operation!");
     decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.role = decodedToken.role;
     req.id = decodedToken.id;
@@ -13,10 +13,6 @@ module.exports = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(403).json({
-      success: false,
-      message: 'unauthorized User',
-    });
     error.status = 403;
     next(error);
   }
