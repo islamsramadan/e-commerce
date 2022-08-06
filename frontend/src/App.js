@@ -29,7 +29,7 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/product/:id" element={<ProductDetailsPage />} />
                 <Route path="/admin/*" element={<AdminPage />} />
-                    <Route path="*" element={<h1>can't find this page </h1>} />
+                <Route path="*" element={<h1>can't find this page </h1>} />
             </Routes>
             <Footer />
         </div>
