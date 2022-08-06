@@ -216,3 +216,21 @@ module.exports.decrementProductInCart = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.getAllCustomers = (req, res, next) => {
+	Customer.find({})
+		.populate({ path: 'userId', select: { email: 1 } })
+		.then((data) => {
+			res.status(200).json({success:true,data:data});
+		});
+};
+
+module.exports.getCustomersById = (req, res, next) => {
+	Customer.findById({ _id: req.params.id })
+		.then((data) => {
+			res.status(200).json({success:true,data:data});
+		})
+		.catch((err) => {
+			next(err);
+		});
+};

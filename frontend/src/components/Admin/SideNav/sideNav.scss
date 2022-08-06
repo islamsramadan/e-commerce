@@ -1,0 +1,71 @@
+.adminSideNav {
+    display: flex;
+    flex-direction: column;
+    background-color: #282c34;
+    height: 100%;
+    padding: 20px 0px;
+
+    p {
+        color: #fff;
+        font-size: 20px;
+        padding: 10px 0;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-item {
+        margin-bottom: 20px;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+
+        svg {
+            margin-right: 10px;
+        }
+
+        a {
+            padding: 5px 20px;
+            color: #fff;
+            font-size: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease-in-out;
+
+            &.active {
+                background-color: #f6f9fc;
+                color: #282c34;
+                
+                &:hover {
+                    background-color: #f6f9fc;
+                }
+            }
+
+            &:hover {
+                background-color: #ccc;
+                color: #282c34;
+            }
+        }
+    }
+    button {
+        margin-bottom: 20px;
+        padding: 5px 20px;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        background: transparent;
+        color: #fff;
+        font-size: 20px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        svg {
+            margin-right: 10px;
+        }
+
+        &:hover {
+            background-color: #eee;
+            color: #282c34;
+        }
+    }
+}

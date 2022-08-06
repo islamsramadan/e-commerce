@@ -109,5 +109,16 @@ router.route("/:id/reviews").post(authMW, controller.createProductReview);
 
 router.get("/search", controller.searchProduct);
 router.get("/filterBy", controller.filterProducts);
-
+router.get("/toprated", controller.getTopProducts);
+router.get("/lastAdded", controller.getLastAdded);
+router.get(
+  "/relatedProducts/:category",
+  [
+    param("category")
+      .isMongoId()
+      .withMessage("Please provide a valid MongoId for the categoryId"),
+  ],
+  validationMW,
+  controller.getRelatedProducts
+);
 module.exports = router;

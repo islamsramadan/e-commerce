@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth");
@@ -9,10 +10,12 @@ const customerRouter = require("./routes/customerRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const productRouter = require("./routes/productRouter");
 const fileUpload = require("./middlewares/filesUpload");
+const adminRouter = require("./routes/admin");
 
 const orderRoutes = require("./routes/order");
 
 const app = express();
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_CONNECTION)
@@ -28,7 +31,7 @@ mongoose
   });
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 
 // routers
 app.use("/auth", authRouter);
@@ -38,10 +41,11 @@ app.use(orderRoutes);
 app.use(businessRouter);
 app.use(categoryRouter);
 app.use(productRouter);
+app.use(adminRouter);
 app.post("/uploadImg", fileUpload.single("image"));
 
 // for development only
-app.use('/development', require('./routes/development'));
+app.use("/development", require("./routes/development"));
 
 // not found middleware
 app.use((req, res) => {

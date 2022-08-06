@@ -1,0 +1,22 @@
+.profile-edit {
+    font-size: 1rem ;
+
+    .lead {
+        font-size: 1.1rem !important;
+    }
+
+    .file-input-container {
+        width: 80px;
+        overflow: hidden;
+        input {
+            opacity: 0;
+        }
+    }
+
+    label {
+        cursor: pointer;
+        height: 2.5rem;
+    }
+
+    
+}
