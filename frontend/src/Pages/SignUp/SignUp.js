@@ -1,6 +1,10 @@
 import React, { useState, useEffec, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
+import Spinner from '../../common/spinner/spinner';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { register, reset } from '../../store/auth/authSlice';
 
 const initialValues = {
     email: '',
@@ -68,10 +72,6 @@ const customerValidationSchema = Yup.object({
     firstName: Yup.string().required('this field is required'),
     lastName: Yup.string().required('this field is required'),
 });
-
-const onSubmit = (values) => {
-    console.log(values);
-};
 
 const BusinessForm = ({ props }) => {
     return (
@@ -182,9 +182,33 @@ const SignUp = () => {
             props.setFieldValue(element, '');
         });
     };
+
     //   handling validatoinSchema
     const [currentRole, setCurrentRole] = useState('');
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            console.log('there is an error: ' + message);
+        }
+        if (isSuccess || user) {
+            // navigate('/login');
+        }
+        dispatch(reset());
+    }, [user, isError, isSuccess, message, dispatch, navigate]);
+
+    const onSubmit = (userData) => {
+        console.log(userData);
+        dispatch(register(userData));
+    };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
     return (
         <Formik
             validationSchema={

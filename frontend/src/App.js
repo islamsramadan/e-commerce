@@ -15,6 +15,9 @@ import NavbarComp from './components/Navabar/Navbar';
 import ProductDetailsPage from './Pages/ProductDetails';
 import AdminPage from './Pages/Admin';
 
+///////
+import DashBoard from './Pages/DashBoard/DashBoard';
+
 function App() {
     return (
         <div className="App">
@@ -30,6 +33,8 @@ function App() {
                 <Route path="/product/:id" element={<ProductDetailsPage />} />
                 <Route path="/admin/*" element={<AdminPage />} />
                 <Route path="*" element={<h1>can't find this page </h1>} />
+
+                <Route path="/dashboard" element={<DashBoard />} />
             </Routes>
             <Footer />
         </div>

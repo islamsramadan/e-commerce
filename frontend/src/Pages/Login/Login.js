@@ -3,6 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import PrimaryButton from '../../common/PrimaryButton/Button';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../common/spinner/spinner';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { login, reset } from '../../store/auth/authSlice';
 
 const validationSchema = Yup.object({
     email: Yup.string().required('this field is required').email('email format is invalid'),
@@ -14,12 +18,34 @@ const intialValues = {
     password: '',
 };
 
-const onSubmit = (values) => {
-    console.log('values are :', values);
-};
-
 export default function Login() {
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            console.log('there is an error: ' + message);
+        }
+        if (isSuccess || user) {
+            // navigate('/');
+            console.log('logged');
+        }
+
+        dispatch(reset());
+    }, [user, isError, isSuccess, message, dispatch, navigate]);
+
+    const onSubmit = (userData) => {
+        console.log(userData);
+        dispatch(login(userData));
+    };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
     return (
         <section className="login my-5">
             <div className="container bg-white rounded-2">
