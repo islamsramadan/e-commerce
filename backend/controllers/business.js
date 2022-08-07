@@ -1,15 +1,16 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
+const mongoose = require("mongoose");
+const fs = require("fs");
+const path = require("path");
+const user = require("../models/user");
 
-require('../models/business');
-require('../models/user');
+require("../models/business");
+require("../models/user");
 
-let Business = mongoose.model('business');
+let Business = mongoose.model("business");
 
 module.exports.getAllBusinesses = (req, res, next) => {
   Business.find({})
-    .populate({ path: 'userId', select: { email: 1 } })
+    .populate({ path: "userId", select: { email: 1 } })
     .then((data) => {
       res.status(200).json(data);
     });
@@ -17,26 +18,27 @@ module.exports.getAllBusinesses = (req, res, next) => {
 
 module.exports.getBusinessById = async (req, res, next) => {
   try {
-    const business = await Business.findById({ _id: req.params.id });
+    const businessData = await Business.findById({
+      _id: req.params.id,
+    }).populate({
+      path: "userId",
+      select: `email address phone`,
+    });
+    delete businessData._doc.__v;
 
-    delete req.user._doc.password;
-    delete req.user._doc.__v;
-    delete req.user._doc._id;
-    delete business._doc.__v;
     directoryPath = path.join(
       __dirname,
-      '..',
-      'images',
-      'commercialRegister',
+      "..",
+      "images",
+      "commercialRegister",
       req.params.id
     );
-    let fullData = { ...req.user._doc, ...business._doc };
-
+    let fullData = { ...businessData._doc };
     fs.readdir(directoryPath, (err, files) => {
       if (err)
         return res.status(400).json({
           success: false,
-          msg: 'Unable to scan directory! ' + err.message,
+          msg: "Unable to scan directory! " + err.message,
         });
       fullData.commercialRegister = files;
       res.json(fullData);
@@ -60,7 +62,7 @@ module.exports.addBusiness = (req, res, next) => {
   business
     .save()
     .then((data) => {
-      res.status(200).json({ data: 'add' });
+      res.status(200).json({ data: "add" });
     })
     .catch((err) => {
       next(err);
@@ -75,7 +77,7 @@ module.exports.updateBusiness = (req, res, next) => {
     // update here
     data.description = req.body.description;
     return data.save().then((data) => {
-      res.status(200).json('business has been updated');
+      res.status(200).json("business has been updated");
     });
   });
   // console.log("req.body.id", req.body.id);
@@ -86,7 +88,7 @@ module.exports.deleteProfileImage = (req, res, next) => {
   const userId = req.params.id;
   Business.findOne({ userId: userId })
     .then((data) => {
-      fs.unlinkSync(data.imageLink, (err) => console.log('error : ', err));
+      fs.unlinkSync(data.imageLink, (err) => console.log("error : ", err));
     })
     .catch((err) => {
       next(err);
@@ -99,7 +101,7 @@ module.exports.updateProfileImageLink = (req, res, next) => {
     .then((data) => {
       data.imageLink = req.file.path;
       return data.save().then((data) => {
-        res.status(200).json({ message: 'img updated' });
+        res.status(200).json({ message: "img updated" });
       });
     })
     .catch((err) => {
@@ -112,7 +114,7 @@ module.exports.deleteComRegImage = (req, res, next) => {
   Business.findOne({ userId: userId })
     .then((data) => {
       fs.unlinkSync(data.verification.comRegImgLink, (err) =>
-        console.log('error : ', err)
+        console.log("error : ", err)
       );
     })
     .catch((err) => {
@@ -122,7 +124,7 @@ module.exports.deleteComRegImage = (req, res, next) => {
 };
 
 module.exports.uploadComRegImg = (req, res, next) => {
-  res.status(200).json({ message: 'img updated' });
+  res.status(200).json({ message: "img updated" });
 };
 
 // module.exports.updateComRegImageLink = (req, res, next) => {
