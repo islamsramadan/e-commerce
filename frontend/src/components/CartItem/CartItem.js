@@ -25,9 +25,9 @@ const CartItem = ({ cartItem }) => {
                 >
                     <h5 className="fw-semibold">22$</h5>
                     <div className="d-flex quantity align-items-center">
-                        <button className="me-2 rounded-2 quantity-inc">+</button>
+                        <button className="me-2 rounded-2 quantity-inc">-</button>
                         {5}
-                        <button className="ms-2 rounded-2 quantity-dec">-</button>
+                        <button className="ms-2 rounded-2 quantity-dec">+</button>
                     </div>
                 </div>
             </div>

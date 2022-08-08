@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { useLocation } from 'react-router-dom';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -15,16 +16,29 @@ export const register = createAsyncThunk('auth/register', async (user, thunkApi)
     try {
         const res = await fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
-            body: JSON.stringify(user),
+            body: JSON.stringify(user.userData),
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        const data = res.json();
+        const data = await res.json();
+        console.log('returned data:', data);
+        // business
+
+        if (user.userData.role == 'business') {
+            const profileImgRes = await fetch(`http://localhost:8080/business/updateProfileImg/${data?.userId}`, {
+                method: 'PUT',
+                body: user.formData,
+            });
+            const imgData = await profileImgRes.json();
+            console.log('img data:', imgData);
+        }
+
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
     }
+    // console.log('form data :', user?.formData?.imgLink);
 });
 
 //login
@@ -41,8 +55,8 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
         if (data) {
             localStorage.setItem('user', JSON.stringify(data));
         }
-        console.log(JSON.stringify(data));
-        console.log(data);
+        // console.log(JSON.stringify(data));
+        // console.log(data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
@@ -50,9 +64,10 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
 });
 
 //logout
-export const logout = createAsyncThunk('auth/logout', async () => {
-    await localStorage.removeItem('user');
-});
+// export const logout = createAsyncThunk('auth/logout', async () => {
+//     await localStorage.removeItem('user');
+//     console.log('clear local storage');
+// });
 
 const authSlice = createSlice({
     name: 'auth',
@@ -63,6 +78,11 @@ const authSlice = createSlice({
             state.isSuccess = false;
             state.isLoading = false;
             state.message = '';
+        },
+        logout: (state) => {
+            state.user = null;
+            localStorage.clear();
+            console.log('logout action');
         },
     },
     extraReducers: {
@@ -99,11 +119,11 @@ const authSlice = createSlice({
         },
 
         // logout
-        [logout.fulfilled]: (state, action) => {
-            state.user = null;
-        },
+        // [logout.fulfilled]: (state, action) => {
+        //     state.user = null;
+        // },
     },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, logout } = authSlice.actions;
 export default authSlice.reducer;

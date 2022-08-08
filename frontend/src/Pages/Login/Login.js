@@ -2,11 +2,12 @@ import './Login.scss';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import PrimaryButton from '../../common/PrimaryButton/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { login, reset } from '../../store/auth/authSlice';
+import Loader from '../../common/Loader/Loader';
 
 const validationSchema = Yup.object({
     email: Yup.string().required('this field is required').email('email format is invalid'),
@@ -19,31 +20,40 @@ const intialValues = {
 };
 
 export default function Login() {
+    const location = useLocation();
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
-
+    const from = location.state?.from?.pathname || '/';
     const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.auth);
+    const [pageLoading, setPageLoading] = useState(true);
+
+    // component did mount
+    useEffect(() => {
+        setPageLoading(false);
+    }, []);
 
     useEffect(() => {
         if (isError) {
             console.log('there is an error: ' + message);
         }
-        if (isSuccess || user) {
-            // navigate('/');
-            console.log('logged');
+        if (user?.success) {
+            navigate(from);
+            console.log('user ->', user);
         }
 
         dispatch(reset());
     }, [user, isError, isSuccess, message, dispatch, navigate]);
 
-    const onSubmit = (userData) => {
-        console.log(userData);
-        dispatch(login(userData));
+    const onSubmit = async (userData) => {
+        await dispatch(login(userData));
+        console.log('loggedUser', user);
+        // if (user?.user) {
+        //     navigate(from, { replace: true });
+        // }
     };
 
-    if (isLoading) {
-        return <Spinner />;
+    if (isLoading || pageLoading) {
+        return <Loader />;
     }
 
     return (

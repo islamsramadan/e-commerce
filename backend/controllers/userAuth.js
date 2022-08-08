@@ -104,11 +104,13 @@ module.exports.signup = function signup(req, res, next) {
                 };
                 addBusinessData(user._id, data);
               }
+              return user;
             })
-            .then(() => {
+            .then((userData) => {
               res.status(201).json({
                 success: true,
                 message: "User created Successfully",
+                userId: userData._id,
               });
             });
         });
