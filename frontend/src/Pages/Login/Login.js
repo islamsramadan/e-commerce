@@ -36,6 +36,7 @@ export default function Login() {
         if (isError) {
             console.log('there is an error: ' + message);
         }
+
         if (user?.success) {
             navigate(from);
             console.log('user ->', user);

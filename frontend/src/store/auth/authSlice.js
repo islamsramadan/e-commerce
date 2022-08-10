@@ -22,6 +22,8 @@ export const register = createAsyncThunk('auth/register', async (user, thunkApi)
             },
         });
         const data = await res.json();
+
+        // osama edit
         console.log('returned data:', data);
         // business
 
@@ -55,8 +57,9 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
         if (data) {
             localStorage.setItem('user', JSON.stringify(data));
         }
-        // console.log(JSON.stringify(data));
-        // console.log(data);
+
+        console.log(data);
+
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);

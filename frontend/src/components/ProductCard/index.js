@@ -10,7 +10,7 @@ import productimage3 from '../../assets/images/3.webp';
 import productimage4 from '../../assets/images/4.png';
 import RateComponent from '../Rate';
 
-export default function ProductCard(product) {
+export default function ProductCard({ product }) {
     let intervalId = null;
 
     // change image on hover on product card image
@@ -78,9 +78,9 @@ export default function ProductCard(product) {
                 </div>
 
                 <div className="productCard-detailsDiv">
-                    <h5 className='m-0'>product name</h5>
-                    <RateComponent rate={3} />
-                    <h6>9.00£</h6>
+                    <h5 className="m-0">{product.name}</h5>
+                    <RateComponent rate={product.rating} />
+                    <h6>{product.price} £</h6>
                     <button>
                         <FontAwesomeIcon icon={faCartPlus} />
                     </button>
