@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const business = require("../models/business");
 require("../models/customer");
 require("../models/product");
 const Customer = mongoose.model("customer");
@@ -218,19 +219,35 @@ module.exports.decrementProductInCart = async (req, res, next) => {
 };
 
 module.exports.getAllCustomers = (req, res, next) => {
-	Customer.find({})
-		.populate({ path: 'userId', select: { email: 1 } })
-		.then((data) => {
-			res.status(200).json({success:true,data:data});
-		});
+  Customer.find({})
+    .populate({ path: "userId", select: { email: 1 } })
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    });
 };
 
 module.exports.getCustomersById = (req, res, next) => {
-	Customer.findById({ _id: req.params.id })
-		.then((data) => {
-			res.status(200).json({success:true,data:data});
-		})
-		.catch((err) => {
-			next(err);
-		});
+  Customer.findById({ _id: req.params.id })
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getCart = async (req, res, next) => {
+  try {
+    const cart = await Customer.findOne(
+      { userId: req.user.id },
+      { cart: 1 }
+    ).populate({
+      path: "cart.products.productId",
+      populate: { path: "businessId", model: "business" },
+    });
+
+    res.json(cart);
+  } catch (error) {
+    next(error);
+  }
 };
