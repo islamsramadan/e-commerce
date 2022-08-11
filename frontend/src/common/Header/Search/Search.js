@@ -1,6 +1,6 @@
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import DropdownButton from 'react-bootstrap/esm/DropdownButton';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import '../Search/Search.style.css';
 import NavbarComp from '../Navbar/Navbar';
 import { useEffect } from 'react';
@@ -48,14 +48,21 @@ export default function Search() {
                     </div>
                     <div className="col-6 col-lg-2 order-2 order-lg-4">
                         <div className="icon d-flex justify-content-end">
-                            {user ? (
+                            {user !== null ? (
                                 <DropdownButton
                                     id="dropdown-basic-button"
                                     title={<i className="fa fa-user user-icon"></i>}
                                     className="profile-button"
                                 >
-                                    <DropdownItem href="/profile">my profile</DropdownItem>
-                                    <DropdownItem href="/orders">orders</DropdownItem>
+                                    <NavLink
+                                        className="p-3 text-black text-decoration-none text-decoration-none"
+                                        to="/profile"
+                                    >
+                                        my profile
+                                    </NavLink>
+                                    {user?.user?.role == 'customer' && (
+                                        <DropdownItem href="/orders">orders</DropdownItem>
+                                    )}
                                     <DropdownItem
                                         onClick={() => {
                                             dispatch(logout());
@@ -77,12 +84,14 @@ export default function Search() {
                                     </button>
                                 </>
                             )}
-                            <div className="cart">
-                                <a href="/cart">
-                                    <i className="fa fa-shopping-bag icon-circle"></i>
-                                    <span>{totalItems}</span>
-                                </a>
-                            </div>
+                            {user?.user?.role == 'customer' && (
+                                <div className="cart">
+                                    <Link to="/cart">
+                                        <i className="fa fa-shopping-bag icon-circle"></i>
+                                        <span>{totalItems}</span>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

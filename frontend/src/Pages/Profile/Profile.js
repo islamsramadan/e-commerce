@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Profile.style.scss';
 import ProfileImg from '../../assets/images/3.webp';
-import { AiOutlineMail } from 'react-icons/ai';
+import { AiFillFileText, AiOutlineMail } from 'react-icons/ai';
 import EditForm from '../../components/EditForm/EditForm';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -20,10 +21,27 @@ const CustomerSection = () => {
 
 const Profile = () => {
     const [modalShow, setModalShow] = React.useState(false);
+    const { user } = useSelector((state) => state.auth.user);
+    const [profileImg, setProfileImg] = useState();
 
-    const { user } = useSelector((state) => state.auth);
+    const handleChange = async (e) => {
+        setProfileImg(e.target.files[0]);
+        const formData = new FormData();
+        formData.append('type', 'businessProfile');
+        formData.append('image', e.target.files[0]);
 
-    const userData = user.user;
+        const res = await fetch(`http://localhost:8080/business/updateProfileImg/${user?._id}`, {
+            method: 'PUT',
+            body: formData,
+        });
+
+        const data = await res.json();
+        console.log('response', data);
+    };
+
+    // useEffect(async () => {
+    //     // console.log('profileImg:', profileImg);
+    // }, [profileImg]);
 
     return (
         <section className="profile-edit my-5">
@@ -44,48 +62,53 @@ const Profile = () => {
                                 >
                                     edit
                                 </label>
-                                <input id="profile" type="file" />
+                                {/*profile image --------------------------- */}
+                                <input onChange={handleChange} id="profile" type="file" />
                             </div>
                         </div>
                     </div>
                     <div className="col-12 col-md-8">
                         <div className="profile-edit-right bg-white rounded-2 p-4 custom-shadow">
-                            <h2 className="text-capitalize mb-3">
-                                {userData.role === 'customer'
-                                    ? `${userData.name.firstname} ${userData.name.lastname}`
-                                    : userData.name}
+                            <h2
+                                className="text-capitalize mb-3"
+                                onClick={() => {
+                                    console.log(user?.name?.firstname);
+                                    console.log(user);
+                                }}
+                            >
+                                {user?.role == 'customer'
+                                    ? user?.name?.firstname + ' ' + user?.name?.lastname
+                                    : user?.name}
                             </h2>
                             <hr />
                             <div className="row">
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">email:</span>{' '}
-                                        <span>{userData.email}</span>
+                                        <span>{user?.email}</span>
                                     </p>
                                 </div>
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">Address:</span>{' '}
-                                        <span>{userData.address.city}</span>
+                                        <span>
+                                            {user?.address?.city}-{user?.address?.street}
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">role:</span>{' '}
-                                        <span>{userData.role}</span>
+                                        <span>{user?.role}</span>
                                     </p>
                                 </div>
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">phone:</span>{' '}
-                                        <span>{userData.phone}</span>
+                                        <span>{user?.phone}</span>
                                     </p>
                                 </div>
-                                {userData.role === 'business' ? (
-                                    <BusinessSection userData={userData} />
-                                ) : (
-                                    <CustomerSection />
-                                )}
+                                {user?.role == 'business' && <BusinessSection user={user} />}
                             </div>
                             <Button variant="primary" onClick={() => setModalShow(true)}>
                                 Edit Profile
@@ -99,18 +122,20 @@ const Profile = () => {
     );
 };
 
-const BusinessSection = ({ userData }) => {
+const BusinessSection = ({ user }) => {
     return (
         <>
             <div className="col-12 col-lg-6">
                 <p className="lead d-flex align-items-center">
                     <span className="fw-semibold me-1 text-dark">verification:</span>{' '}
-                    <span>{userData.isVerified ? 'verified' : 'Not verified yet'}</span>
+                    <span className={`${user?.isVerified ? 'text-success' : 'text-danger'} fw-bold `}>
+                        {user?.isVerified ? 'verified' : 'not verified'}
+                    </span>
                 </p>
             </div>
             <div className="col-12 my-2">
                 <p className="lead d-flex ">
-                    <span className="fw-semibold me-1 text-dark">description:</span> <span>{userData.description}</span>
+                    <span className="fw-semibold me-1 text-dark">description:</span> <span>{user?.description}</span>
                 </p>
             </div>
         </>

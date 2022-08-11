@@ -13,12 +13,6 @@ import { useEffect } from 'react';
 import { getCategories } from '../../../store/categories/categorySlice';
 
 export default function NavbarComp() {
-    const dispatch = useDispatch();
-    const categories = useSelector((state) => state.categories.categories);
-
-    useEffect(() => {
-        dispatch(getCategories());
-    }, []);
     return (
         <Navbar expand="lg" className="navbar-component bg-white">
             <Container>
@@ -33,51 +27,37 @@ export default function NavbarComp() {
                         }
                         id="basic-nav-dropdown"
                     >
-                        {categories.map((category) => {
-                            return (
-                                <NavDropdown.Item href="#action/3.1" key={category._id}>
-                                    <BiCategoryAlt />
-                                    <span className="ms-3 ">{category.name}</span>
-                                </NavDropdown.Item>
-                            );
-                        })}
+                        <Link
+                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
+                            to="/"
+                        >
+                            <BiCategoryAlt />
+                            <span className="ms-3 ">item</span>
+                        </Link>
 
-                        {/* <NavDropdown.Item href="#action/3.1">
-              <Link
-                className="text-decoration-none text-black d-flex align-items-center category-item"
-                to="/"
-              >
-                <BiCategoryAlt />
-                <span className="ms-3 ">item</span>
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.1">
-              <Link
-                className="text-decoration-none text-black d-flex align-items-center category-item"
-                to="/"
-              >
-                <BiCategoryAlt />
-                <span className="ms-3 ">item</span>
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.1">
-              <Link
-                className="text-decoration-none text-black d-flex align-items-center category-item"
-                to="/"
-              >
-                <BiCategoryAlt />
-                <span className="ms-3 ">item</span>
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.1">
-              <Link
-                className="text-decoration-none text-black d-flex align-items-center category-item"
-                to="/"
-              >
-                <BiCategoryAlt />
-                <span className="ms-3 ">item</span>
-              </Link>
-            </NavDropdown.Item> */}
+                        <Link
+                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
+                            to="/"
+                        >
+                            <BiCategoryAlt />
+                            <span className="ms-3 ">item</span>
+                        </Link>
+
+                        <Link
+                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
+                            to="/"
+                        >
+                            <BiCategoryAlt />
+                            <span className="ms-3 ">item</span>
+                        </Link>
+
+                        <Link
+                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
+                            to="/"
+                        >
+                            <BiCategoryAlt />
+                            <span className="ms-3 ">item</span>
+                        </Link>
                     </NavDropdown>
                 </Navbar.Brand>
             </Container>

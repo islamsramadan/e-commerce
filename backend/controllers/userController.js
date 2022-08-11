@@ -38,7 +38,9 @@ module.exports.updateUser = async (req, res, next) => {
       }
     });
     await user.save();
-    res.status(200).json({ success: true, message: "Updated Successfully!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Updated Successfully!", data: user });
   } catch (e) {
     next(e);
   }

@@ -4,10 +4,11 @@ import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../../store/auth/authSlice';
+import Loader from '../../common/Loader/Loader';
 
 const initialValues = {
     email: 'o@gm.com',
-    phone: '0128284486',
+    phone: '01282848843',
     password: '12345678',
     confirmPassword: '12345678',
     city: 'Alex',
@@ -17,8 +18,8 @@ const initialValues = {
     role: '',
     name: 'Apple',
     description: 'lorem',
-    firstName: '',
-    lastName: '',
+    firstName: 'Apple',
+    lastName: 'tech Compny',
     imgLink: '',
     comRegImgLink: '',
 };
@@ -207,6 +208,9 @@ const SignUp = () => {
         dispatch(register({ userData, formData }));
     };
 
+    if (isLoading) {
+        return <Loader />;
+    }
     return (
         <Formik
             validationSchema={

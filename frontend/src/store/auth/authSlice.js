@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { useLocation } from 'react-router-dom';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const userLocal = JSON.parse(localStorage.getItem('user'));
+// if(localStorage)
 
 const initialState = {
-    user: user ? user : null,
+    user: userLocal ? userLocal : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -57,20 +58,11 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
         if (data) {
             localStorage.setItem('user', JSON.stringify(data));
         }
-
-        console.log(data);
-
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
     }
 });
-
-//logout
-// export const logout = createAsyncThunk('auth/logout', async () => {
-//     await localStorage.removeItem('user');
-//     console.log('clear local storage');
-// });
 
 const authSlice = createSlice({
     name: 'auth',
@@ -120,11 +112,6 @@ const authSlice = createSlice({
             state.isError = true;
             state.message = action.payload;
         },
-
-        // logout
-        // [logout.fulfilled]: (state, action) => {
-        //     state.user = null;
-        // },
     },
 });
 
