@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
-const business = require("../models/business");
-require("../models/customer");
-require("../models/product");
-const Customer = mongoose.model("customer");
-const Product = mongoose.model("product");
+const mongoose = require('mongoose');
+const business = require('../models/business');
+require('../models/customer');
+require('../models/product');
+const Customer = mongoose.model('customer');
+const Product = mongoose.model('product');
 
 module.exports.addToCart = async (req, res, next) => {
   try {
@@ -62,7 +62,7 @@ module.exports.addToCart = async (req, res, next) => {
     await customer.save();
     res.status(201).json({
       success: true,
-      message: "Product(s) added to cart successfully!",
+      message: 'Product(s) added to cart successfully!',
     });
   } catch (e) {
     next(e);
@@ -109,7 +109,7 @@ module.exports.removeFromCart = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: "Product(s) removed from cart successfully!",
+      message: 'Product(s) removed from cart successfully!',
     });
   } catch (e) {
     next(e);
@@ -142,7 +142,7 @@ module.exports.incrementProductInCart = async (req, res, next) => {
     );
 
     if (productInCartIndex === -1)
-      return next(new Error("Cannot increment, product is not in cart"));
+      return next(new Error('Cannot increment, product is not in cart'));
 
     if (productQuantity < cart.products[productInCartIndex].quantity + 1)
       return next(
@@ -159,7 +159,7 @@ module.exports.incrementProductInCart = async (req, res, next) => {
     await customer.save();
     res.status(200).json({
       success: true,
-      message: "Product incremented successfully!",
+      message: 'Product incremented successfully!',
     });
   } catch (e) {
     next(e);
@@ -194,7 +194,7 @@ module.exports.decrementProductInCart = async (req, res, next) => {
     );
 
     if (productInCartIndex === -1)
-      return next(new Error("Cannot decrement, product is not in cart"));
+      return next(new Error('Cannot decrement, product is not in cart'));
 
     if (cart.products[productInCartIndex].quantity == 1)
       return next(
@@ -211,7 +211,7 @@ module.exports.decrementProductInCart = async (req, res, next) => {
     await customer.save();
     res.status(200).json({
       success: true,
-      message: "Product decremented successfully!",
+      message: 'Product decremented successfully!',
     });
   } catch (e) {
     next(e);
@@ -220,7 +220,7 @@ module.exports.decrementProductInCart = async (req, res, next) => {
 
 module.exports.getAllCustomers = (req, res, next) => {
   Customer.find({})
-    .populate({ path: "userId", select: { email: 1 } })
+    .populate({ path: 'userId', select: { email: 1 } })
     .then((data) => {
       res.status(200).json({ success: true, data: data });
     });
@@ -242,12 +242,40 @@ exports.getCart = async (req, res, next) => {
       { userId: req.user.id },
       { cart: 1 }
     ).populate({
-      path: "cart.products.productId",
-      populate: { path: "businessId", model: "business" },
+      path: 'cart.products.productId',
+      populate: { path: 'businessId', model: 'business' },
     });
 
     res.json(cart);
   } catch (error) {
     next(error);
   }
+};
+
+module.exports.updateCustomer = (req, res, next) => {
+  const customerId = req.user._id.toString();
+  Customer.findOne({ user_id: customerId })
+    .then((data) => {
+      for (const property in req.body) {
+        switch (property) {
+          case 'firstname':
+            data.name.firstname = req.body[property];
+            break;
+          case 'street':
+            data.name.lastname = req.body[property];
+            break;
+          default:
+            data[property] = req.body[property];
+            break;
+        }
+      }
+      return data.save().then((data) => {
+        res.status(200).json({
+          status: 'success',
+          message: 'customer updated',
+          data,
+        });
+      });
+    })
+    .catch((err) => next(err));
 };
