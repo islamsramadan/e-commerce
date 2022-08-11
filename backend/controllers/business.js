@@ -72,16 +72,24 @@ module.exports.addBusiness = (req, res, next) => {
 // Update Business
 
 module.exports.updateBusiness = (req, res, next) => {
-  Business.findOne({ _id: req.body.id }).then((data) => {
-    data.name = req.body.name;
-    // update here
-    data.description = req.body.description;
-    return data.save().then((data) => {
-      res.status(200).json("business has been updated");
-    });
-  });
-  // console.log("req.body.id", req.body.id);
-  // res.status(200).json("business has been updated");
+  console.log("reqid ========>", req.id);
+  Business.findOne({ userId: req.id })
+    .then((data) => {
+      console.log("data =>", data);
+      for (prop in req.body) {
+        if (prop in data) {
+          data[prop] = req.body[prop];
+        }
+      }
+      return data.save().then((data) => {
+        res.status(200).json({
+          status: "success",
+          message: "business updated",
+          data,
+        });
+      });
+    })
+    .catch((err) => next(err));
 };
 
 module.exports.deleteProfileImage = (req, res, next) => {
