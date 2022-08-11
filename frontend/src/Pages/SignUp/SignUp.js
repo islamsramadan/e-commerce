@@ -7,17 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../../store/auth/authSlice';
 
 const initialValues = {
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    city: '',
-    street: '',
-    building: '',
-    floor: '',
+    email: 'o@gm.com',
+    phone: '0128284486',
+    password: '12345678',
+    confirmPassword: '12345678',
+    city: 'Alex',
+    street: 'sre',
+    building: 'da',
+    floor: '3',
     role: '',
-    name: '',
-    description: '',
+    name: 'Apple',
+    description: 'lorem',
     firstName: '',
     lastName: '',
     imgLink: '',
@@ -78,7 +78,7 @@ const BusinessForm = ({ props }) => {
         <div className="business-form my-3">
             <div className="row">
                 <div className="form-group col-12 col-md-6">
-                    <label htmlFor="business">business name</label>
+                    <label htmlFor="name">business name</label>
                     <Field
                         type="text"
                         name="name"
@@ -96,7 +96,7 @@ const BusinessForm = ({ props }) => {
                         type="text"
                         name="description"
                         className="form-control"
-                        id="name"
+                        id="description"
                         placeholder="Enter your business description"
                     />
                     <p className="text-danger">
@@ -105,7 +105,7 @@ const BusinessForm = ({ props }) => {
                 </div>
 
                 <div className="form-group col-12 col-md-6 my-3">
-                    <label htmlFor="description">Upload your profile image</label>
+                    <label htmlFor="profileImg">Upload your profile image</label>
                     <input
                         onChange={(e) => {
                             props.setFieldValue('imgLink', e.target.files[0]);
@@ -113,7 +113,7 @@ const BusinessForm = ({ props }) => {
                         type="file"
                         name="imgLink"
                         className="form-control"
-                        id="name"
+                        id="profileImg"
                         placeholder="upload img"
                     />
                     <p className="text-danger">
@@ -121,12 +121,12 @@ const BusinessForm = ({ props }) => {
                     </p>
                 </div>
                 <div className="form-group col-12 col-md-6 my-3">
-                    <label htmlFor="description">Upload your registeration image</label>
+                    <label htmlFor="comRegImgLink">Upload your registeration image</label>
                     <input
                         type="file"
                         name="comRegImgLink"
                         className="form-control"
-                        id="name"
+                        id="comRegImgLink"
                         placeholder="upload img"
                         onChange={(e) => {
                             props.setFieldValue('comRegImgLink', e.target.files[0]);
@@ -202,8 +202,10 @@ const SignUp = () => {
     }, [user, isError, isSuccess, message, dispatch, navigate]);
 
     const onSubmit = (userData) => {
-        console.log(userData);
-        dispatch(register(userData));
+        let formData = new FormData();
+        formData = { type: 'businessProfile', image: userData.imgLink };
+        console.log('form data:', formData);
+        dispatch(register({ userData, formData }));
     };
 
     if (isLoading) {
@@ -245,7 +247,7 @@ const SignUp = () => {
                                     type="phone"
                                     name="phone"
                                     className="form-control"
-                                    id="form"
+                                    id="phone"
                                     placeholder="Enter ur phone number"
                                 />
                                 <p className="text-danger">
@@ -260,7 +262,7 @@ const SignUp = () => {
                                     type="password"
                                     name="password"
                                     className="form-control"
-                                    id="form"
+                                    id="password"
                                     placeholder="enter password"
                                 />
                                 <p className="text-danger">
@@ -273,7 +275,7 @@ const SignUp = () => {
                                     type="password"
                                     name="confirmPassword"
                                     className="form-control"
-                                    id="form"
+                                    id="confirmPassword"
                                     placeholder="confirm password"
                                 />
                                 <p className="text-danger">
@@ -390,7 +392,7 @@ const SignUp = () => {
                                         // @Jasmine
                                     }
                                 >
-                                    login
+                                    Sign Up
                                 </button>
                             </div>
                         </div>

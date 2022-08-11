@@ -70,56 +70,58 @@ module.exports.signup = function signup(req, res, next) {
 		floor: req.body.floor,
 	};
 
-	User.findOne({ email: email })
-		.then((user) => {
-			if (user) {
-				// email already exist in database
-				return res.status(401).json({
-					success: false,
-					message: 'this email exist on our data',
-				});
-			} else {
-				// hashing password and save data in USER collection
-				bcrypt.hash(password, 10).then((hashedPassword) => {
-					return new User({
-						email: email,
-						password: hashedPassword,
-						role: role,
-						phone: phone,
-						address: address,
-					})
-						.save()
-						.then((user) => {
-							// saving data in CUSTOMER or BUSINESS collection
-							if (user.role === 'customer') {
-								const data = {
-									firstname: req.body.firstname,
-									lastname: req.body.lastname,
-								};
-								addCustomerData(user._id, data);
-							} else {
-								const data = {
-									name: req.body.name,
-									description: req.body.description,
-								};
-								addBusinessData(user._id, data);
-							}
-							return user;
-						})
-						.then((userData) => {
-							res.status(201).json({
-								success: true,
-								message: 'User created Successfully',
-                userId:userData._id
-							});
-						});
-				});
-			}
-		})
-		.catch((err) => {
-			err.status = 500;
-			next(err);
-		});
+
+  User.findOne({ email: email })
+    .then((user) => {
+      if (user) {
+        // email already exist in database
+        return res.status(401).json({
+          success: false,
+          message: "this email exist on our data",
+        });
+      } else {
+        // hashing password and save data in USER collection
+        bcrypt.hash(password, 10).then((hashedPassword) => {
+          return new User({
+            email: email,
+            password: hashedPassword,
+            role: role,
+            phone: phone,
+            address: address,
+          })
+            .save()
+            .then((user) => {
+              // saving data in CUSTOMER or BUSINESS collection
+              if (user.role === "customer") {
+                const data = {
+                  firstname: req.body.firstname,
+                  lastname: req.body.lastname,
+                };
+                addCustomerData(user._id, data);
+              } else {
+                const data = {
+                  name: req.body.name,
+                  description: req.body.description,
+                };
+                addBusinessData(user._id, data);
+              }
+              return user;
+            })
+            .then((userData) => {
+              res.status(201).json({
+                success: true,
+                message: "User created Successfully",
+                userId: userData._id,
+              });
+            });
+        });
+      }
+    })
+    .catch((err) => {
+      err.status = 500;
+      next(err);
+    });
+
 };
 
 module.exports.resetPassword = (req, res, next) => {

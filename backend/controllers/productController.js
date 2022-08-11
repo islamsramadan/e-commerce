@@ -55,12 +55,29 @@ module.exports.updateProduct = (req, res, next) => {
   }
 };
 
-module.exports.getOneProduct = (req, res, next) => {
-  Products.findOne({ _id: req.params.id })
-    .then((data) => {
-      res.status(200).json({ status: "success", data });
-    })
-    .catch((err) => next(err));
+module.exports.getOneProduct = async (req, res, next) => {
+  try {
+    const product = await Products.findOne({ _id: req.params.id });
+    if (!product) throw new Error("Couldnt find a product with that id");
+    directoryPath = path.join(
+      __dirname,
+      "..",
+      "images",
+      "products",
+      req.params.id
+    );
+    fs.readdir(directoryPath, (err, files) => {
+      if (err)
+        return res.status(400).json({
+          success: false,
+          msg: "Unable to scan directory! " + err.message,
+        });
+      const fullData = { ...product._doc, images: files };
+      res.json({ success: true, fullData });
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports.deleteOneProduct = (req, res, next) => {

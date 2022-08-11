@@ -7,6 +7,7 @@ const authMW = require("../middlewares/isAuthenticated");
 
 router
   .route("/customers/cart")
+  .get(authMW, controller.getCart)
   .post(
     authMW,
     [

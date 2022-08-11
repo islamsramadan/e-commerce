@@ -3,12 +3,16 @@ import DropdownButton from 'react-bootstrap/esm/DropdownButton';
 import { Link } from 'react-router-dom';
 import '../Search/Search.style.css';
 import NavbarComp from '../Navbar/Navbar';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../../store/auth/authSlice';
 
 export default function Search() {
     const searchElement = document.querySelector('.search');
-    window.addEventListener('scroll', () => {
-        // searchElement.classList.toggle("active", window.screenY > 100);
-    });
+    const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     return (
         <form className="search bg-white custom-shadow">
             <div className="container">
@@ -33,15 +37,35 @@ export default function Search() {
                     </div>
                     <div className="col-6 col-lg-2 order-2 order-lg-4">
                         <div className="icon d-flex justify-content-end">
-                            <DropdownButton
-                                id="dropdown-basic-button"
-                                title={<i className="fa fa-user user-icon"></i>}
-                                className="profile-button"
-                            >
-                                <DropdownItem href="/profile">my profile</DropdownItem>
-                                <DropdownItem href="/orders">orders</DropdownItem>
-                                <DropdownItem href="#/action-3">Something else</DropdownItem>
-                            </DropdownButton>
+                            {user ? (
+                                <DropdownButton
+                                    id="dropdown-basic-button"
+                                    title={<i className="fa fa-user user-icon"></i>}
+                                    className="profile-button"
+                                >
+                                    <DropdownItem href="/profile">my profile</DropdownItem>
+                                    <DropdownItem href="/orders">orders</DropdownItem>
+                                    <DropdownItem
+                                        onClick={() => {
+                                            dispatch(logout());
+                                        }}
+                                    >
+                                        logout
+                                    </DropdownItem>
+                                </DropdownButton>
+                            ) : (
+                                <>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            navigate('login');
+                                        }}
+                                    >
+                                        login
+                                    </button>
+                                </>
+                            )}
                             <div className="cart">
                                 <a href="/cart">
                                     <i className="fa fa-shopping-bag icon-circle"></i>

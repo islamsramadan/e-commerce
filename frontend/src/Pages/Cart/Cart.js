@@ -15,8 +15,8 @@ const Cart = () => {
                 <div className="row">
                     <div className="col-12 col-lg-8">
                         <div className="cart-items">
-                            {cartItems.map((cartItem) => (
-                                <CartItem cartItem={cartItem} />
+                            {cartItems.map((cartItem, index) => (
+                                <CartItem cartItem={cartItem} key={index} />
                             ))}
                         </div>
                     </div>
