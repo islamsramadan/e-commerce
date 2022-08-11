@@ -71,7 +71,7 @@ module.exports.getCustomerData = async (req, res, next) => {
   }
 };
 
-module.exports.addAdmin = (req, res, next) => {
+module.exports.addAdmin = async (req, res, next) => {
   let admin = new Admin({
     email: req.body.email,
     password: req.body.password,
@@ -87,9 +87,8 @@ module.exports.addAdmin = (req, res, next) => {
     });
 };
 
-module.exports.deleteAdmin = (req, res, next) => {
+module.exports.deleteAdmin = async (req, res, next) => {
   const admin = await Admin.findById(req.params.id);
-
   if (admin) {
     admin.isDeleted = true;
     const updatedadmin = await admin.save();
