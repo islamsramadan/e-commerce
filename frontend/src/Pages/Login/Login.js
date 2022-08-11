@@ -25,12 +25,8 @@ export default function Login() {
     const dispatch = useDispatch();
     const from = location.state?.from?.pathname || '/';
     const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.auth);
-    const [pageLoading, setPageLoading] = useState(true);
 
     // component did mount
-    useEffect(() => {
-        setPageLoading(false);
-    }, []);
 
     useEffect(() => {
         if (isError) {
@@ -47,12 +43,9 @@ export default function Login() {
     const onSubmit = async (userData) => {
         await dispatch(login(userData));
         console.log('loggedUser', user);
-        // if (user?.user) {
-        //     navigate(from, { replace: true });
-        // }
     };
 
-    if (isLoading || pageLoading) {
+    if (isLoading) {
         return <Loader />;
     }
 

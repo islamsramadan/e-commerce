@@ -3,7 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React, { useState, useEffec, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
+import { editProfile } from '../../store/profile/profileSlice';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
+import Loader from '../../common/Loader/Loader';
 
 const mainValidationSchema = Yup.object({
     email: Yup.string().required('this field is required').email('invalid email format'),
@@ -20,22 +24,15 @@ const mainValidationSchema = Yup.object({
     role: Yup.string().required('this field is required'),
 });
 const businessValidationSchema = Yup.object({
-    email: Yup.string().required('this field is required').email('invalid email format'),
-    phone: Yup.string().required('this field is required').length(11, 'should be 11 digits'),
-    password: Yup.string()
-        .required('this field is required')
-        .max(16, 'maximum passwrd is 8')
-        .min(8, 'min digits are 8'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'password must match'),
-    city: Yup.string().required('this field is required'),
-    street: Yup.string().required('this field is required'),
-    building: Yup.string().required('this field is required'),
-    floor: Yup.number().required(),
-    role: Yup.string().required('this field is required'),
-    name: Yup.string().required('this field is required'),
-    description: Yup.string().required('this field is required'),
-    imgLink: Yup.string().required('this field is required'),
-    comRegImgLink: Yup.string().required('this field is required'),
+    email: Yup.string().required().email('invalid email format'),
+    phone: Yup.string().required().length(11, 'should be 11 digits'),
+    city: Yup.string().required(),
+    street: Yup.string().required(),
+    building: Yup.string().required(),
+    floor: Yup.number(),
+    name: Yup.string().required(),
+    description: Yup.string().required(),
+    comRegImgLink: Yup.string(),
 });
 const customerValidationSchema = Yup.object({
     email: Yup.string().required('this field is required').email('invalid email format'),
@@ -53,6 +50,57 @@ const customerValidationSchema = Yup.object({
     firstName: Yup.string().required('this field is required'),
     lastName: Yup.string().required('this field is required'),
 });
+
+const BusinessForm = ({ props }) => {
+    return (
+        <div className="business-form my-3">
+            <div className="row">
+                <div className="form-group col-12 col-md-6">
+                    <label htmlFor="name">business name</label>
+                    <Field
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        id="name"
+                        placeholder="Enter your business name"
+                    />
+                    <p className="text-danger">
+                        <ErrorMessage name="name" />
+                    </p>
+                </div>
+                <div className="form-group col-12 col-md-6">
+                    <label htmlFor="description">Business Description</label>
+                    <Field
+                        type="text"
+                        name="description"
+                        className="form-control"
+                        id="description"
+                        placeholder="Enter your business description"
+                    />
+                    <p className="text-danger">
+                        <ErrorMessage name="description" />
+                    </p>
+                </div>
+                <div className="form-group col-12 col-md-6 my-3">
+                    <label htmlFor="comRegImgLink">Upload your registeration image</label>
+                    <input
+                        type="file"
+                        name="comRegImgLink"
+                        className="form-control"
+                        id="comRegImgLink"
+                        placeholder="upload img"
+                        onChange={(e) => {
+                            props.setFieldValue('comRegImgLink', e.target.files[0]);
+                        }}
+                    />
+                    <p className="text-danger">
+                        <ErrorMessage name="comRegImgLink" />
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const CustomerForm = () => {
     return (
@@ -89,37 +137,83 @@ const CustomerForm = () => {
     );
 };
 
-const onSubmit = (values) => {
-    console.log(values);
-};
-
 const EditForm = (props) => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+
+    const onSubmit = (values) => {
+        dispatch(editProfile(values));
+    };
+    const localUser = JSON.parse(localStorage.getItem('user')).user;
+    const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.profile);
+    const userData = JSON.parse(localStorage.getItem('user')).user;
+    const [profileState, setProfileState] = useState(userData);
+
+    useEffect(() => {
+        if (isError) {
+            console.log('there is an error: ' + message);
+        }
+        if (isSuccess) {
+            const userLocal = JSON.parse(localStorage.getItem('user'));
+            // that will be changed
+            userLocal.user.name = user?.roleData?.data?.name;
+            userLocal.user.description = user?.roleData?.data?.description;
+            localStorage.setItem('user', JSON.stringify(userLocal));
+            for (let prop in user?.userData) {
+                console.log('props:', prop);
+                if (prop == 'city' || prop == 'floor' || prop == 'building' || prop == 'street') {
+                    userLocal.user.address[prop] = user?.userData[prop];
+                } else {
+                    userLocal.user[prop] = user?.userData[prop];
+                }
+            }
+            localStorage.setItem('user', JSON.stringify(userLocal));
+            console.log('local strg user', userLocal);
+            console.log(user);
+        }
+    }, [user, isError, isSuccess, message, dispatch]);
+
     const initialValues = {
-        email: 'osama@gmail.com',
-        phone: '01272848843',
-        password: '',
-        confirmPassword: '',
-        city: 'Mallawi',
-        street: 'sde-e23',
-        building: '45eds',
-        floor: '8',
-        role: 'Customer',
-        name: '',
-        description: '',
-        firstName: '',
-        lastName: '',
-        imgLink: '',
+        email: localUser.email,
+        phone: localUser.phone,
+        city: localUser.address.city,
+        street: localUser.address.street,
+        building: localUser.address.building,
+        floor: localUser.address.floor,
+        name: localUser.name,
+        description: localUser.description,
+        firstName: localUser.firstname || '',
+        lastName: localUser.lastname || '',
         comRegImgLink: '',
     };
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">Edit profile</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Formik validationSchema={businessValidationSchema} initialValues={initialValues} onSubmit={onSubmit}>
+                <Formik
+                    validationSchema={
+                        profileState?.role == 'business' ? businessValidationSchema : customerValidationSchema
+                    }
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                >
                     {(props) => (
                         <Form className="">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    console.log(profileState);
+                                }}
+                            >
+                                show localStorage
+                            </button>
                             <div className="container  rounded-2 px-5 bg-white">
                                 <div className="row">
                                     <div className="form-group col-12 col-md-6">
@@ -146,34 +240,6 @@ const EditForm = (props) => {
                                         />
                                         <p className="text-danger">
                                             <ErrorMessage name="phone" />
-                                        </p>
-                                    </div>
-
-                                    {/*password */}
-                                    <div className="form-group col-12 col-md-6">
-                                        <label htmlFor="password">password</label>
-                                        <Field
-                                            type="password"
-                                            name="password"
-                                            className="form-control"
-                                            id="form"
-                                            placeholder="enter password"
-                                        />
-                                        <p className="text-danger">
-                                            <ErrorMessage name="password" />
-                                        </p>
-                                    </div>
-                                    <div className="form-group col-12 col-md-6">
-                                        <label htmlFor="confirmPassword">confirm password</label>
-                                        <Field
-                                            type="password"
-                                            name="confirmPassword"
-                                            className="form-control"
-                                            id="form"
-                                            placeholder="confirm password"
-                                        />
-                                        <p className="text-danger">
-                                            <ErrorMessage name="confirmPassword" />
                                         </p>
                                     </div>
 
@@ -237,7 +303,11 @@ const EditForm = (props) => {
                                     <p className="text-danger">
                                         <ErrorMessage name="role" />
                                     </p>
-                                    <CustomerForm />
+                                    {profileState?.role == 'customer' ? (
+                                        <CustomerForm />
+                                    ) : (
+                                        <BusinessForm props={props} />
+                                    )}
                                     <div className=" justify-content-center row">
                                         <button
                                             type="submit"

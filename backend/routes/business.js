@@ -36,7 +36,7 @@ businessRoute
         .isString()
         .withMessage("description should be string"),
     ],
-    validationMW,
+    // validationMW,
     updateBusiness
   );
 
