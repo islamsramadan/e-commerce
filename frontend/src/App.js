@@ -16,7 +16,6 @@ import ProductDetailsPage from './Pages/ProductDetails';
 import AdminPage from './Pages/Admin';
 import { logout } from './store/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import DashBoard from './Pages/DashBoard/DashBoard';
 import RequireAuth from './RequireAuth';
 import UnAuthorized from './Pages/UnAuthorized/UnAuthorized';
 
@@ -62,9 +61,8 @@ function App() {
                 </Route>
 
                 {/*Permission role based routes */}
-                <Route element={<RequireAuth allowedRoles={['admin']} />}>
-                    <Route path="/admin/*" element={<AdminPage />} />
-                </Route>
+                <Route path="/admin/*" element={<AdminPage />} />
+                <Route element={<RequireAuth allowedRoles={['admin']} />}></Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
                 <Route path="*" element={<h1>can't find this page </h1>} />

@@ -18,9 +18,13 @@ export default function OrdersList() {
                         <h6>Filter</h6>
                         <div className="d-flex">
                             <Form className="d-flex w-100 justify-content-center">
-                                <Form.Control className="w-25 me-2" type="text" placeholder="Customer name" />
                                 <Form.Control className="w-25 me-2" type="email" placeholder="Customer email" />
                                 <Form.Control className="w-25" type="text" placeholder="Business name" />
+                                <Form.Select className='mx-2 w-auto' aria-label="All">
+                                    <option value="1">All</option>
+                                    <option value="2">Delivered</option>
+                                    <option value="3">On its way</option>
+                                </Form.Select>
                                 <Button className="ms-3">Filter</Button>
                             </Form>
                         </div>
@@ -36,6 +40,8 @@ export default function OrdersList() {
                                 <th>Business</th>
                                 <th>Products</th>
                                 <th>Total price</th>
+                                <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +60,10 @@ export default function OrdersList() {
                                     <Link to="/admin/products/id">name</Link>
                                 </td>
                                 <td>200 LE</td>
+                                <td>Delivered</td>
+                                <td>
+                                    <Link to="/admin/orders/id">View</Link>
+                                </td>
                             </tr>
                             <tr>
                                 <td>1</td>
@@ -68,6 +78,10 @@ export default function OrdersList() {
                                     <Link to="/admin/products/id">name</Link>
                                 </td>
                                 <td>75 LE</td>
+                                <td>On its way</td>
+                                <td>
+                                    <Link to="/admin/orders/id">View</Link>
+                                </td>
                             </tr>
                         </tbody>
                     </Table>

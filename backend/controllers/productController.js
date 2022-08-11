@@ -10,6 +10,7 @@ const Category = require("../models/category");
 
 module.exports.getAllProducts = (req, res, next) => {
   Products.find({})
+    .populate("businessId")
     .then((data) => {
       res.status(200).json({ status: "success", data });
     })

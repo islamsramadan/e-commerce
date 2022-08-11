@@ -3,15 +3,26 @@ import DropdownButton from 'react-bootstrap/esm/DropdownButton';
 import { Link, NavLink } from 'react-router-dom';
 import '../Search/Search.style.css';
 import NavbarComp from '../Navbar/Navbar';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../store/auth/authSlice';
+import { getCart } from '../../../store/cart/cartSlice';
 
 export default function Search() {
     const searchElement = document.querySelector('.search');
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const { cartItems } = useSelector((state) => state.cart);
+    useEffect(() => {
+        dispatch(getCart());
+    }, [dispatch, cartItems]);
+    let totalItems = 0;
+    for (let i = 0; i < cartItems?.length; i++) {
+        totalItems += cartItems[i].quantity;
+    }
 
     return (
         <form className="search bg-white custom-shadow">
@@ -77,7 +88,7 @@ export default function Search() {
                                 <div className="cart">
                                     <Link to="/cart">
                                         <i className="fa fa-shopping-bag icon-circle"></i>
-                                        <span>8</span>
+                                        <span>{totalItems}</span>
                                     </Link>
                                 </div>
                             )}

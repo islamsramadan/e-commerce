@@ -8,6 +8,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { BiCategoryAlt, BiCaretDown } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getCategories } from '../../../store/categories/categorySlice';
+
 export default function NavbarComp() {
     return (
         <Navbar expand="lg" className="navbar-component bg-white">

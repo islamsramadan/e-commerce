@@ -81,22 +81,6 @@ const BusinessForm = ({ props }) => {
                         <ErrorMessage name="description" />
                     </p>
                 </div>
-                <div className="form-group col-12 col-md-6 my-3">
-                    <label htmlFor="comRegImgLink">Upload your registeration image</label>
-                    <input
-                        type="file"
-                        name="comRegImgLink"
-                        className="form-control"
-                        id="comRegImgLink"
-                        placeholder="upload img"
-                        onChange={(e) => {
-                            props.setFieldValue('comRegImgLink', e.target.files[0]);
-                        }}
-                    />
-                    <p className="text-danger">
-                        <ErrorMessage name="comRegImgLink" />
-                    </p>
-                </div>
             </div>
         </div>
     );
@@ -139,10 +123,11 @@ const CustomerForm = () => {
 
 const EditForm = (props) => {
     const dispatch = useDispatch();
-    const location = useLocation();
 
-    const onSubmit = (values) => {
-        dispatch(editProfile(values));
+    const onSubmit = async (values) => {
+        await dispatch(editProfile(values));
+        await window.location.reload();
+        props.onHide();
     };
     const localUser = JSON.parse(localStorage.getItem('user')).user;
     const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.profile);
@@ -155,9 +140,15 @@ const EditForm = (props) => {
         }
         if (isSuccess) {
             const userLocal = JSON.parse(localStorage.getItem('user'));
-            // that will be changed
-            userLocal.user.name = user?.roleData?.data?.name;
-            userLocal.user.description = user?.roleData?.data?.description;
+
+            if (userLocal.user.role == 'business') {
+                userLocal.user.name = user?.roleData?.data?.name;
+                userLocal.user.description = user?.roleData?.data?.description;
+            } else if (userLocal.user.role == 'customer') {
+                userLocal.user.firstName = user?.roleData?.data?.firsName;
+                userLocal.user.firstName = user?.roleData?.data?.firstName;
+            }
+
             localStorage.setItem('user', JSON.stringify(userLocal));
             for (let prop in user?.userData) {
                 console.log('props:', prop);
@@ -184,8 +175,9 @@ const EditForm = (props) => {
         description: localUser.description,
         firstName: localUser.firstname || '',
         lastName: localUser.lastname || '',
-        comRegImgLink: '',
     };
+
+    console.log('is loading:', isLoading);
 
     if (isLoading) {
         return <Loader />;
@@ -330,6 +322,13 @@ const EditForm = (props) => {
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
+            <button
+                onClick={() => {
+                    console.log(props);
+                }}
+            >
+                show props
+            </button>
         </Modal>
     );
 };

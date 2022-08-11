@@ -5,6 +5,8 @@ require('../models/customer');
 require('../models/order');
 require('../models/common');
 require('../models/admin');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const orders = mongoose.model('orders');
 const Products = mongoose.model('product');
 const User = mongoose.model('user');
@@ -71,20 +73,47 @@ module.exports.getCustomerData = async (req, res, next) => {
   }
 };
 
-module.exports.addAdmin = async (req, res, next) => {
-  let admin = new Admin({
-    email: req.body.email,
-    password: req.body.password,
-    name: req.body.name,
-  });
-  admin
-    .save()
-    .then((data) => {
-      res.status(200).json({ data: 'added', data });
-    })
-    .catch((err) => {
-      next(err);
-    });
+module.exports.signup = async (req, res, next) => {
+  const { email, password } = req.body;
+  const name = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+  };
+  try {
+    if (req.admin.isHead === true) {
+      Admin.findOne({ email: email }).then((user) => {
+        if (user) {
+          // email already exist in database
+          return res.status(401).json({
+            success: false,
+            message: 'this email exist on our data',
+          });
+        } else {
+          // hashing password and save data in USER collection
+          bcrypt.hash(password, 10).then((hashedPassword) => {
+            return new Admin({
+              email: email,
+              password: hashedPassword,
+              name: name,
+            })
+              .save()
+              .then((userData) => {
+                res.status(201).json({
+                  success: true,
+                  message: 'User created Successfully',
+                  userId: userData,
+                });
+              });
+          });
+        }
+      });
+    } else {
+      throw new Error('sorry you don`t have authorize');
+    }
+  } catch (error) {
+    error.status = 500;
+    next(error);
+  }
 };
 
 module.exports.deleteAdmin = async (req, res, next) => {
@@ -97,4 +126,48 @@ module.exports.deleteAdmin = async (req, res, next) => {
     res.status(404);
     throw new Error('admin not found');
   }
+};
+module.exports.adminLogin = function login(req, res, next) {
+  const { email, password } = req.body;
+
+  Admin.findOne({ email: email })
+    .then((admin) => {
+      if (!admin) {
+        // no email found
+        return res.status(401).json({
+          success: false,
+          message: 'invalid email or password',
+        });
+      } else {
+        bcrypt.compare(password, admin.password).then(async (isEqual) => {
+          if (!isEqual) {
+            // password is incorrect
+            return res.status(401).json({
+              success: false,
+              message: 'invalid email or password',
+            });
+          } else {
+            // successful login
+            const token = jwt.sign(
+              {
+                id: admin._id,
+              },
+              process.env.JWT_SECRET_KEY,
+              { expiresIn: '24h' }
+            );
+
+            res.status(200).json({
+              success: true,
+              message: 'successful login',
+              token: token,
+              admin: admin,
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      err.status = 500;
+      next(err);
+    });
 };

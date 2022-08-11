@@ -4,6 +4,10 @@
     background-color: #282c34;
     height: 100%;
     padding: 20px 0px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
 
     p {
         color: #fff;
@@ -36,7 +40,7 @@
             &.active {
                 background-color: #f6f9fc;
                 color: #282c34;
-                
+
                 &:hover {
                     background-color: #f6f9fc;
                 }

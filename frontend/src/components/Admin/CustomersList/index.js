@@ -27,7 +27,7 @@ export default function CustomersList() {
                                 <th>name</th>
                                 <th>email</th>
                                 <th>phone</th>
-                                <th>action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

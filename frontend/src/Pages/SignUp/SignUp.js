@@ -1,7 +1,6 @@
 import React, { useState, useEffec, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
-import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../../store/auth/authSlice';
@@ -9,7 +8,7 @@ import Loader from '../../common/Loader/Loader';
 
 const initialValues = {
     email: 'o@gm.com',
-    phone: '01282848843',
+    phone: '01282584486',
     password: '12345678',
     confirmPassword: '12345678',
     city: 'Alex',
@@ -203,10 +202,19 @@ const SignUp = () => {
     }, [user, isError, isSuccess, message, dispatch, navigate]);
 
     const onSubmit = (userData) => {
-        let formData = new FormData();
-        formData = { type: 'businessProfile', image: userData.imgLink };
-        console.log('form data:', formData);
-        dispatch(register({ userData, formData }));
+        // profile business
+        let pofileFormData = new FormData();
+        let profileImg = userData.imgLink;
+        pofileFormData.append('type', 'businessProfile');
+        pofileFormData.append('image', profileImg);
+
+        //comercail register images
+        let comercialFormData = new FormData();
+        let comercialImg = userData.comRegImgLink;
+        comercialFormData.append('type', 'commercial');
+        comercialFormData.append('image', comercialImg);
+
+        dispatch(register({ userData, pofileFormData, comercialFormData }));
     };
 
     if (isLoading) {
