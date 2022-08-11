@@ -61,13 +61,11 @@ function App() {
                 </Route>
 
                 {/*Permission role based routes */}
-                    <Route path="/admin/*" element={<AdminPage />} />
-                <Route element={<RequireAuth allowedRoles={['admin']} />}>
-                </Route>
+                <Route path="/admin/*" element={<AdminPage />} />
+                <Route element={<RequireAuth allowedRoles={['admin']} />}></Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
                 <Route path="*" element={<h1>can't find this page </h1>} />
-                <Route path="/dashboard" element={<DashBoard />} />
             </Routes>
             <Footer />
         </div>
