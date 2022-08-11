@@ -6,8 +6,6 @@ import EditForm from '../../components/EditForm/EditForm';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
-import { useSelector, useDispatch } from 'react-redux';
-
 const CustomerSection = () => {
     return (
         <div className="col-12 col-lg-6">

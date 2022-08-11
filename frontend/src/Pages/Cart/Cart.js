@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 const Cart = () => {
     const dispatch = useDispatch();
     const { cartItems, totalPrice } = useSelector((state) => state.cart);
+    const { user } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(getCart());

@@ -112,9 +112,8 @@ const cartSlice = createSlice({
         [getCart.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.cartItems = action.payload.cart.products;
-            // state.cartItems = action.payload;
-            state.totalPrice = action.payload.cart.totalPrice;
+            state.cartItems = action.payload?.cart.products;
+            state.totalPrice = action.payload?.cart.totalPrice;
         },
         [getCart.rejected]: (state, action) => {
             state.isLoading = false;
