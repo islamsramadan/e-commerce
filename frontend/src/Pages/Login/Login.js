@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import PrimaryButton from '../../common/PrimaryButton/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { login, reset } from '../../store/auth/authSlice';

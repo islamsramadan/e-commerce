@@ -4,6 +4,9 @@ import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import 'animate.css/animate.min.css';
 
 import './ProductCard.scss';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../store/cart/cartSlice';
+
 // development
 import productimage2 from '../../assets/images/2.jpg';
 import productimage3 from '../../assets/images/3.webp';
@@ -45,6 +48,12 @@ export default function ProductCard({ product }) {
         dots[i].classList.add('active');
     }
 
+    // add to cart action
+    const productId = { productId: product._id, quantity: 1 };
+    const dispatch = useDispatch();
+    const addToCartHandel = (productId) => {
+        dispatch(addToCart(productId));
+    };
     return (
         <div className="outer">
             <div className="productCard">
@@ -82,7 +91,7 @@ export default function ProductCard({ product }) {
                     <RateComponent rate={product.rating} />
                     <h6>{product.price} £</h6>
                     <button>
-                        <FontAwesomeIcon icon={faCartPlus} />
+                        <FontAwesomeIcon icon={faCartPlus} onClick={() => addToCartHandel(productId)} />
                     </button>
                 </div>
             </div>

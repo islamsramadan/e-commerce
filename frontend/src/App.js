@@ -16,7 +16,6 @@ import ProductDetailsPage from './Pages/ProductDetails';
 import AdminPage from './Pages/Admin';
 import { logout } from './store/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import DashBoard from './Pages/DashBoard/DashBoard';
 import RequireAuth from './RequireAuth';
 import UnAuthorized from './Pages/UnAuthorized/UnAuthorized';
 

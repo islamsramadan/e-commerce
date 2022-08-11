@@ -127,13 +127,13 @@ module.exports.incrementProductInCart = async (req, res, next) => {
 
     const product = await Product.findById(req.body.productId, {
       price: 1,
-      quantity: 1,
+      countInStock: 1,
     });
 
     if (!product)
       return next(new Error("Couldn't find a product with that id."));
 
-    const { price: productPrice, quantity: productQuantity } = product;
+    const { price: productPrice, countInStock: productQuantity } = product;
 
     const cart = customer.cart;
 

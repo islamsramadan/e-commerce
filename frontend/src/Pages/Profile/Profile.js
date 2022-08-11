@@ -5,9 +5,7 @@ import { AiOutlineMail } from 'react-icons/ai';
 import EditForm from '../../components/EditForm/EditForm';
 import { Button } from 'react-bootstrap';
 
-import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
 const CustomerSection = () => {
     return (

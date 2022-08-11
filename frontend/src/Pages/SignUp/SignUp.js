@@ -1,7 +1,6 @@
 import React, { useState, useEffec, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
-import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../../store/auth/authSlice';
@@ -208,9 +207,6 @@ const SignUp = () => {
         dispatch(register({ userData, formData }));
     };
 
-    if (isLoading) {
-        return <Spinner />;
-    }
     return (
         <Formik
             validationSchema={

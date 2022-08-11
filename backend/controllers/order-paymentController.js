@@ -103,7 +103,7 @@ module.exports.updateOrderToDelivered = async (req, res, next) => {
 };
 module.exports.getCustomerOrder = (req, res, next) => {
   orders
-    .findOne({ userId: req.id }, { orderItems: 1 })
+    .find({ userId: req.id })
     .then((data) => {
       res.status(200).json(data);
     })

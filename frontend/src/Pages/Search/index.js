@@ -6,7 +6,6 @@ import ProductCard from '../../components/ProductCard';
 import Filter from '../../components/Filter';
 import './search.scss';
 
-import Spinner from '../../common/spinner/spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getProducts } from '../../store/products/productSlice';
@@ -17,7 +16,7 @@ export default function SearchPage() {
     useEffect(() => {
         dispatch(getProducts());
     }, []);
-
+    console.log(products);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

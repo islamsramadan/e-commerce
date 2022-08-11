@@ -2,37 +2,25 @@ import './Cart.style.scss';
 import ProdImg from '../../assets/images/3.webp';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../../store/products/productSlice';
-import { useEffect } from 'react';
-import Spinner from '../../common/spinner/spinner';
+import { useDispatch } from 'react-redux';
+import { incrementProduct, decrementProduct, removeFromCart } from '../../store/cart/cartSlice';
 
-const CartItem = ({ productID }) => {
-    // console.log(productID);
+const CartItem = ({ product, quantity }) => {
+    // console.log(product);
+    const productId = { productId: product._id };
+
     const dispatch = useDispatch();
-    const { products, isLoading, isSuccess, isError } = useSelector((state) => state.products);
-    useEffect(() => {
-        if (isError) {
-            console.log('error');
-        }
-        if (isSuccess) {
-            console.log(products);
-        }
-        dispatch(getProducts());
-    }, []);
-
-    const getCartProduct = (ProductId) => {
-        const cartProduct = products.length > 0 && products.filter((product) => product._id == ProductId);
-        // console.log(cartProduct);
-        return cartProduct[0];
+    const increamentHandel = (productId) => {
+        dispatch(incrementProduct(productId));
     };
-    console.log(products);
-    const product = getCartProduct(productID);
-    console.log(product);
 
-    if (isLoading) {
-        return <Spinner />;
-    }
+    const decreamentHandel = (productId) => {
+        dispatch(decrementProduct(productId));
+    };
+
+    const removeFromCartHandel = (productId) => {
+        dispatch(removeFromCart(productId));
+    };
 
     return (
         <div className="cart-item bg-white p-3 rounded-2 my-3 custom-shadow">
@@ -41,11 +29,14 @@ const CartItem = ({ productID }) => {
                     <img src={ProdImg} alt="product image" className="w-100 h-100" />
                 </div>
                 <div className="col-6 d-flex flex-column justify-content-center">
-                    {/* <h5>{product.name}</h5> */}
+                    <h5>{product.name}</h5>
                     <p>
-                        sold by: <span className="fw-semibold">Addidas</span>
+                        sold by: <span className="fw-semibold">{product.businessId?.name}</span>
                     </p>
-                    <button className="btn-delete btn btn-danger d-flex align-items-center justify-content-center">
+                    <button
+                        onClick={() => removeFromCartHandel(productId)}
+                        className="btn-delete btn btn-danger d-flex align-items-center justify-content-center"
+                    >
                         <RiDeleteBin6Line className="me-1" /> delete
                     </button>
                 </div>
@@ -54,11 +45,23 @@ const CartItem = ({ productID }) => {
                 align-items-md-end justify-content-md-between
                 "
                 >
-                    {/* <h5 className="fw-semibold">{product[0].price} $</h5> */}
+                    <h5 className="fw-semibold">{product.price} $</h5>
                     <div className="d-flex quantity align-items-center">
-                        <button className="me-2 rounded-2 quantity-inc">-</button>
-                        {5}
-                        <button className="ms-2 rounded-2 quantity-dec">+</button>
+                        <button
+                            disabled={quantity == 1}
+                            className="me-2 rounded-2 quantity-inc"
+                            onClick={() => decreamentHandel(productId)}
+                        >
+                            -
+                        </button>
+                        {quantity}
+                        <button
+                            disabled={quantity >= product.countInStock}
+                            className="ms-2 rounded-2 quantity-dec"
+                            onClick={() => increamentHandel(productId)}
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
             </div>
