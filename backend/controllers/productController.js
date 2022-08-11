@@ -109,12 +109,11 @@ module.exports.createProductReview = asyncHandler(async (req, res, next) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-
     if (alreadyReviewed) {
       res.status(400);
       throw new Error("Product already reviewed");
     }
-    console.log(req.id);
+
     const review = {
       name: req.body.name,
       rating: Number(rating),

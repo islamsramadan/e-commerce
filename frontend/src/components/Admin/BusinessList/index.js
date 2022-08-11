@@ -14,7 +14,6 @@ export default function BusinessList() {
                     <h1 className="text-center my-3">Business</h1>
                 </div>
                 <div className="col-12">
-                    <spna>Filter</spna>
                     <FloatingLabel controlId="floatingInput" label="Business name" className="mb-3">
                         <Form.Control type="text" placeholder="Business name" />
                     </FloatingLabel>

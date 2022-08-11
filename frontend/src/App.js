@@ -26,10 +26,10 @@ function App() {
     return (
         <div className="App ">
             <Search />
-            {/*  <button
+            <button
                 className="btn btn-primary m-3"
                 onClick={() => {
-                    // JSON.parse(localStorage.getItem('user'))
+                    let user = JSON.parse(localStorage.getItem('token'));
                     console.log('currentUser', user);
                 }}
             >
@@ -42,7 +42,7 @@ function App() {
                 }}
             >
                 logout
-            </button> */}
+            </button>
             <Routes>
                 {/*public routes */}
                 <Route path="/" element={<Home />} />
@@ -51,11 +51,14 @@ function App() {
 
                 {/*protected routes */}
                 <Route element={<RequireAuth allowedRoles={['customer']} />}>
-                    <Route path="/profile" element={<Profile />} />
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/product/:id" element={<ProductDetailsPage />} />
+                </Route>
+
+                <Route element={<RequireAuth allowedRoles={['customer', 'business']} />}>
+                    <Route path="/profile" element={<Profile />} />
                 </Route>
 
                 {/*Permission role based routes */}

@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 require('../models/product');
 require('../models/user');
+require('../models/customer');
 require('../models/order');
+require('../models/common');
 const orders = mongoose.model('orders');
 const Products = mongoose.model('product');
 const User = mongoose.model('user');
+const Customer = mongoose.model('customer');
 
 module.exports.getNumberOfProduct = async (req, res) => {
   const numOfProductInStoct = await Products.count({
@@ -47,4 +50,21 @@ module.exports.getTotalOrders = async (req, res) => {
     numOfOnDelivery: numOfOnDelivery,
     numOfDelivered: numOfDelivered,
   });
+};
+
+module.exports.getCustomerData = async (req, res, next) => {
+  try {
+    const data = await orders
+      .findOne({ userId: req.params.id }, { status: 1 })
+      .populate({
+        path: 'orderItems.productId',
+        select: 'name reviews',
+      })
+      .populate({ path: 'userId', select: ' email isVerified phone address' });
+
+    const fullName = await Customer.findOne({ userId: req.params.id }, {});
+    res.status(200).json({data:data, fullName: fullName });
+  } catch (error) {
+    next(error);
+  }
 };

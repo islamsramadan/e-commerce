@@ -1,16 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const verificationSchema = mongoose.Schema(
   {
     isVerified: {
       type: Boolean,
       default: false,
-
     },
     adminId: {
       type: mongoose.Types.ObjectId,
-      ref: "admin",
-
+      ref: 'admin',
     },
     // adminId: {
     //   type: mongoose.Types.ObjectId,
@@ -34,7 +32,7 @@ const businessSchema = mongoose.Schema({
   },
   userId: {
     type: mongoose.Types.ObjectId,
-    ref: "users",
+    ref: 'user',
     required: true,
   },
   name: {
@@ -48,13 +46,13 @@ const businessSchema = mongoose.Schema({
   balance: {
     type: Number,
     required: true,
-    default:0
+    default: 0,
   },
   verification: {
     type: verificationSchema,
-    default:{}
+    default: {},
   },
   description: String,
 });
 
-module.exports = mongoose.model("business", businessSchema);
+module.exports = mongoose.model('business', businessSchema);
