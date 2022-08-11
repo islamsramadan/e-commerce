@@ -32,10 +32,11 @@ export default function Products() {
                             <tr>
                                 <th>#</th>
                                 <th>Date</th>
-                                <th>Product name</th>
+                                <th>Name</th>
                                 <th>Business</th>
                                 <th>Price</th>
                                 <th>Rate</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +55,7 @@ export default function Products() {
                                 <td>
                                     <Rate rate={3}/>
                                 </td>
+                                <td><Link to="/admin/products/id">View</Link></td>
                             </tr>
                             <tr>
                                 <td>1</td>
@@ -70,6 +72,8 @@ export default function Products() {
                                 <td>
                                     <Rate rate={5}/>
                                 </td>
+                                <td><Link to="/admin/products/id">View</Link></td>
+
                             </tr>
                         </tbody>
                     </Table>

@@ -7,6 +7,16 @@ import { GiMoneyStack } from 'react-icons/gi';
 import './statistics.scss';
 
 export default function Statistics() {
+
+    function getProductsCount(){
+        try{
+            fetch('https')
+        }
+        catch(err){
+
+        }
+    }
+
     return (
         <div className="statistics animate__animated animate__fadeIn">
             <div className="row">
