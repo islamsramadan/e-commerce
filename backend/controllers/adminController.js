@@ -4,10 +4,12 @@ require('../models/user');
 require('../models/customer');
 require('../models/order');
 require('../models/common');
+require('../models/admin');
 const orders = mongoose.model('orders');
 const Products = mongoose.model('product');
 const User = mongoose.model('user');
 const Customer = mongoose.model('customer');
+const Admin = mongoose.model('admin');
 
 module.exports.getNumberOfProduct = async (req, res) => {
   const numOfProductInStoct = await Products.count({
@@ -63,8 +65,37 @@ module.exports.getCustomerData = async (req, res, next) => {
       .populate({ path: 'userId', select: ' email isVerified phone address' });
 
     const fullName = await Customer.findOne({ userId: req.params.id }, {});
-    res.status(200).json({data:data, fullName: fullName });
+    res.status(200).json({ data: data, fullName: fullName });
   } catch (error) {
     next(error);
+  }
+};
+
+module.exports.addAdmin = (req, res, next) => {
+  let admin = new Admin({
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
+  });
+  admin
+    .save()
+    .then((data) => {
+      res.status(200).json({ data: 'added', data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports.deleteAdmin = (req, res, next) => {
+  const admin = await Admin.findById(req.params.id);
+
+  if (admin) {
+    admin.isDeleted = true;
+    const updatedadmin = await admin.save();
+    res.json(updatedadmin);
+  } else {
+    res.status(404);
+    throw new Error('admin not found');
   }
 };
