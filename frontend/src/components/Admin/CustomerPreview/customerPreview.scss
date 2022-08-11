@@ -1,0 +1,58 @@
+.customerPreview {
+    margin-top: 50px;
+
+    &-data {
+        &_title {
+            text-align: center;
+            margin: 20px auto;
+            button{
+                margin-left: 10px;
+            }
+        }
+        table {
+            width: max-content;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+            box-shadow: 2px 2px 5px #ccc;
+            td {
+                font-size: 18px;
+                padding: 20px;
+
+                &:first-of-type,
+                &:nth-last-of-type(2) {
+                    font-weight: 600;
+                    padding: 20px 40px;
+                }
+                &:nth-last-of-type(2) {
+                    border-left: 1px solid #ccc;
+                }
+
+            }
+        }
+    }
+
+    &-orders{
+        &_title{
+            text-align: center;
+            margin: 40px auto;
+        }
+        table{
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+            box-shadow: 2px 2px 5px #ccc;
+            td{
+                padding: 20px 10px;
+                a{
+                    display: block;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

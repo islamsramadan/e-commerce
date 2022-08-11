@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Admin = require('../models/admin');
 require('../models/product');
 require('../models/user');
 require('../models/customer');
@@ -67,4 +68,49 @@ module.exports.getCustomerData = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports.adminLogin = function login(req, res, next) {
+	const { email, password } = req.body;
+
+	Admin.findOne({ email: email })
+		.then((admin) => {
+			if (!admin) {
+				// no email found
+				return res.status(401).json({
+					success: false,
+					message: 'invalid email or password',
+				});
+			} else {
+				bcrypt.compare(password, admin.password).then(async (isEqual) => {
+					if (!isEqual) {
+						// password is incorrect
+						return res.status(401).json({
+							success: false,
+							message: 'invalid email or password',
+						});
+					} else {
+						// successful login
+						const token = jwt.sign(
+							{
+								id: admin._id,
+							},
+							process.env.JWT_SECRET_KEY,
+							{ expiresIn: '24h' }
+						);
+
+						res.status(200).json({
+							success: true,
+							message: 'successful login',
+							token: token,
+							admin: admin,
+						});
+					}
+				});
+			}
+		})
+		.catch((err) => {
+			err.status = 500;
+			next(err);
+		});
 };

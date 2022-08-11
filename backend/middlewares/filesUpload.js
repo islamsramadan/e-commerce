@@ -4,6 +4,8 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		console.log(req.body);
+		console.log(file);
 
 		if(req.body.type == undefined || req.body.type == null){
 			cb(new Error('Error : file type is must be provided [businessProfile , commercial , product]'))
