@@ -346,7 +346,6 @@ exports.getRelatedProducts = async (req, res, next) => {
 module.exports.getCategoryProducts = (req, res, next) => {
   Products.find({ category: req.params.id })
     .then((data) => {
-      console.log(data);
       res.status(200).json({ msg: "success", data });
     })
     .catch((error) => {
