@@ -81,7 +81,7 @@ const ProductItem = ({ product }) => {
                     <h4>{product.unitPrice} $</h4>
                     <h4 className="mb-0">business name from back end </h4>
                 </div>
-            </a>
+            </div>
         </div>
     );
 };
@@ -112,3 +112,5 @@ const Orders = () => {
         </section>
     );
 };
+
+export default Orders;
