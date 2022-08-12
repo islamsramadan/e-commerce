@@ -1,19 +1,25 @@
 import React from 'react';
 import CartItem from '../../components/CartItem/CartItem';
 import './Cart.style.scss';
-
+import { Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCart } from '../../store/cart/cartSlice';
 import { useEffect } from 'react';
+import CheckoutModal from '../../components/CheckoutModal/CheckoutModal';
 
 const Cart = () => {
     const dispatch = useDispatch();
     const { cartItems, totalPrice } = useSelector((state) => state.cart);
-    // const { user } = useSelector((state) => state.user);
+    const [modalShow, setModalShow] = React.useState(false);
+
+    const initialValues = {
+        address: '',
+        paymentMethod: '',
+    };
 
     useEffect(() => {
         dispatch(getCart());
-    }, [dispatch, cartItems, totalPrice]);
+    }, [dispatch, totalPrice]);
 
     let totalItems = 0;
     for (let i = 0; i < cartItems?.length; i++) {
@@ -35,8 +41,8 @@ const Cart = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="col-12 col-md-4 my-3 ">
-                        <div className="order-summary bg-white rounded-2 custom-shadow p-2">
+                    <div className="col-12 col-lg-4 my-3 ">
+                        <div className="order-summary bg-white rounded-2 custom-shadow p-4">
                             <h5>order summary</h5>
                             <hr />
                             <p className="d-flex justify-content-between">
@@ -45,11 +51,19 @@ const Cart = () => {
                             </p>
                             <hr />
                             <p className="d-flex justify-content-between">
+                                <span>shipping: {totalItems} </span>
+                                <span>EGP {30}</span>
+                            </p>
+                            <hr />
+                            <p className="d-flex justify-content-between">
                                 <span className="fw-semibold">total: {totalItems} item(s)</span>
-                                <span className="fw-semibold">EGP {totalPrice}</span>
+                                <span className="fw-semibold">EGP {totalPrice + 30}</span>
                             </p>
                             <div className="d-flex justify-content-center">
-                                <button className="btn btn-primary">checkout</button>
+                                <Button variant="primary" onClick={() => setModalShow(true)}>
+                                    Checkout
+                                </Button>
+                                <CheckoutModal show={modalShow} onHide={() => setModalShow(false)} />
                             </div>
                         </div>
                     </div>

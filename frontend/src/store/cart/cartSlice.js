@@ -18,7 +18,8 @@ export const getCart = createAsyncThunk('cart/getCart', async (_, thunkApi) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        const data = res.json();
+        const data = await res.json();
+        console.log('returned cart', data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error);
