@@ -20,7 +20,6 @@ const CustomerSection = () => {
 const Profile = () => {
     const [modalShow, setModalShow] = React.useState(false);
     const { user } = useSelector((state) => state.auth.user);
-    const data = useSelector((state) => state.profile);
     const [profileImg, setProfileImg] = useState();
 
     const handleChange = async (e) => {
@@ -28,19 +27,19 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('type', 'businessProfile');
         formData.append('image', e.target.files[0]);
-        // const res = await fetch(`http://localhost:8080/business/updateProfileImg/${user?._id}`, {
-        //     method: 'PUT',
-        //     body: formData,
-        // });
 
-        // const data = await res.json();
-        // console.log('response', data);
+        const res = await fetch(`http://localhost:8080/business/updateProfileImg/${user?._id}`, {
+            method: 'PUT',
+            body: formData,
+        });
+
+        const data = await res.json();
+        console.log('response', data);
     };
 
     // useEffect(async () => {
     //     // console.log('profileImg:', profileImg);
     // }, [profileImg]);
-    const localUser = JSON.parse(localStorage.getItem('user')).user;
 
     return (
         <section className="profile-edit my-5">
@@ -71,34 +70,27 @@ const Profile = () => {
                             <h2
                                 className="text-capitalize mb-3"
                                 onClick={() => {
-                                    // console.log(user);
-                                    // console.log('localUser.lastName', localUser.lastName);
-                                    // console.log('localUser.lastname', localUser.lastname);
-                                    // console.log(' user?.name?.lastname', user?.name?.lastname);
-                                    console.log('data => ', data?.user);
-                                    console.log(data?.user?.userData?.name?.lastname);
-                                    console.log(data?.user?.name?.lastname);
+                                    console.log(user?.name?.firstname);
+                                    console.log(user);
                                 }}
                             >
                                 {user?.role == 'customer'
-                                    ? localUser.firstname || localUser.firstName || user?.name?.firstname
-                                    : localUser.name}
-                                {'  '}
-                                {localUser.lastName || localUser.name.lastname}
+                                    ? user?.name?.firstname + ' ' + user?.name?.lastname
+                                    : user?.name}
                             </h2>
                             <hr />
                             <div className="row">
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">email:</span>{' '}
-                                        <span>{localUser.email}</span>
+                                        <span>{user?.email}</span>
                                     </p>
                                 </div>
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">Address:</span>{' '}
                                         <span>
-                                            {localUser.address.city}-{localUser.address.street}
+                                            {user?.address?.city}-{user?.address?.street}
                                         </span>
                                     </p>
                                 </div>
@@ -111,7 +103,7 @@ const Profile = () => {
                                 <div className="col-12 col-lg-6">
                                     <p className="lead d-flex align-items-center">
                                         <span className="fw-semibold me-1 text-dark">phone:</span>{' '}
-                                        <span>{localUser.phone}</span>
+                                        <span>{user?.phone}</span>
                                     </p>
                                 </div>
                                 {user?.role == 'business' && <BusinessSection user={user} />}

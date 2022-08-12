@@ -16,13 +16,13 @@ const OrderItem = ({ order }) => {
                 ${order.status == 'delivered' ? 'bg-success' : 'bg-warning'}
                 `}
                 >
-                    order status:{order.status}
+                    order status:{order?.status}
                 </p>
                 <p className="me-2 text-white p-1 rounded-1 bg-info">order total price:{order.totalPrice}$</p>
             </div>
             <div className="order-products">
                 <div className="row">
-                    {order.orderItems.map((product) => (
+                    {order?.orderItems?.map((product) => (
                         <ProductItem key={product.productId} product={product} />
                     ))}
                 </div>

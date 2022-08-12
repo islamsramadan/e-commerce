@@ -16,7 +16,7 @@ export default function Search() {
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const userLocal = JSON.parse(localStorage.getItem('user'))?.user;
     const { cartItems } = useSelector((state) => state.cart);
     useEffect(() => {
         dispatch(getCart());
@@ -64,7 +64,7 @@ export default function Search() {
                     </div>
                     <div className="col-6 col-lg-2 order-2 order-lg-4">
                         <div className="icon d-flex justify-content-end">
-                            {user !== null ? (
+                            {userLocal ? (
                                 <DropdownButton
                                     id="dropdown-basic-button"
                                     title={<i className="fa fa-user user-icon"></i>}
@@ -100,11 +100,13 @@ export default function Search() {
                                     </button>
                                 </>
                             )}
-                            {user?.user?.role == 'customer' && (
+                            {userLocal?.role == 'customer' && (
                                 <div className="cart">
                                     <Link to="/cart">
                                         <i className="fa fa-shopping-bag icon-circle"></i>
-                                        <span>{totalItems}</span>
+                                        <span className="d-flex justify-content-center align-items-center">
+                                            {totalItems}
+                                        </span>
                                     </Link>
                                 </div>
                             )}
