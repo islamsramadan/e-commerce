@@ -42,22 +42,44 @@ module.exports.getOrderById = async (req, res, next) => {
   // }).catch(err=>next(err))
 };
 
-module.exports.addOrders = (req, res, next) => {
-  const order = new orders({
-    userId: req.body.userId,
-    orderItems: req.body.orderItems,
-    paymentMethod: req.body.paymentMethod,
-    paymentResult: req.body.paymentResult,
-    shippingPrice: req.body.shippingPrice,
-    totalPrice: req.body.totalPrice,
-  });
-  order
-    .save()
-    .then((data) => {
-      res.status(201).json({ data: "added" });
-    })
-    .catch((error) => next(error));
+module.exports.addOrders = async (req, res, next) => {
+  console.log("------>", req.body.cartItems[0].productId.businessId._id);
+  try {
+    const address = {
+      city: req.body.city,
+      street: req.body.street,
+      building: req.body.building,
+      floor: req.body.floor,
+    };
+
+    const orderItems = [];
+    for (let obj of req.body.cartItems) {
+      console.log("obj", obj);
+      orderItems.push({
+        productId: obj.productId._id,
+        businessId: obj.productId.businessId._id,
+        name: obj.productId.name,
+        quantity: obj.quantity,
+      });
+    }
+
+    const order = new orders({
+      userId: req.body.userId,
+      paymentMethod: req.body.paymentMethod,
+      shippingPrice: req.body.shippingPrice,
+      totalPrice: req.body.totalPrice,
+      address,
+      orderItems,
+    });
+
+    await order.save();
+    res.status(201).json({ success: true, order });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
 };
+
 module.exports.updateOrderToPaid = async (req, res) => {
   const order = await orders.findById(req.params.id);
 

@@ -45,7 +45,7 @@ const CartItem = ({ product, quantity }) => {
                 align-items-md-end justify-content-md-between
                 "
                 >
-                    <h5 className="fw-semibold">{product.price} EGP</h5>
+                    <h5 className="fw-semibold">{product.price}£ </h5>
                     <div className="d-flex quantity align-items-center">
                         <button
                             disabled={quantity == 1}

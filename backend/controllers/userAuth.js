@@ -15,33 +15,33 @@ sgMail.setApiKey(process.env.SEND_GRID_KEY);
 module.exports.login = function login(req, res, next) {
   const { email, password } = req.body;
 
-	User.findOne({ email: email })
-		.then((user) => {
-			if (!user) {
-				// no email found
-				return res.status(401).json({
-					success: false,
-					message: 'invalid email or password',
-				});
-			} else {
-				bcrypt.compare(password, user.password).then(async (isEqual) => {
-					if (!isEqual) {
-						// password is incorrect
-						return res.status(401).json({
-							success: false,
-							message: 'invalid email or password',
-						});
-					} else {
-						// successful login
-						const token = jwt.sign(
-							{
-								id: user._id,
-								email: user.email,
-								role: user.role,
-							},
-							process.env.JWT_SECRET_KEY,
-							{ expiresIn: '24h' }
-						);
+  User.findOne({ email: email })
+    .then((user) => {
+      if (!user) {
+        // no email found
+        return res.status(401).json({
+          success: false,
+          message: "invalid email or password",
+        });
+      } else {
+        bcrypt.compare(password, user.password).then(async (isEqual) => {
+          if (!isEqual) {
+            // password is incorrect
+            return res.status(401).json({
+              success: false,
+              message: "invalid email or password",
+            });
+          } else {
+            // successful login
+            const token = jwt.sign(
+              {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+              },
+              process.env.JWT_SECRET_KEY,
+              { expiresIn: "24h" }
+            );
 
             const userData = await getUserData(user);
 
@@ -269,10 +269,10 @@ async function getUserData(user) {
 
     if (user.role == "customer") {
       const customer = await Customer.findOne({ userId: user._id });
-      userData = { ...userData, ...customer.toJSON() };
+      userData = { ...customer.toJSON(), ...userData };
     } else {
       const business = await Business.findOne({ userId: user._id });
-      userData = { ...userData, ...business.toJSON() };
+      userData = { ...business.toJSON(), ...userData };
     }
     delete userData.password;
     delete userData.__v;
