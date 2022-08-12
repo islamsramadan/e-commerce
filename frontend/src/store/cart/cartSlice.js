@@ -12,7 +12,7 @@ const initialState = {
 // get user Cart
 export const getCart = createAsyncThunk('cart/getCart', async (_, thunkApi) => {
     try {
-        const token = thunkApi.getState().auth.user.token;
+        const token = thunkApi.getState().auth.user?.token;
         const res = await fetch('http://localhost:8080/customers/cart', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -112,8 +112,8 @@ const cartSlice = createSlice({
         [getCart.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.cartItems = action.payload?.cart.products;
-            state.totalPrice = action.payload?.cart.totalPrice;
+            state.cartItems = action.payload?.cart?.products;
+            state.totalPrice = action.payload?.cart?.totalPrice;
         },
         [getCart.rejected]: (state, action) => {
             state.isLoading = false;

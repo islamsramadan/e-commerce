@@ -7,7 +7,8 @@ import './ProductCard.style.scss';
 // development
 import productimage from '../../assets/home-slider/slide-1.png';
 
-export default function ProductCard(product) {
+export default function ProductCard({ product }) {
+    // console.log(product);
     return (
         <div className="outer">
             <div className="productCard">
@@ -17,9 +18,8 @@ export default function ProductCard(product) {
                     </div>
                 </Link>
                 <div className="productCard-detailsDiv">
-                    <h5>product name</h5>
-                    <h6>9.00£</h6>
-                    <button>add icon</button>
+                    <h5>{product.name}</h5>
+                    <h6>{product.price}£</h6>
                 </div>
             </div>
         </div>

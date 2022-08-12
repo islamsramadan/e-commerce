@@ -8,15 +8,18 @@ import './search.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getProducts } from '../../store/products/productSlice';
+import { getProducts, getSearchProducts } from '../../store/products/productSlice';
 
 export default function SearchPage() {
-    const products = useSelector((state) => state.products.products);
+    const { products } = useSelector((state) => state.products);
+
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getProducts());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getProducts());
+    //
+    // }, [dispatch]);
     console.log(products);
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -40,14 +43,22 @@ export default function SearchPage() {
             </div>
 
             <div className="SearchPageContainer">
-                <div className="d-none d-lg-block">
+                {/* <div className="d-none d-lg-block">
                     <Filter></Filter>
-                </div>
-                <div className="productsListDiv">
-                    {products.map((product) => {
-                        return <ProductCard key={product._id} product={product} />;
-                    })}
-                </div>
+                </div> */}
+
+                {products?.length > 0 ? (
+                    <div className="productsListDiv">
+                        {products.map((product) => {
+                            return <ProductCard key={product._id} product={product} />;
+                        })}
+                    </div>
+                ) : (
+                    <div className="w-50 mx-auto my-5 text-center">
+                        <h5>No results for your product search</h5>
+                        <h6>Try checking your spelling or use more general terms</h6>
+                    </div>
+                )}
             </div>
         </>
     );

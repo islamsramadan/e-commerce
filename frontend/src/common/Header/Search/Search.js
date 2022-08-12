@@ -3,14 +3,16 @@ import DropdownButton from 'react-bootstrap/esm/DropdownButton';
 import { Link, NavLink } from 'react-router-dom';
 import '../Search/Search.style.css';
 import NavbarComp from '../Navbar/Navbar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../store/auth/authSlice';
 import { getCart } from '../../../store/cart/cartSlice';
+import { getSearchProducts } from '../../../store/products/productSlice';
 
 export default function Search() {
-    const searchElement = document.querySelector('.search');
+    // const searchElement = document.querySelector('.search-element')?.value;
+    // console.log(searchElement);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -18,14 +20,23 @@ export default function Search() {
     const { cartItems } = useSelector((state) => state.cart);
     useEffect(() => {
         dispatch(getCart());
-    }, [dispatch, cartItems]);
+    }, [dispatch]);
     let totalItems = 0;
     for (let i = 0; i < cartItems?.length; i++) {
         totalItems += cartItems[i].quantity;
     }
 
+    const [text, setText] = useState('');
+    const onSubmitHandel = (e) => {
+        e.preventDefault();
+        console.log(text);
+        dispatch(getSearchProducts(text));
+        navigate('search');
+        setText('');
+    };
+
     return (
-        <form className="search bg-white custom-shadow">
+        <form onSubmit={onSubmitHandel} className="search bg-white custom-shadow">
             <div className="container">
                 <div className="row justify-content-between align-items-center">
                     <div className="col-6 col-lg-2 order-1 order-lg-1">
@@ -38,7 +49,12 @@ export default function Search() {
                     <div className="col-12 col-lg-6 order-3 order-lg-2">
                         <div className="my-2 search-box overflow-hidden d-flex align-items-center">
                             <i className="fa fa-search"></i>
-                            <input type="text" placeholder="Search for products" />
+                            <input
+                                type="text"
+                                value={text}
+                                placeholder="Search your products"
+                                onChange={(e) => setText(e.target.value)}
+                            />
                             {/*<span className="d-none d-md-block">all categories</span>*/}
                         </div>
                     </div>

@@ -25,23 +25,7 @@ function App() {
     return (
         <div className="App ">
             <Search />
-            <button
-                className="btn btn-primary m-3"
-                onClick={() => {
-                    let user = JSON.parse(localStorage.getItem('token'));
-                    console.log('currentUser', user);
-                }}
-            >
-                current user
-            </button>
-            <button
-                onClick={() => {
-                    dispatch(logout());
-                    console.log('logout');
-                }}
-            >
-                logout
-            </button>
+
             <Routes>
                 {/*public routes */}
                 <Route path="/" element={<Home />} />
@@ -52,9 +36,9 @@ function App() {
                 <Route element={<RequireAuth allowedRoles={['customer']} />}>
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/cart" element={<Cart />} />
-                    <Route path="/search" element={<SearchPage />} />
                     <Route path="/product/:id" element={<ProductDetailsPage />} />
                 </Route>
+                <Route path="/search" element={<SearchPage />} />
 
                 <Route element={<RequireAuth allowedRoles={['customer', 'business']} />}>
                     <Route path="/profile" element={<Profile />} />
