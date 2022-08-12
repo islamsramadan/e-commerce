@@ -127,13 +127,13 @@ module.exports.incrementProductInCart = async (req, res, next) => {
 
     const product = await Product.findById(req.body.productId, {
       price: 1,
-      quantity: 1,
+      countInStock: 1,
     });
 
     if (!product)
       return next(new Error("Couldn't find a product with that id."));
 
-    const { price: productPrice, quantity: productQuantity } = product;
+    const { price: productPrice, countInStock: productQuantity } = product;
 
     const cart = customer.cart;
 
@@ -250,4 +250,33 @@ exports.getCart = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports.updateCustomer = (req, res, next) => {
+  const customerId = req.user._id.toString();
+
+  Customer.findOne({ userId: customerId })
+    .then((data) => {
+      console.log(data);
+      console.log(customerId);
+      for (const property in req.body) {
+        switch (property) {
+          case "firstname":
+            data.name.firstname = req.body[property];
+            break;
+          case "lastname":
+            data.name.lastname = req.body[property];
+            break;
+          default:
+            data[property] = req.body[property];
+            break;
+        }
+      }
+      return data
+        .save()
+        .then((data) => res.status(200).json({ message: "updated", data }));
+    })
+    .catch((error) => {
+      next(error);
+    });
 };

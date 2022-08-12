@@ -8,16 +8,22 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../store/auth/authSlice';
 
 export default function Search() {
-    const searchElement = document.querySelector('.search');
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const userLocal = JSON.parse(localStorage.getItem('user'))?.user;
     return (
         <form className="search bg-white custom-shadow">
             <div className="container">
                 <div className="row justify-content-between align-items-center">
                     <div className="col-6 col-lg-2 order-1 order-lg-1">
+                        <h1
+                            onClick={() => {
+                                console.log('userLocal', userLocal);
+                            }}
+                        >
+                            test
+                        </h1>
                         <div className="logo width">
                             <Link to="/">
                                 <h1>logo</h1>
@@ -37,7 +43,7 @@ export default function Search() {
                     </div>
                     <div className="col-6 col-lg-2 order-2 order-lg-4">
                         <div className="icon d-flex justify-content-end">
-                            {user !== null ? (
+                            {userLocal ? (
                                 <DropdownButton
                                     id="dropdown-basic-button"
                                     title={<i className="fa fa-user user-icon"></i>}
@@ -73,11 +79,11 @@ export default function Search() {
                                     </button>
                                 </>
                             )}
-                            {user?.user?.role == 'customer' && (
+                            {userLocal?.role == 'customer' && (
                                 <div className="cart">
                                     <Link to="/cart">
                                         <i className="fa fa-shopping-bag icon-circle"></i>
-                                        <span>8</span>
+                                        <span className="d-flex justify-content-center align-items-center">8</span>
                                     </Link>
                                 </div>
                             )}

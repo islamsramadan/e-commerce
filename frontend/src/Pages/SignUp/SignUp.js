@@ -19,8 +19,8 @@ const initialValues = {
     role: '',
     name: 'Apple',
     description: 'lorem',
-    firstName: 'Apple',
-    lastName: 'tech Compny',
+    firstname: 'Apple',
+    lastname: 'tech Compny',
     imgLink: '',
     comRegImgLink: '',
 };
@@ -70,8 +70,8 @@ const customerValidationSchema = Yup.object({
     building: Yup.string().required('this field is required'),
     floor: Yup.number().required('this field is required'),
     role: Yup.string().required('this field is required'),
-    firstName: Yup.string().required('this field is required'),
-    lastName: Yup.string().required('this field is required'),
+    firstname: Yup.string().required('this field is required'),
+    lastname: Yup.string().required('this field is required'),
 });
 
 const BusinessForm = ({ props }) => {
@@ -147,29 +147,29 @@ const CustomerForm = () => {
         <div className="customer-form my-3">
             <div className="row">
                 <div className="form-group col-12 col-md-6 mt-3">
-                    <label htmlFor="firstName">first name</label>
+                    <label htmlFor="firstname">first name</label>
                     <Field
                         type="text"
-                        name="firstName"
+                        name="firstname"
                         className="form-control"
-                        id="firstName"
+                        id="firstname"
                         placeholder="enter your first name"
                     />
                     <p className="text-danger">
-                        <ErrorMessage name="firstName" />
+                        <ErrorMessage name="firstname" />
                     </p>
                 </div>
                 <div className="form-group col-12 col-md-6 mt-3">
-                    <label htmlFor="lastName">last name</label>
+                    <label htmlFor="lastname">last name</label>
                     <Field
                         type="text"
-                        name="lastName"
+                        name="lastname"
                         className="form-control"
-                        id="lastName"
+                        id="lastname"
                         placeholder="enter your last name"
                     />
                     <p className="text-danger">
-                        <ErrorMessage name="lastName" />
+                        <ErrorMessage name="lastname" />
                     </p>
                 </div>
             </div>
@@ -196,8 +196,8 @@ const SignUp = () => {
         if (isError) {
             console.log('there is an error: ' + message);
         }
-        if (isSuccess || user) {
-            // navigate('/login');
+        if (user?.success && user?.user) {
+            navigate('/');
         }
         dispatch(reset());
     }, [user, isError, isSuccess, message, dispatch, navigate]);
@@ -240,6 +240,11 @@ const SignUp = () => {
                                 />
                                 <p className="text-danger">
                                     <ErrorMessage name="email" />
+                                </p>
+                                <p className="text-danger fst-italic fw-semibold">
+                                    {user?.success == false &&
+                                        user?.message == 'this email exist on our data' &&
+                                        'this email is already exist !'}
                                 </p>
                             </div>
                             <div className="form-group col-12 col-md-6">
@@ -365,7 +370,7 @@ const SignUp = () => {
                                             setCurrentRole(e.target.value);
                                             props.setFieldValue('role', e.target.value);
 
-                                            resetForm(['firstName', 'lastName'], props);
+                                            resetForm(['firstname', 'lastname'], props);
                                         }}
                                     />
                                     <label className="form-check-label" htmlFor="business">

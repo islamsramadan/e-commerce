@@ -55,4 +55,5 @@ router.put(
   validationMW,
   controller.decrementProductInCart
 );
+router.put("/update-customer/", authMW, controller.updateCustomer);
 module.exports = router;
