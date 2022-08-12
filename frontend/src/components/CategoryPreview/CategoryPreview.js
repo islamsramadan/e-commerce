@@ -18,8 +18,8 @@ export default function CategoryPreview() {
         dispatch(getLastAddedProducts());
     }, []);
 
-    console.log(topRatedProducts);
-    console.log(lastAddedProducts);
+    // console.log(topRatedProducts);
+    // console.log(lastAddedProducts);
 
     const settings = {
         dots: true,

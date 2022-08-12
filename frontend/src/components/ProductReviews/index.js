@@ -1,42 +1,45 @@
 import React from 'react';
 
 import RateComponent from '../Rate';
-import profileImg from '../../assets/images/user.jpg'
+import profileImg from '../../assets/images/user.jpg';
 import './productReviews.scss';
 
-export default function ProductReviews(props) {
-    const reviews = [1, 2, 3];
+export default function ProductReviews({ product }) {
+    // console.log(product);
+    const reviews = product?.reviews;
 
-    return (
-        <div className="reviews">
-            <div className="reviews-headerDiv">
-                <h3 className="reviewsDiv-headerDiv_title">Buyers Reviews</h3>
-                <div>
-                    <RateComponent rate={3} />
-                    <span>12 reviews</span>
+    if (reviews) {
+        return (
+            <div className="reviews">
+                <div className="reviews-headerDiv">
+                    <h3 className="reviewsDiv-headerDiv_title">Buyers Reviews</h3>
+                    <div>
+                        <RateComponent rate={3} />
+                        <span>{product?.numReviews} reviews</span>
+                    </div>
                 </div>
-            </div>
 
-            {reviews.map((review) => {
-                return (
-                        <div key={review} className="reviews-contentContainer">
-                            <img alt='product' src={profileImg} />
+                {reviews.map((review) => {
+                    return (
+                        <div key={review._id} className="reviews-contentContainer">
+                            <img alt="product" src={profileImg} />
                             <div className="reviews-contentContainer-content">
                                 <div className="reviews-contentContainer-content_row">
-                                    <h6>moemen</h6>
+                                    <h6>{review.name}</h6>
                                     <span> rated it </span>
-                                    <RateComponent rate={3} />
+                                    <RateComponent rate={review.rating} />
                                 </div>
                                 <div className="reviews-contentContainer-content_row">
-                                    <span>15/2/2020</span>
+                                    <span>{review.createdAt.split('T')[0]}</span>
                                 </div>
                                 <div className="reviews-contentContainer-content_row">
-                                    <p>tex ttex tlkd sfhjlksdf jhoishjlkdbmdfpjkbpad </p>
+                                    <p>{review.comment}</p>
                                 </div>
                             </div>
                         </div>
-                );
-            })}
-        </div>
-    );
+                    );
+                })}
+            </div>
+        );
+    }
 }

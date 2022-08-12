@@ -58,7 +58,9 @@ module.exports.updateProduct = (req, res, next) => {
 
 module.exports.getOneProduct = async (req, res, next) => {
   try {
-    const product = await Products.findOne({ _id: req.params.id });
+    const product = await Products.findOne({ _id: req.params.id }).populate(
+      "businessId"
+    );
     if (!product) throw new Error("Couldnt find a product with that id");
     directoryPath = path.join(
       __dirname,
@@ -327,12 +329,11 @@ exports.getLastAdded = async (req, res, next) => {
 
 exports.getRelatedProducts = async (req, res, next) => {
   try {
-    const relatedProducts = await Products.find(
-      {
-        category: req.params.category,
-      },
-      { category: 1 }
-    ).limit(5);
+    const relatedProducts = await Products.find({
+      category: req.params.category,
+    })
+      .populate("businessId")
+      .limit(5);
     if (!relatedProducts.length)
       throw new Error("Couldnt find products in that category!");
 
@@ -346,7 +347,6 @@ exports.getRelatedProducts = async (req, res, next) => {
 module.exports.getCategoryProducts = (req, res, next) => {
   Products.find({ category: req.params.id })
     .then((data) => {
-      console.log(data);
       res.status(200).json({ msg: "success", data });
     })
     .catch((error) => {

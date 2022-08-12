@@ -170,7 +170,7 @@ const EditForm = (props) => {
         lastName: localUser.lastName || localUser.name.lastname,
     };
 
-    console.log('is loading:', isLoading);
+    // console.log('is loading:', isLoading);
 
     console.log('is loading:', isLoading);
 

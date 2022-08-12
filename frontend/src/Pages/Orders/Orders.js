@@ -5,31 +5,38 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../store/orders/orderSlice';
 import { useEffect } from 'react';
 
-const Orders = () => {
-    const dispatch = useDispatch();
-    const { orders } = useSelector((state) => state.orders);
-    useEffect(() => {
-        dispatch(getOrders());
-    }, []);
-    useEffect(() => {
-        console.log('orders');
-    }, [orders]);
-    console.log(orders);
-    return (
-        <section className="orders-section my-5">
-            <div className="container">
-                <h2 className="fw-bold">Orders</h2>
-                <div className="row">
-                    {orders?.map((order) => (
-                        <OrderItem key={order._id} order={order} />
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-export default Orders;
+// const orders = [
+//     {
+//         date: '20/2/2022',
+//         status: 'delivered',
+//         totalPrice: 500,
+//         products: [
+//             { name: 'Laptop', price: 232, imgLink: '' },
+//             { name: 'Mouse', price: 300, imgLink: '' },
+//             { name: 'Cooler', price: 100, imgLink: '' },
+//         ],
+//     },
+//     {
+//         date: '20/2/2022',
+//         status: 'delivered',
+//         totalPrice: 500,
+//         products: [
+//             { name: 'Laptop', price: 232, imgLink: '' },
+//             { name: 'Mouse', price: 300, imgLink: '' },
+//             { name: 'Cooler', price: 100, imgLink: '' },
+//         ],
+//     },
+//     {
+//         date: '20/2/2022',
+//         status: 'pending',
+//         totalPrice: 500,
+//         products: [
+//             { name: 'Laptop', price: 232, imgLink: '' },
+//             { name: 'Mouse', price: 300, imgLink: '' },
+//             { name: 'Cooler', price: 100, imgLink: '' },
+//         ],
+//     },
+// ];
 
 const OrderItem = ({ order }) => {
     return (
@@ -70,10 +77,38 @@ const ProductItem = ({ product }) => {
                     <img width="100" className="h-100" src={ProductImg} alt="product image" />
                 </div>
                 <div className="product-details ms-2">
-                    <h4 className="fw-semibold">{product.name}</h4>
-                    <h4 className="mb-0">quantity: {product.quantity}</h4>
+                    <h4>{product.name}</h4>
+                    <h4>{product.unitPrice} $</h4>
+                    <h4 className="mb-0">business name from back end </h4>
                 </div>
-            </div>
+            </a>
         </div>
+    );
+};
+
+const Orders = () => {
+    const dispatch = useDispatch();
+    const { orders } = useSelector((state) => state.orders);
+    useEffect(() => {
+        dispatch(getOrders());
+    }, []);
+    // console.log(orders);
+    return (
+        <section className="orders-section my-5">
+            <div className="container">
+                {orders?.length > 0 ? (
+                    <div className="row">
+                        {orders.map((order) => (
+                            <OrderItem key={order._id} order={order} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="w-50 mx-auto my-5 text-center">
+                        <h5>There is no orders yet</h5>
+                        <h6>check our products and make order</h6>
+                    </div>
+                )}
+            </div>
+        </section>
     );
 };

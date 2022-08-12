@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+const productDetails = JSON.parse(localStorage.getItem('productDetails'));
+const relatedProducts = JSON.parse(localStorage.getItem('relatedProducts'));
+
 const initialState = {
     products: [],
+    productDetails: productDetails || {},
     topRatedProducts: [],
     lastAddedProducts: [],
+    relatedProducts: relatedProducts || [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -22,12 +27,28 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
     }
 });
 
+// get one product
+export const getOneProduct = createAsyncThunk('products/getOneProduct', async (productID, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+        const res = await fetch(`http://localhost:8080/products/${productID}`);
+        const data = await res.json();
+        if (data) {
+            localStorage.setItem('productDetails', JSON.stringify(data.fullData));
+        }
+        // console.log(productDetails);
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.message);
+    }
+});
+
 // get search products
 export const getSearchProducts = createAsyncThunk('products/getSearchProducts', async (searchParameter, thunkApi) => {
     try {
         const res = await fetch(`http://localhost:8080/search?q=${searchParameter}`);
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
@@ -39,7 +60,7 @@ export const getCategoryProducts = createAsyncThunk('products/getCategoryProduct
     try {
         const res = await fetch(`http://localhost:8080/category/${categoryId}`);
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
@@ -51,7 +72,7 @@ export const getFilterProducts = createAsyncThunk('products/getFilterProducts', 
     try {
         const res = await fetch(`http://localhost:8080/filterBy/${categoryId}`);
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
@@ -82,17 +103,20 @@ export const getLastAddedProducts = createAsyncThunk('products/getLastAddedProdu
     }
 });
 
-// // get one product
-// export const getOneProduct = createAsyncThunk('products/getOneProduct', async (_, thunkApi) => {
-//     const { rejectWithValue } = thunkApi;
-//     try {
-//         const res = await fetch(`http://localhost:8080/products/${productID}`);
-//         const data = await res.json();
-//         return data;
-//     } catch (error) {
-//         return rejectWithValue(error.message);
-//     }
-// });
+// get reltaed products
+export const getRelatedProducts = createAsyncThunk('products/getRelatedProducts', async (categoryId, thunkApi) => {
+    try {
+        const res = await fetch(`http://localhost:8080/relatedProducts/${categoryId}`);
+        const data = await res.json();
+        if (data) {
+            localStorage.setItem('relatedProducts', JSON.stringify(data.relatedProducts));
+        }
+        // console.log(productDetails);
+        return data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.message);
+    }
+});
 
 // // create new product
 // export const createProduct = createAsyncThunk('products/createProduct', async (product, thunkApi) => {
@@ -152,46 +176,20 @@ const productSlice = createSlice({
             state.isError = true;
             state.message = action.payload;
         },
-        // [getOneProduct.pending]: (state) => {
-        //     state.isLoading = true;
-        // },
-        // [getOneProduct.fulfilled]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.isSuccess = true;
-        //     state.products = action.payload.data;
-        // },
-        // [getOneProduct.rejected]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.products = [];
-        //     state.isError = true;
-        //     state.message = action.payload;
-        // },
-        // [createProduct.pending]: (state) => {
-        //     state.isLoading = true;
-        // },
-        // [createProduct.fulfilled]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.isSuccess = true;
-        //     state.products.push(action.payload);
-        // },
-        // [createProduct.rejected]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.isError = true;
-        //     state.message = action.payload;
-        // },
-        // [deleteProduct.pending]: (state) => {
-        //     state.isLoading = true;
-        // },
-        // [deleteProduct.fulfilled]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.isSuccess = true;
-        //     state.products = state.products.filter((product) => product._id !== action.payload.id);
-        // },
-        // [deleteProduct.rejected]: (state, action) => {
-        //     state.isLoading = false;
-        //     state.isError = true;
-        //     state.message = action.payload;
-        // },
+        [getOneProduct.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [getOneProduct.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.productDetails = action.payload.fullData;
+        },
+        [getOneProduct.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        },
+
         [getSearchProducts.pending]: (state) => {
             state.isLoading = true;
         },
@@ -241,6 +239,19 @@ const productSlice = createSlice({
             state.lastAddedProducts = action.payload.lastAdded;
         },
         [getLastAddedProducts.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        },
+        [getRelatedProducts.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [getRelatedProducts.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.relatedProducts = action.payload.relatedProducts;
+        },
+        [getRelatedProducts.rejected]: (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;

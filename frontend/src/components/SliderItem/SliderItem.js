@@ -12,7 +12,6 @@ export default function SliderItem({ category }) {
     const onClickCategoryHandel = (categoryId) => {
         dispatch(getCategoryProducts(categoryId));
         navigate('search');
-        console.log('category clicked');
     };
     return (
         <div className="home-slider-item">

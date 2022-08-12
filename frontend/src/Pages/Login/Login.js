@@ -33,9 +33,7 @@ export default function Login() {
         }
         if (user?.success && user?.user) {
             navigate(from);
-            console.log('user ->', user);
-            console.log(location);
-            console.log(from);
+            // console.log('user ->', user);
         }
 
         dispatch(reset());
@@ -43,7 +41,7 @@ export default function Login() {
 
     const onSubmit = async (userData) => {
         await dispatch(login(userData));
-        console.log('loggedUser', user);
+        // console.log('loggedUser', user);
     };
 
     if (isLoading) {

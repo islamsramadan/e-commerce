@@ -13,12 +13,7 @@ import { getProducts, getSearchProducts } from '../../store/products/productSlic
 export default function SearchPage() {
     const { products } = useSelector((state) => state.products);
 
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(getProducts());
-    //
-    // }, [dispatch]);
-    console.log(products);
+    // console.log(products);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -42,7 +37,7 @@ export default function SearchPage() {
                 </button>
             </div>
 
-            <div className="SearchPageContainer">
+            <div className="SearchPageContainer my-5">
                 {/* <div className="d-none d-lg-block">
                     <Filter></Filter>
                 </div> */}
