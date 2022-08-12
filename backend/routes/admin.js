@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const { getBusinessStatistics } = require('../controllers/business');
+
 const isAdmin = require('../middlewares/isAdmin');
 
 router.get('/product-count', adminController.getNumberOfProduct);
@@ -11,5 +13,6 @@ router.post('/add-admin/', isAdmin, adminController.signup);
 router.delete('/delete-admin', isAdmin, adminController.deleteAdmin);
 router.get('/adminLogin', adminController.adminLogin);
 router.get('/getStatistics', adminController.getStatistics);
+router.get('/getStatistics-business/:id', getBusinessStatistics);
 
 module.exports = router;
