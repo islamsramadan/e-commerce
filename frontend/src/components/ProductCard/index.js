@@ -8,9 +8,6 @@ import './ProductCard.scss';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cart/cartSlice';
 import { useNavigate } from 'react-router-dom';
-
-import ProductDetailsPage from '../../Pages/ProductDetails';
-
 import { getOneProduct, getRelatedProducts } from '../../store/products/productSlice';
 
 // development

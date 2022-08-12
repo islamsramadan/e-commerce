@@ -3,14 +3,30 @@ import React from 'react';
 import productImg from '../../assets/images/1.jpg';
 import './relatedProducts.scss';
 
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getOneProduct, getRelatedProducts } from '../../store/products/productSlice';
+
 export default function RelatedProductsComponent({ relatedProducts }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const onClickHandel = (productID, productCategoryID) => {
+        dispatch(getOneProduct(productID));
+        dispatch(getRelatedProducts(productCategoryID));
+        navigate(`/product/${productID}`);
+    };
+
     let products = relatedProducts;
     return (
         <div>
             <p>Related products</p>
             {products.map((product) => {
                 return (
-                    <div key={product._id} className="productItem">
+                    <div
+                        key={product._id}
+                        className="productItem"
+                        onClick={() => onClickHandel(product._id, product.category)}
+                    >
                         <img alt="product" src={productImg} />
                         <div className="productItem-data">
                             <h6 className="productItem-data_title mb-2">{product.name}</h6>
