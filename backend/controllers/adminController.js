@@ -72,7 +72,42 @@ module.exports.getCustomerData = async (req, res, next) => {
     next(error);
   }
 };
-
+module.exports.getStatistics = async (req, res, next) => {
+  try {
+    const numOfDelivered = await orders.count({
+      status: 'Delivered',
+    });
+    const numOfOnDelivery = await orders.count({
+      status: 'order',
+    });
+    const totalNumofOrders = await orders.count({});
+    const numOfProductInStoct = await Products.count({
+      countInStock: { $gte: 0 },
+    });
+    const numofSolded = await Products.count({ countInStock: { $lte: 1 } });
+    const numofAllProducts = await Products.count({});
+    const numOfCustomers = await User.count({
+      role: 'customer',
+    });
+    const numOfbusiness = await User.count({
+      role: 'business',
+    });
+    const numOfUsers = await User.count({});
+    res.json({
+      numOfUsers: numOfUsers,
+      numOfCustomers: numOfCustomers,
+      numOfbusiness: numOfbusiness,
+      numofAllProducts: numofAllProducts,
+      productCount: numOfProductInStoct,
+      numofSolded: numofSolded,
+      totalNumofOrders: totalNumofOrders,
+      numOfOnDelivery: numOfOnDelivery,
+      numOfDelivered: numOfDelivered,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports.signup = async (req, res, next) => {
   const { email, password } = req.body;
   const name = {
@@ -118,7 +153,7 @@ module.exports.signup = async (req, res, next) => {
 
 module.exports.deleteAdmin = async (req, res, next) => {
   const admin = await Admin.findById(req.params.id);
-  if (admin) {
+  if (req.admin.isHead === true) {
     admin.isDeleted = true;
     const updatedadmin = await admin.save();
     res.json(updatedadmin);

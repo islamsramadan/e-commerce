@@ -254,14 +254,15 @@ exports.getCart = async (req, res, next) => {
 
 module.exports.updateCustomer = (req, res, next) => {
   const customerId = req.user._id.toString();
-  Customer.findOne({ user_id: customerId })
+
+  Customer.findOne({ userId: customerId })
     .then((data) => {
       for (const property in req.body) {
         switch (property) {
           case 'firstname':
             data.name.firstname = req.body[property];
             break;
-          case 'street':
+          case 'lastname':
             data.name.lastname = req.body[property];
             break;
           default:
@@ -269,13 +270,11 @@ module.exports.updateCustomer = (req, res, next) => {
             break;
         }
       }
-      return data.save().then((data) => {
-        res.status(200).json({
-          status: 'success',
-          message: 'customer updated',
-          data,
-        });
-      });
+      return data
+        .save()
+        .then((data) => res.status(200).json({ message: 'updated', data }));
     })
-    .catch((err) => next(err));
+    .catch((error) => {
+      next(error);
+    });
 };
