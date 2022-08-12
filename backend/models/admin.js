@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const nameScehma = require("./common");
+const nameScehma = require('./common');
 
 const adminSchema = new mongoose.Schema({
   _id: {
@@ -9,6 +9,11 @@ const adminSchema = new mongoose.Schema({
     auto: true,
   },
   isHead: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  isDeleted: {
     type: Boolean,
     required: true,
     default: false,
@@ -28,4 +33,4 @@ const adminSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("admin", adminSchema);
+module.exports = mongoose.model('admin', adminSchema);

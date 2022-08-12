@@ -6,6 +6,7 @@ const orderController = require('../controllers/order-paymentController');
 const authMw = require('../middlewares/isAuthenticated');
 const { body, param } = require('express-validator');
 const validationMW = require('../middlewares/validationMW');
+const isAdmin = require('../middlewares/isAdmin');
 
 router.route('/orders').get(authMw, orderController.getOrders);
 router.get('/myorders', authMw, orderController.getCustomerOrder);
@@ -38,9 +39,9 @@ router
     orderController.addOrders
   );
 router.route('/getSingleOrder/:id').get(authMw, orderController.getOrderById);
-router.route('/:id/pay').put(authMw, orderController.updateOrderToPaid);
+router.route('/:id/pay').put(isAdmin, orderController.updateOrderToPaid);
 router
   .route('/:id/deliver')
-  .put(authMw, orderController.updateOrderToDelivered);
+  .put(isAdmin, orderController.updateOrderToDelivered);
 
 module.exports = router;
