@@ -24,16 +24,21 @@ export const register = createAsyncThunk('auth/register', async (user, thunkApi)
             },
         });
         const data = await res.json();
-        console.log('returned data:', data);
+        console.log(`user data:`, data);
         // business
-
         if (user.userData.role == 'business') {
+            // profile picture
             const profileImgRes = await fetch(`http://localhost:8080/business/updateProfileImg/${data?.userId}`, {
-                method: 'PUT',
-                body: user.formData,
+                method: 'POST',
+                body: user.pofileFormData,
             });
-            const imgData = await profileImgRes.json();
-            console.log('img data:', imgData);
+            //const profileImgData = await profileImgRes.json();
+
+            const comercialImgsRes = await fetch(`http://localhost:8080/business/uploadComReg/${data?.userId}`, {
+                method: 'POST',
+                body: user.comercialFormData,
+            });
+            // const comercialImgsData = await profileImgRes.json();
         }
         console.log('returned data', data);
         return data;

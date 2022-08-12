@@ -10,6 +10,7 @@ const Category = require("../models/category");
 
 module.exports.getAllProducts = (req, res, next) => {
   Products.find({})
+    .populate("businessId")
     .then((data) => {
       res.status(200).json({ status: "success", data });
     })
@@ -181,6 +182,7 @@ exports.searchProduct = async (req, res, next) => {
 exports.filterProducts = async (req, res, next) => {
   try {
     const filterKey = Object.keys(req.query)[0]?.toLowerCase().trim();
+    console.log(filterKey);
     if (!filterKey)
       throw new Error("Filter criteria must be Category, Price or Rating");
 
@@ -232,6 +234,72 @@ exports.filterProducts = async (req, res, next) => {
   }
 };
 
+// exports.filterProducts = async (req, res, next) => {
+//   try {
+//     const searchText = req.body.searchText.trim();
+//     if (!searchText) throw new Error("Search Query must not be empty.");
+
+//     const filterKey = Object.keys(req.query)[0]?.toLowerCase().trim();
+//     if (!filterKey)
+//       throw new Error("Filter criteria must be Category, Price or Rating");
+
+//     const filterValue = req.query[filterKey];
+//     if (!filterValue) throw new Error("Filter value must not be empty");
+
+//     let matchingProducts;
+//     switch (filterKey) {
+//       case "category":
+//         const matchingCategory = await Category.findOne(
+//           { name: req.query.category },
+//           { _id: 1 }
+//         );
+//         if (!matchingCategory)
+//           throw new Error("Couldnt find category with that name!");
+
+//         matchingProducts = await Products.find(
+//           {
+//             category: matchingCategory._id.toString(),
+//             name: { $regex: new RegExp(searchText, "i") },
+//           },
+//           { name: 1, price: 1, rating: 1 }
+//         );
+//         break;
+
+//       case "price":
+//         if (isNaN(req.query.price)) throw new Error("Price must be a number!");
+//         matchingProducts = await Products.find(
+//           {
+//             price: { $lte: req.query.price },
+//             name: { $regex: new RegExp(searchText, "i") },
+//           },
+//           { name: 1, price: 1, rating: 1 }
+//         );
+//         break;
+
+//       case "rating":
+//         if (isNaN(req.query.rating))
+//           throw new Error("Rating must be a number!");
+//         matchingProducts = await Products.find(
+//           {
+//             rating: req.query.rating,
+//             name: { $regex: new RegExp(searchText, "i") },
+//           },
+//           { name: 1, price: 1, rating: 1 }
+//         );
+//     }
+
+//     if (!matchingProducts.length)
+//       throw new Error("Couldnt find products with that filter value");
+
+//     const maxPrice = findMaxPrice(matchingProducts);
+//     res.json({ data: matchingProducts, maxPrice });
+//   } catch (error) {
+//     if (error.message.includes("Couldnt find")) error.status = 404;
+//     if (error.message.includes("must be")) error.status = 400;
+//     next(error);
+//   }
+// };
+
 const findMaxPrice = (products) => {
   let maxPrice = Number.MIN_SAFE_INTEGER;
   products.forEach((product) => (maxPrice = Math.max(product.price, maxPrice)));
@@ -273,4 +341,16 @@ exports.getRelatedProducts = async (req, res, next) => {
     if (error.message.includes("Couldnt find")) error.status = 404;
     next(error);
   }
+};
+
+module.exports.getCategoryProducts = (req, res, next) => {
+  Products.find({ category: req.params.id })
+    .then((data) => {
+      console.log(data);
+      res.status(200).json({ msg: "success", data });
+    })
+    .catch((error) => {
+      error.status = 500;
+      next(error);
+    });
 };

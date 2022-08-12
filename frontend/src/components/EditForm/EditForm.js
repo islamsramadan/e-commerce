@@ -172,6 +172,8 @@ const EditForm = (props) => {
 
     console.log('is loading:', isLoading);
 
+    console.log('is loading:', isLoading);
+
     if (isLoading) {
         return <Loader />;
     }
@@ -315,6 +317,13 @@ const EditForm = (props) => {
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
+            <button
+                onClick={() => {
+                    console.log(props);
+                }}
+            >
+                show props
+            </button>
         </Modal>
     );
 };

@@ -3,27 +3,43 @@ import DropdownButton from 'react-bootstrap/esm/DropdownButton';
 import { Link, NavLink } from 'react-router-dom';
 import '../Search/Search.style.css';
 import NavbarComp from '../Navbar/Navbar';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../store/auth/authSlice';
+import { getCart } from '../../../store/cart/cartSlice';
+import { getSearchProducts } from '../../../store/products/productSlice';
 
 export default function Search() {
+    // const searchElement = document.querySelector('.search-element')?.value;
+    // console.log(searchElement);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userLocal = JSON.parse(localStorage.getItem('user'))?.user;
+    const { cartItems } = useSelector((state) => state.cart);
+    useEffect(() => {
+        dispatch(getCart());
+    }, [dispatch]);
+    let totalItems = 0;
+    for (let i = 0; i < cartItems?.length; i++) {
+        totalItems += cartItems[i].quantity;
+    }
+
+    const [text, setText] = useState('');
+    const onSubmitHandel = (e) => {
+        e.preventDefault();
+        console.log(text);
+        dispatch(getSearchProducts(text));
+        navigate('search');
+        setText('');
+    };
+
     return (
-        <form className="search bg-white custom-shadow">
+        <form onSubmit={onSubmitHandel} className="search bg-white custom-shadow">
             <div className="container">
                 <div className="row justify-content-between align-items-center">
                     <div className="col-6 col-lg-2 order-1 order-lg-1">
-                        <h1
-                            onClick={() => {
-                                console.log('userLocal', userLocal);
-                            }}
-                        >
-                            test
-                        </h1>
                         <div className="logo width">
                             <Link to="/">
                                 <h1>logo</h1>
@@ -33,7 +49,12 @@ export default function Search() {
                     <div className="col-12 col-lg-6 order-3 order-lg-2">
                         <div className="my-2 search-box overflow-hidden d-flex align-items-center">
                             <i className="fa fa-search"></i>
-                            <input type="text" placeholder="Search for products" />
+                            <input
+                                type="text"
+                                value={text}
+                                placeholder="Search your products"
+                                onChange={(e) => setText(e.target.value)}
+                            />
                             {/*<span className="d-none d-md-block">all categories</span>*/}
                         </div>
                     </div>
@@ -83,7 +104,9 @@ export default function Search() {
                                 <div className="cart">
                                     <Link to="/cart">
                                         <i className="fa fa-shopping-bag icon-circle"></i>
-                                        <span className="d-flex justify-content-center align-items-center">8</span>
+                                        <span className="d-flex justify-content-center align-items-center">
+                                            {totalItems}
+                                        </span>
                                     </Link>
                                 </div>
                             )}

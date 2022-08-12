@@ -8,7 +8,26 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { BiCategoryAlt, BiCaretDown } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { useEffect } from 'react';
+import { getCategories } from '../../../store/categories/categorySlice';
+import { getCategoryProducts } from '../../../store/products/productSlice';
+
 export default function NavbarComp() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { categories } = useSelector((state) => state.categories);
+    useEffect(() => {
+        dispatch(getCategories());
+    }, [dispatch]);
+    // console.log(categories);
+
+    const onClickCategoryHandel = (categoryId) => {
+        dispatch(getCategoryProducts(categoryId));
+        console.log('category clicked');
+    };
     return (
         <Navbar expand="lg" className="navbar-component bg-white">
             <Container>
@@ -23,37 +42,17 @@ export default function NavbarComp() {
                         }
                         id="basic-nav-dropdown"
                     >
-                        <Link
-                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
-                            to="/"
-                        >
-                            <BiCategoryAlt />
-                            <span className="ms-3 ">item</span>
-                        </Link>
-
-                        <Link
-                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
-                            to="/"
-                        >
-                            <BiCategoryAlt />
-                            <span className="ms-3 ">item</span>
-                        </Link>
-
-                        <Link
-                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
-                            to="/"
-                        >
-                            <BiCategoryAlt />
-                            <span className="ms-3 ">item</span>
-                        </Link>
-
-                        <Link
-                            className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
-                            to="/"
-                        >
-                            <BiCategoryAlt />
-                            <span className="ms-3 ">item</span>
-                        </Link>
+                        {categories.map((category) => (
+                            <Link
+                                key={category._id}
+                                className="p-2 text-decoration-none text-black d-flex align-items-center category-item"
+                                to="/search"
+                                onClick={() => onClickCategoryHandel(category._id)}
+                            >
+                                <BiCategoryAlt />
+                                <span className="ms-3 ">{category.name}</span>
+                            </Link>
+                        ))}
                     </NavDropdown>
                 </Navbar.Brand>
             </Container>

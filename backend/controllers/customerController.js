@@ -257,8 +257,6 @@ module.exports.updateCustomer = (req, res, next) => {
 
   Customer.findOne({ userId: customerId })
     .then((data) => {
-      console.log(data);
-      console.log(customerId);
       for (const property in req.body) {
         switch (property) {
           case "firstname":

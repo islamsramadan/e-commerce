@@ -1,20 +1,20 @@
-const mongoose = require('mongoose');
-require('../models/order');
-const orders = mongoose.model('orders');
+const mongoose = require("mongoose");
+require("../models/order");
+const orders = mongoose.model("orders");
 
-const business = mongoose.model('business');
+const business = mongoose.model("business");
 
 module.exports.getOrders = (req, res, next) => {
   orders
     .find()
-    .populate({ path: 'userId' })
+    .populate({ path: "userId" })
     .populate({
-      path: 'orderItems',
-      populate: { path: 'productId', model: 'product' },
+      path: "orderItems",
+      populate: { path: "productId", model: "product" },
     })
     .populate({
-      path: 'orderItems',
-      populate: { path: 'businessId', model: 'user' },
+      path: "orderItems",
+      populate: { path: "businessId", model: "user" },
     })
 
     //{name:1,email:1}
@@ -28,13 +28,13 @@ module.exports.getOrders = (req, res, next) => {
 module.exports.getOrderById = async (req, res, next) => {
   const order = await orders
     .findById(req.params.id)
-    .populate({ path: 'userId', select: { email: 1, _id: 0 } });
+    .populate({ path: "userId", select: { email: 1, _id: 0 } });
 
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
   // orders.find({_id:req.params.id}).then(data=>{
   //     if(data==null) next(new Error(" orders not found"))
@@ -54,7 +54,7 @@ module.exports.addOrders = (req, res, next) => {
   order
     .save()
     .then((data) => {
-      res.status(201).json({ data: 'added' });
+      res.status(201).json({ data: "added" });
     })
     .catch((error) => next(error));
 };
@@ -76,7 +76,7 @@ module.exports.updateOrderToPaid = async (req, res) => {
     res.json(updatedOrder);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 };
 module.exports.updateOrderToDelivered = async (req, res, next) => {
@@ -84,7 +84,7 @@ module.exports.updateOrderToDelivered = async (req, res, next) => {
   const BusinessId = order.orderItems[0].businessId.toString();
 
   if (order) {
-    order.status = 'Delivered';
+    order.status = "Delivered";
     order.deliveredAt = Date.now();
     order.save();
     res.status(200).json(order);
@@ -94,16 +94,16 @@ module.exports.updateOrderToDelivered = async (req, res, next) => {
       return Business.save();
     } else {
       res.status(404);
-      throw new Error('Business not found');
+      throw new Error("Business not found");
     }
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 };
 module.exports.getCustomerOrder = (req, res, next) => {
   orders
-    .findOne({ userId: req.id }, { orderItems: 1 })
+    .find({ userId: req.id })
     .then((data) => {
       res.status(200).json(data);
     })
