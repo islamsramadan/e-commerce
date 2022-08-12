@@ -31,10 +31,11 @@ export default function Login() {
         if (isError) {
             console.log('there is an error: ' + message);
         }
-
-        if (user?.success) {
+        if (user?.success && user?.user) {
             navigate(from);
             console.log('user ->', user);
+            console.log(location);
+            console.log(from);
         }
 
         dispatch(reset());
@@ -105,6 +106,11 @@ export default function Login() {
                                             <ErrorMessage className="text-danger" name="password" />
                                         </p>
                                     </div>
+                                    <p className="text-danger fst-italic text-capitalize fw-semibold">
+                                        {user?.success == false &&
+                                            user?.message == 'invalid email or password' &&
+                                            'wrong email or password !'}
+                                    </p>
                                     <div className="form-group mt-4">
                                         <input
                                             type="submit"

@@ -15,6 +15,7 @@ const initialState = {
 //register
 export const register = createAsyncThunk('auth/register', async (user, thunkApi) => {
     try {
+        console.log('formData', user.userData);
         const res = await fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
             body: JSON.stringify(user.userData),
@@ -39,7 +40,7 @@ export const register = createAsyncThunk('auth/register', async (user, thunkApi)
             });
             // const comercialImgsData = await profileImgRes.json();
         }
-
+        console.log('returned data', data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
@@ -58,7 +59,8 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
             },
         });
         const data = await res.json();
-        if (data) {
+        if (data?.success) {
+            console.log('returned response', data);
             localStorage.setItem('user', JSON.stringify(data));
         }
         return data;

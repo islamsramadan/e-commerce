@@ -32,23 +32,16 @@ const businessValidationSchema = Yup.object({
     floor: Yup.number(),
     name: Yup.string().required(),
     description: Yup.string().required(),
-    comRegImgLink: Yup.string(),
 });
 const customerValidationSchema = Yup.object({
-    email: Yup.string().required('this field is required').email('invalid email format'),
-    phone: Yup.string().required('this field is required').length(11, 'should be 11 digits'),
-    password: Yup.string()
-        .required('this field is required')
-        .max(16, 'maximum passwrd is 8')
-        .min(8, 'min digits are 8'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'password must match'),
-    city: Yup.string().required('this field is required'),
-    street: Yup.string().required('this field is required'),
-    building: Yup.string().required('this field is required'),
-    floor: Yup.number().required('this field is required'),
-    role: Yup.string().required('this field is required'),
-    firstName: Yup.string().required('this field is required'),
-    lastName: Yup.string().required('this field is required'),
+    email: Yup.string().required().email('invalid email format'),
+    phone: Yup.string().required().length(11, 'should be 11 digits'),
+    city: Yup.string().required(),
+    street: Yup.string().required(),
+    building: Yup.string().required(),
+    floor: Yup.number(),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
 });
 
 const BusinessForm = ({ props }) => {
@@ -126,7 +119,7 @@ const EditForm = (props) => {
 
     const onSubmit = async (values) => {
         await dispatch(editProfile(values));
-        await window.location.reload();
+        // await window.location.reload();
         props.onHide();
     };
     const localUser = JSON.parse(localStorage.getItem('user')).user;
@@ -173,9 +166,11 @@ const EditForm = (props) => {
         floor: localUser.address.floor,
         name: localUser.name,
         description: localUser.description,
-        firstName: localUser.firstname || '',
-        lastName: localUser.lastname || '',
+        firstName: localUser.firstName || localUser.name.firstname,
+        lastName: localUser.lastName || localUser.name.lastname,
     };
+
+    console.log('is loading:', isLoading);
 
     console.log('is loading:', isLoading);
 

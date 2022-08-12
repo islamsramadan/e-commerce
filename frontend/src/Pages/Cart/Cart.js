@@ -16,7 +16,7 @@ const Cart = () => {
     }, [dispatch, cartItems, totalPrice]);
 
     let totalItems = 0;
-    for (let i = 0; i < cartItems.length; i++) {
+    for (let i = 0; i < cartItems?.length; i++) {
         totalItems += cartItems[i].quantity;
     }
 

@@ -44,15 +44,19 @@ export const editProfile = createAsyncThunk('profile/editProfile', async (userDa
             });
             roleData = await businessRes.json();
         } else if (user.role == 'customer') {
-            const customerRes = await fetch('http://localhost:8080/customer', {
+            const customerRes = await fetch('http://localhost:8080/update-customer', {
                 method: 'PUT',
-                body: JSON.stringify(userData),
+                body: JSON.stringify({
+                    firstname: userData.firstName,
+                    lastname: userData.lastName,
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             });
             roleData = await customerRes.json();
+            console.log('returned customerData:', roleData);
         }
         console.log('role data =>', roleData);
         return { userData, roleData };
