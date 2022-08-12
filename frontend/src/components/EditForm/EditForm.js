@@ -177,7 +177,7 @@ const EditForm = (props) => {
         lastName: localUser.lastname || '',
     };
 
-    console.log('is loading:', isLoading);
+    // console.log('is loading:', isLoading);
 
     if (isLoading) {
         return <Loader />;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const reviewSchema = mongoose.Schema(
   {
@@ -8,7 +8,7 @@ const reviewSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'user',
+      ref: "user",
     },
   },
   {
@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: mongoose.Types.ObjectId,
-      ref: 'category',
+      ref: "category",
       // required: true,
     },
     reviews: [reviewSchema],
@@ -61,7 +61,7 @@ const productSchema = new mongoose.Schema(
     },
     businessId: {
       type: mongoose.Types.ObjectId,
-      ref: 'user',
+      ref: "business",
       // required:true,
     },
     imageLink: String,
@@ -71,4 +71,4 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('product', productSchema);
+module.exports = mongoose.model("product", productSchema);

@@ -2,10 +2,16 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import 'animate.css/animate.min.css';
+import { Link } from 'react-router-dom';
 
 import './ProductCard.scss';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cart/cartSlice';
+import { useNavigate } from 'react-router-dom';
+
+import ProductDetailsPage from '../../Pages/ProductDetails';
+
+import { getOneProduct, getRelatedProducts } from '../../store/products/productSlice';
 
 // development
 import productimage2 from '../../assets/images/2.jpg';
@@ -54,8 +60,18 @@ export default function ProductCard({ product }) {
     const addToCartHandel = (productId) => {
         dispatch(addToCart(productId));
     };
+
+    // add product details
+    const navigate = useNavigate();
+    const onClickHandel = (productID, productCategoryID) => {
+        dispatch(getOneProduct(productID));
+        dispatch(getRelatedProducts(productCategoryID));
+        navigate(`/product/${productID}`);
+    };
+
     return (
-        <div className="outer">
+        <div className="outer" onClick={() => onClickHandel(product._id, product.category)}>
+            {/* <Link to={`/product/${product._id}`}> */}
             <div className="productCard">
                 <div className="productCard-header">
                     <div
@@ -89,12 +105,13 @@ export default function ProductCard({ product }) {
                 <div className="productCard-detailsDiv">
                     <h5 className="m-0">{product.name}</h5>
                     <RateComponent rate={product.rating} />
-                    <h6>{product.price} £</h6>
+                    <h6>{product.price} EGP</h6>
                     <button>
                         <FontAwesomeIcon icon={faCartPlus} onClick={() => addToCartHandel(productId)} />
                     </button>
                 </div>
             </div>
+            {/* </Link> */}
         </div>
     );
 }

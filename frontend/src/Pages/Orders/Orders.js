@@ -6,39 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../store/orders/orderSlice';
 import { useEffect } from 'react';
 
-// const orders = [
-//     {
-//         date: '20/2/2022',
-//         status: 'delivered',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-//     {
-//         date: '20/2/2022',
-//         status: 'delivered',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-//     {
-//         date: '20/2/2022',
-//         status: 'pending',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-// ];
-
 const OrderItem = ({ order }) => {
     return (
         <div className="order-item">
@@ -86,15 +53,22 @@ const Orders = () => {
     useEffect(() => {
         dispatch(getOrders());
     }, []);
-    console.log(orders);
+    // console.log(orders);
     return (
         <section className="orders-section my-5">
             <div className="container">
-                <div className="row">
-                    {orders.map((order) => (
-                        <OrderItem key={order._id} order={order} />
-                    ))}
-                </div>
+                {orders?.length > 0 ? (
+                    <div className="row">
+                        {orders.map((order) => (
+                            <OrderItem key={order._id} order={order} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="w-50 mx-auto my-5 text-center">
+                        <h5>There is no orders yet</h5>
+                        <h6>check our products and make order</h6>
+                    </div>
+                )}
             </div>
         </section>
     );

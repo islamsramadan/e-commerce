@@ -80,7 +80,7 @@ const authSlice = createSlice({
         logout: (state) => {
             state.user = null;
             localStorage.clear();
-            console.log('logout action');
+            // console.log('logout action');
         },
     },
     extraReducers: {

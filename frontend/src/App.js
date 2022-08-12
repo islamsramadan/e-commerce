@@ -36,8 +36,8 @@ function App() {
                 <Route element={<RequireAuth allowedRoles={['customer']} />}>
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/cart" element={<Cart />} />
-                    <Route path="/product/:id" element={<ProductDetailsPage />} />
                 </Route>
+                <Route path="/product/:id" element={<ProductDetailsPage />} />
                 <Route path="/search" element={<SearchPage />} />
 
                 <Route element={<RequireAuth allowedRoles={['customer', 'business']} />}>
