@@ -6,6 +6,7 @@ const userLocal = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
     user: userLocal ? userLocal : null,
+    admin: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -69,6 +70,29 @@ export const login = createAsyncThunk('auth/login', async (user, thunkApi) => {
     }
 });
 
+// login admin
+export const loginAdmin = createAsyncThunk('auth/login', async (formData, thunkApi) => {
+    console.log('sentData', formData);
+    try {
+        const res = await fetch('http://localhost:8080/adminLogin', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        if (data?.success) {
+            console.log('returned response', data);
+            localStorage.setItem('user', JSON.stringify(data));
+        }
+        console.log('returned admin ==== >', data);
+        return data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.message);
+    }
+});
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -103,6 +127,22 @@ const authSlice = createSlice({
         },
 
         // login
+        [login.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [login.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.user = action.payload;
+        },
+        [login.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.user = null;
+            state.isError = true;
+            state.message = action.payload;
+        },
+
+        // login admin
         [login.pending]: (state) => {
             state.isLoading = true;
         },

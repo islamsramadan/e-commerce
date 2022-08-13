@@ -47,6 +47,13 @@ export default function Search() {
                         </div>
                     </div>
                     <div className="col-12 col-lg-6 order-3 order-lg-2">
+                        <h1
+                            onClick={() => {
+                                console.log(user?.user?.role);
+                            }}
+                        >
+                            test
+                        </h1>
                         <div className="my-2 search-box overflow-hidden d-flex align-items-center">
                             <i className="fa fa-search"></i>
                             <input
@@ -68,24 +75,40 @@ export default function Search() {
                                 <DropdownButton
                                     id="dropdown-basic-button"
                                     title={<i className="fa fa-user user-icon"></i>}
-                                    className="profile-button"
+                                    className="profile-button "
                                 >
-                                    <NavLink
-                                        className="p-3 text-black text-decoration-none text-decoration-none"
-                                        to="/profile"
-                                    >
-                                        my profile
-                                    </NavLink>
-                                    {user?.user?.role == 'customer' && (
-                                        <DropdownItem href="/orders">orders</DropdownItem>
-                                    )}
-                                    <DropdownItem
-                                        onClick={() => {
-                                            dispatch(logout());
-                                        }}
-                                    >
-                                        logout
-                                    </DropdownItem>
+                                    <div className="d-flex flex-column">
+                                        <NavLink
+                                            className="p-2 text-black text-decoration-none text-decoration-none"
+                                            to="/profile"
+                                        >
+                                            my profile
+                                        </NavLink>
+                                        <NavLink
+                                            className="p-2 text-black text-decoration-none text-decoration-none"
+                                            to="/orders"
+                                        >
+                                            orders
+                                        </NavLink>
+
+                                        {user?.user?.role == 'business' && (
+                                            <NavLink
+                                                className="p-2 text-black text-decoration-none text-decoration-none"
+                                                to="/orders"
+                                            >
+                                                dashboard
+                                            </NavLink>
+                                        )}
+
+                                        <DropdownItem
+                                            onClick={() => {
+                                                dispatch(logout());
+                                            }}
+                                            className="p-2"
+                                        >
+                                            logout
+                                        </DropdownItem>
+                                    </div>
                                 </DropdownButton>
                             ) : (
                                 <>

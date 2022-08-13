@@ -18,6 +18,8 @@ import { logout } from './store/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import RequireAuth from './RequireAuth';
 import UnAuthorized from './Pages/UnAuthorized/UnAuthorized';
+import AdminLogin from './components/AdminLogin/AdminLogin';
+import NotFound from './Pages/NotFound/NotFound';
 
 function App() {
     const dispatch = useDispatch();
@@ -29,17 +31,16 @@ function App() {
             <Routes>
                 {/*public routes */}
                 <Route path="/" element={<Home />} />
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signUp" element={<SignUp />} />
-
+                <Route path="/adminLogin" element={<AdminLogin />} />
                 {/*protected routes */}
                 <Route element={<RequireAuth allowedRoles={['customer']} />}>
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/cart" element={<Cart />} />
                 </Route>
                 <Route path="/product/:id" element={<ProductDetailsPage />} />
-                <Route path="/search" element={<SearchPage />} />
-
                 <Route element={<RequireAuth allowedRoles={['customer', 'business']} />}>
                     <Route path="/profile" element={<Profile />} />
                 </Route>
@@ -49,7 +50,7 @@ function App() {
                 <Route element={<RequireAuth allowedRoles={['admin']} />}></Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
-                <Route path="*" element={<h1>can't find this page </h1>} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
         </div>
