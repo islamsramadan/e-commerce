@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+const localUser = JSON.parse(localStorage.getItem('user')).user;
 
 const initialState = {
     orders: [],
@@ -16,11 +17,35 @@ export const getOrders = createAsyncThunk('orders/getOrders', async (_, thunkApi
                 Authorization: `Bearer ${token}`,
             },
         });
-        const data = res.json();
+        const data = await res.json();
+        console.log('returned data: ', data);
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error);
     }
+});
+
+export const addOrders = createAsyncThunk('orders/getOrders', async ({ values, cartItems, totalPrice }, thunkApi) => {
+    try {
+        console.log('sent Data', values);
+        console.log('sent Data', cartItems);
+        const token = thunkApi.getState().auth.user.token;
+        const res = await fetch('http://localhost:8080/orders', {
+            method: 'POST',
+            body: JSON.stringify({ ...values, shippingPrice: 30, cartItems, userId: localUser._id, totalPrice }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        console.log('returned data:', data);
+        return data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error);
+    }
+    console.log(values);
+    console.log(cartItems);
+    return '';
 });
 
 const orderSlice = createSlice({
