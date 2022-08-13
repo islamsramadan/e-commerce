@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import BusinessOrderPreview from '../../components/Business/BusinessOrderPreview';
 import BusinessOrders from '../../components/Business/BusinessOrders';
@@ -19,6 +19,14 @@ export default function BusinessPage() {
                 display: none;
             }
     `;
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            navigate('/');
+        }
+    }, []);
 
     return (
         <>

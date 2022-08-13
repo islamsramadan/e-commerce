@@ -30,7 +30,8 @@ export default function BusinessProductAdd() {
     }
 
     async function addProduct() {
-        setProductData({ ...productData, businessId: sessionStorage.getItem('businessId') });
+        let user= JSON.parse(localStorage.getItem('user'))
+        setProductData({ ...productData, businessId: user.user._id});
         setImages(document.getElementById('image-file').files[0]);
 
         // adding product data

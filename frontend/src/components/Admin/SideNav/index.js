@@ -16,7 +16,7 @@ export default function AdminSideNav() {
         <Nav className="adminSideNav">
             <p>LOGO</p>
             <p>
-                welcome <span> Moemen</span>
+                welcome
             </p>
             <Nav.Item>
                 <NavLink to="statistics" activeclassname="active">

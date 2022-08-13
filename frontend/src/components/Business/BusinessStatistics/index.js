@@ -14,11 +14,14 @@ export default function BusinessStatistics() {
     }, []);
 
     async function getBusinessStatistics() {
+        let userData = JSON.parse(localStorage.getItem('user'))
+        console.log(userData.user._id);
         const res = await fetch(
-            `http://localhost:8080/business/getBusinessStatistics/${localStorage.getItem('businessId')}`
+            `http://localhost:8080/getStatistics-business/${userData.user._id}`
         );
         const data = await res.json();
         setStatistics(data);
+        console.log(data);
     }
 
     return (
@@ -64,7 +67,7 @@ export default function BusinessStatistics() {
                         </h4>
                         <div className="d-flex flex-wrap">
                             <div className="statistics-container_inner w-100">
-                                <h6>{ statistics?.balance[0].balance || 0}</h6>
+                                <h6>{ statistics?.balance || 0}</h6>
                             </div>
                         </div>
                     </div>

@@ -25,10 +25,14 @@ export default function BusinessProductPreview() {
         const res = await fetch(`http://localhost:8080/products/${id}`);
         const data = await res.json();
         setProductData(data.fullData);
+        console.log(data.fullData);
     }
 
-    async function deleteProduct(){
-        
+    async function deleteProduct() {
+        const res = await fetch(`http://localhost:8080/products/${id}`);
+        const data = await res.json();
+        setProductData(data.fullData);
+        console.log(data.fullData);
     }
 
     function closeImgPreview() {
@@ -105,29 +109,38 @@ export default function BusinessProductPreview() {
                             <Link to={'/business/products/edit/' + id} className="ms-2 btn btn-primary">
                                 Edit
                             </Link>
-                            <Button variant="danger" onClick={deleteProduct}>Delete</Button>
+                            <Button variant="danger" onClick={deleteProduct}>
+                                Delete
+                            </Button>
                         </div>
                     </div>
 
                     <div className="outerDiv">
                         <h2>Images</h2>
                         <div className="images">
+                            {productData?.images?.map((imgSrc) => {
+                                return (
+                                    <div>
+                                        <img src={imgSrc} onClick={displayImgPreview} />
+                                        <Button variant="danger">Delete</Button>
+                                    </div>
+                                );
+                            })}
                             <div>
-                                <img src={image1} onClick={displayImgPreview} />
-                                <Button variant="danger">Delete</Button>
-                            </div>
-                            <div>
-                                <img src={image2} onClick={displayImgPreview} />
-                                <Button variant="danger">Delete</Button>
-                            </div>
-                            <div>
-                                <img src={image3} onClick={displayImgPreview} />
-                                <Button variant="danger">Delete</Button>
-                            </div>
-                            <div>
-                                <button className="addBtn">
+                                <button className="addBtn position-relative">
                                     <CgAdd />
                                     Add
+                                    <input
+                                        type="file"
+                                        style={{
+                                            opacity: 0,
+                                            position: 'absolute',
+                                            width: '100%',
+                                            height: '100%',
+                                            top: 0,
+                                            left: 0,
+                                        }}
+                                    />
                                 </button>
                             </div>
                         </div>

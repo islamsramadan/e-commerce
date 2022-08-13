@@ -143,7 +143,7 @@ module.exports.getBusinessStatistics = async (req, res, next) => {
     const numOfProductInStoct = await Products.count({
       businessId: req.params.id,
     });
-    const balance = await Business.find(
+    const balance = await Business.findOne(
       { userId: req.params.id },
       { balance: 1, _id: 0 }
     );
@@ -154,7 +154,7 @@ module.exports.getBusinessStatistics = async (req, res, next) => {
     res.json({
       productCount: numOfProductInStoct,
       numOfSoldProducts: numOfSoldProducts,
-      balance: balance,
+      balance: balance.balance,
     });
   } catch (error) {
     next(error);

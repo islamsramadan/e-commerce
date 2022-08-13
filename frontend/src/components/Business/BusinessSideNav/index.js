@@ -23,7 +23,7 @@ export default function BusinessSideNav() {
             <Nav className="adminSideNav">
             <p>LOGO</p>
             <p>
-                welcome <span> Moemen</span>
+                welcome
             </p>
             <Nav.Item>
                 <NavLink to="statistics" activeclassname="active">
@@ -43,12 +43,12 @@ export default function BusinessSideNav() {
                     Orders
                 </NavLink>
             </Nav.Item>
-            <Nav.Item>
+            {/* <Nav.Item>
                 <NavLink to="admins" activeclassname="active">
                     <FiSettings />
                     Settings
                 </NavLink>
-            </Nav.Item>
+            </Nav.Item> */}
 
             <button>
                 <BiLogOut />

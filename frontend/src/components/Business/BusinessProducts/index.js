@@ -15,7 +15,8 @@ export default function BusinessProducts() {
     }, []);
 
     async function loadBusinessProducts() {
-        const res = await fetch(`http://localhost:8080/businessProducts/${localStorage.getItem('businessId')}`);
+        let user= JSON.parse(localStorage.getItem('user'))
+        const res = await fetch(`http://localhost:8080/businessProducts/${user.user._id}`);
         const data = await res.json();
         setProducts(data.data);
         console.log(data);

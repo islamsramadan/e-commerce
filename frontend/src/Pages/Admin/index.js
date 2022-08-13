@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import AdminSideNav from '../../components/Admin/SideNav';
 import CustomersList from '../../components/Admin/CustomersList';
@@ -17,6 +17,15 @@ import OrderPreview from '../../components/Admin/OrderPreview';
 import AdminPreview from '../../components/Admin/AdminPreview';
 
 export default function AdminPage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            navigate('/');
+        }
+    }, []);
+
     const style = `
         form.search,footer.footer{
                 display: none;
