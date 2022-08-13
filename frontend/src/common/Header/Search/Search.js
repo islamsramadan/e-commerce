@@ -29,7 +29,7 @@ export default function Search() {
     const [text, setText] = useState('');
     const onSubmitHandel = (e) => {
         e.preventDefault();
-        console.log(text);
+        // console.log(text);
         dispatch(getSearchProducts(text));
         navigate('search');
         setText('');
@@ -47,13 +47,13 @@ export default function Search() {
                         </div>
                     </div>
                     <div className="col-12 col-lg-6 order-3 order-lg-2">
-                        <h1
+                        {/* <h1
                             onClick={() => {
                                 console.log(user?.user?.role);
                             }}
                         >
                             test
-                        </h1>
+                        </h1> */}
                         <div className="my-2 search-box overflow-hidden d-flex align-items-center">
                             <i className="fa fa-search"></i>
                             <input

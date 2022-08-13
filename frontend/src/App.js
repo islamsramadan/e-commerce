@@ -20,6 +20,7 @@ import RequireAuth from './RequireAuth';
 import UnAuthorized from './Pages/UnAuthorized/UnAuthorized';
 import AdminLogin from './components/AdminLogin/AdminLogin';
 import NotFound from './Pages/NotFound/NotFound';
+import BusinessPage from './Pages/Business/index';
 
 function App() {
     const dispatch = useDispatch();
