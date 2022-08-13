@@ -81,6 +81,12 @@ export default function BusinessPreview() {
                             <p>gamal abd elnaser</p>
                         </div>
                         <div className="col-6 col-lg-3 title">
+                            <p>Building</p>
+                        </div>
+                        <div className="col-6 col-lg-3">
+                            <p>15</p>
+                        </div>
+                        <div className="col-6 col-lg-3 title">
                             <p>Floor</p>
                         </div>
                         <div className="col-6 col-lg-3">
@@ -91,6 +97,12 @@ export default function BusinessPreview() {
                         </div>
                         <div className="col-6 col-lg-3">
                             <p>not verified</p>
+                        </div>
+                        <div className="col-6 col-lg-3 title">
+                            <p>responsible admin</p>
+                        </div>
+                        <div className="col-6 col-lg-3">
+                            <p>none</p>
                         </div>
                     </div>
 

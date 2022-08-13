@@ -18,6 +18,9 @@ export default function CategoryPreview() {
         dispatch(getTopRatedProducts());
         dispatch(getLastAddedProducts());
     }, []);
+    
+    console.log(`topRatedProducts`,topRatedProducts);
+    console.log(`lastAddedProducts`,lastAddedProducts);
 
     const settings = {
         dots: true,
@@ -107,9 +110,9 @@ export default function CategoryPreview() {
                     <div className=" my-5">
                         <div className="container">
                             <Slider {...settings}>
-                                {lastAddedProducts.map((product) => (
+                                {/* {lastAddedProducts.map((product) => (
                                     <ProductCard key={product._id} product={product} />
-                                ))}
+                                ))} */}
                             </Slider>
                         </div>
                     </div>

@@ -6,14 +6,21 @@ import { FcStatistics } from 'react-icons/fc';
 import { FaUsers } from 'react-icons/fa';
 import { MdProductionQuantityLimits } from 'react-icons/md';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { GiMoneyStack } from 'react-icons/gi';
+import { FiSettings } from 'react-icons/fi';
 import { RiAdminLine } from 'react-icons/ri';
 
-import './sideNav.scss';
+import './businessSideNav.scss';
 
-export default function AdminSideNav() {
+export default function BusinessSideNav() {
+    const style = `
+    form.search,footer.footer{
+            display: none;
+        }
+`;
+
     return (
-        <Nav className="adminSideNav">
+        <>
+            <Nav className="adminSideNav">
             <p>LOGO</p>
             <p>
                 welcome <span> Moemen</span>
@@ -22,18 +29,6 @@ export default function AdminSideNav() {
                 <NavLink to="statistics" activeclassname="active">
                     <FcStatistics />
                     Statistics
-                </NavLink>
-            </Nav.Item>
-            <Nav.Item>
-                <NavLink to="customers" activeclassname="active">
-                    <FaUsers />
-                    Customers
-                </NavLink>
-            </Nav.Item>
-            <Nav.Item>
-                <NavLink to="business" activeclassname="active">
-                    <FaUsers />
-                    Business
                 </NavLink>
             </Nav.Item>
             <Nav.Item>
@@ -48,16 +43,10 @@ export default function AdminSideNav() {
                     Orders
                 </NavLink>
             </Nav.Item>
-            {/* <Nav.Item>
-                <NavLink to="earning" activeclassname="active">
-                    <GiMoneyStack />
-                    Earnings
-                </NavLink>
-            </Nav.Item> */}
             <Nav.Item>
                 <NavLink to="admins" activeclassname="active">
-                    <RiAdminLine />
-                    Admins
+                    <FiSettings />
+                    Settings
                 </NavLink>
             </Nav.Item>
 
@@ -66,5 +55,6 @@ export default function AdminSideNav() {
                 logout
             </button>
         </Nav>
+        </>
     );
 }

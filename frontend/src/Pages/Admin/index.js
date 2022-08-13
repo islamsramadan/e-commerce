@@ -14,6 +14,7 @@ import CustomerPreview from '../../components/Admin/CustomerPreview';
 import BusinessPreview from '../../components/Admin/BusinessPreview';
 import ProductPreview from '../../components/Admin/ProductPreview';
 import OrderPreview from '../../components/Admin/OrderPreview';
+import AdminPreview from '../../components/Admin/AdminPreview';
 
 export default function AdminPage() {
     const style = `
@@ -41,6 +42,7 @@ export default function AdminPage() {
                         <Route path="products" element={<Products />} />
                         <Route path="products/:id" element={<ProductPreview />} />
                         <Route path="admins" element={<AdminsList />} />
+                        <Route path="admins/:id" element={<AdminPreview />} />
                         <Route path="earning" element={<EarningList />} />
                     </Routes>
                 </div>
