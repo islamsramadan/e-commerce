@@ -13,7 +13,7 @@ import { getProducts, getSearchProducts } from '../../store/products/productSlic
 export default function SearchPage() {
     const { products } = useSelector((state) => state.products);
 
-    // console.log(products);
+    console.log('search products ----------->', products);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);

@@ -1,6 +1,5 @@
 import './CategoryPreview.style.css';
 import { IoShirtOutline } from 'react-icons/io5';
-import { CgArrowTopRightO } from 'react-icons/cg';
 import Slider from 'react-slick';
 import ProductCard from '../ProductCard/ProductCard';
 import { Link } from 'react-router-dom';
@@ -18,9 +17,9 @@ export default function CategoryPreview() {
         dispatch(getTopRatedProducts());
         dispatch(getLastAddedProducts());
     }, []);
-    
-    console.log(`topRatedProducts`,topRatedProducts);
-    console.log(`lastAddedProducts`,lastAddedProducts);
+
+    // console.log(`topRatedProducts`, topRatedProducts);
+    // console.log(`lastAddedProducts`, lastAddedProducts);
 
     const settings = {
         dots: true,
@@ -110,9 +109,9 @@ export default function CategoryPreview() {
                     <div className=" my-5">
                         <div className="container">
                             <Slider {...settings}>
-                                {/* {lastAddedProducts.map((product) => (
+                                {lastAddedProducts.map((product) => (
                                     <ProductCard key={product._id} product={product} />
-                                ))} */}
+                                ))}
                             </Slider>
                         </div>
                     </div>

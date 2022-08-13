@@ -11,7 +11,7 @@ import './ProductCard.style.scss';
 import productimage from '../../assets/home-slider/slide-1.png';
 
 export default function ProductCard({ product }) {
-    // console.log(product);
+    console.log(product);
 
     // add product details
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function ProductCard({ product }) {
             <div className="productCard">
                 <Link to={`/product/${product._id}`}>
                     <div className="productCard-imgDiv">
-                        <img width="50" alt="product" src={productimage} />
+                        <img width="50" alt="product" src={product.image} />
                         {/* <img width="50" alt="product" src={product?.images[0]} /> */}
                     </div>
                 </Link>

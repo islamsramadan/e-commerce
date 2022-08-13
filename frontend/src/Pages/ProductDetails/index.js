@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 export default function ProductDetailsPage() {
     const { productDetails } = useSelector((state) => state.products);
     const { relatedProducts } = useSelector((state) => state.products);
-    // console.log(productDetails, relatedProducts);
+    console.log(productDetails, relatedProducts);
     return (
         <div className="container mt-3">
             {productDetails && (

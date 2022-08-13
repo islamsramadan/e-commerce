@@ -110,7 +110,7 @@ export const getRelatedProducts = createAsyncThunk('products/getRelatedProducts'
         const res = await fetch(`http://localhost:8080/relatedProducts/${categoryId}`);
         const data = await res.json();
         if (data) {
-            localStorage.setItem('relatedProducts', JSON.stringify(data.relatedProducts));
+            localStorage.setItem('relatedProducts', JSON.stringify(data.data));
         }
         // console.log(productDetails);
         return data;
@@ -237,7 +237,7 @@ const productSlice = createSlice({
         [getLastAddedProducts.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.lastAddedProducts = action.payload.lastAdded;
+            state.lastAddedProducts = action.payload.data;
         },
         [getLastAddedProducts.rejected]: (state, action) => {
             state.isLoading = false;
@@ -250,7 +250,7 @@ const productSlice = createSlice({
         [getRelatedProducts.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.relatedProducts = action.payload.relatedProducts;
+            state.relatedProducts = action.payload.data;
         },
         [getRelatedProducts.rejected]: (state, action) => {
             state.isLoading = false;

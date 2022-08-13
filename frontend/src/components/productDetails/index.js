@@ -15,7 +15,7 @@ import productImg3 from '../../assets/images/3.webp';
 import productImg4 from '../../assets/images/4.png';
 
 export default function ProductDetailsComponent({ product }) {
-    console.log(product);
+    // console.log(product);
     function displaySelectedImg(e) {
         const displayedImg = document.getElementById('displayedImg');
         displayedImg.src = e.target.src;
@@ -52,12 +52,12 @@ export default function ProductDetailsComponent({ product }) {
                         <img alt="product" src={productImg4} onClick={displaySelectedImg} />
                         <img alt="product" src={productImg4} onClick={displaySelectedImg} />
                         <img alt="product" src={productImg4} onClick={displaySelectedImg} /> */}
-                        {product.images.map((image) => (
+                        {product.images?.map((image) => (
                             <img key={image} alt={product.name} src={image} onClick={displaySelectedImg} />
                         ))}
                     </div>
 
-                    <img src={product.images[0]} alt={product.name} id="displayedImg" />
+                    <img src={product?.images[0]} alt={product.name} id="displayedImg" />
                 </div>
                 <div className="product-mainData_data">
                     <h1 className="product-mainData_data-name">{product.name}</h1>

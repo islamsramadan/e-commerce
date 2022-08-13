@@ -20,36 +20,36 @@ export default function ProductCard({ product }) {
     let intervalId = null;
 
     // change image on hover on product card image
-    function changeImgOnHover(e) {
-        const images = Array.from(e.target.parentElement.querySelectorAll('img'));
-        intervalId = setInterval(() => {
-            let activeImg = images.find((el) => el.classList.contains('active'));
-            activeImg.classList.remove('active');
-            if (activeImg.nextSibling) {
-                activeImg.nextSibling.classList.add('active');
-                changeActiveDotOnHover(e.target.closest('.productCard-header'), images.indexOf(activeImg.nextSibling));
-            } else {
-                images[0].classList.add('active');
-                changeActiveDotOnHover(e.target.closest('.productCard-header'), 0);
-            }
-        }, 1500);
-    }
+    // function changeImgOnHover(e) {
+    //     const images = Array.from(e.target.parentElement.querySelectorAll('img'));
+    //     intervalId = setInterval(() => {
+    //         let activeImg = images.find((el) => el.classList.contains('active'));
+    //         activeImg.classList.remove('active');
+    //         if (activeImg.nextSibling) {
+    //             activeImg.nextSibling.classList.add('active');
+    //             changeActiveDotOnHover(e.target.closest('.productCard-header'), images.indexOf(activeImg.nextSibling));
+    //         } else {
+    //             images[0].classList.add('active');
+    //             changeActiveDotOnHover(e.target.closest('.productCard-header'), 0);
+    //         }
+    //     }, 1500);
+    // }
 
     // clear interval for product's img hover and reset active class to first image
-    function clearHoverInterval(e) {
-        const images = e.target.parentElement.querySelectorAll('img');
-        for (let image of images) image.classList.remove('active');
-        images[0].classList.add('active');
-        clearInterval(intervalId);
-        changeActiveDotOnHover(e.target.closest('.productCard-header'), 0);
-    }
+    // function clearHoverInterval(e) {
+    //     const images = e.target.parentElement.querySelectorAll('img');
+    //     for (let image of images) image.classList.remove('active');
+    //     images[0].classList.add('active');
+    //     clearInterval(intervalId);
+    //     changeActiveDotOnHover(e.target.closest('.productCard-header'), 0);
+    // }
 
     // update active dot for active displayed image
-    function changeActiveDotOnHover(target, i) {
-        const dots = Array.from(target.querySelectorAll('.productCard-header_dotsDiv div'));
-        for (let dot of dots) dot.classList.remove('active');
-        dots[i].classList.add('active');
-    }
+    // function changeActiveDotOnHover(target, i) {
+    //     const dots = Array.from(target.querySelectorAll('.productCard-header_dotsDiv div'));
+    //     for (let dot of dots) dot.classList.remove('active');
+    //     dots[i].classList.add('active');
+    // }
 
     // add to cart action
     const productId = { productId: product._id, quantity: 1 };
@@ -73,15 +73,15 @@ export default function ProductCard({ product }) {
                 <div className="productCard-header">
                     <div
                         className="productCard-header_imgsDiv"
-                        onMouseEnter={changeImgOnHover}
-                        onMouseLeave={clearHoverInterval}
+                        // onMouseEnter={changeImgOnHover}
+                        // onMouseLeave={clearHoverInterval}
                     >
                         <img
                             alt="product"
-                            src={productimage2}
+                            src={product.image}
                             className="animate__animated animate__fadeIn animate__faster active"
                         />
-                        <img
+                        {/* <img
                             alt="product"
                             src={productimage3}
                             className="animate__animated animate__fadeIn animate__faster"
@@ -90,13 +90,13 @@ export default function ProductCard({ product }) {
                             alt="product"
                             src={productimage4}
                             className="animate__animated animate__fadeIn animate__faster"
-                        />
+                        /> */}
                     </div>
-                    <div className="productCard-header_dotsDiv">
+                    {/* <div className="productCard-header_dotsDiv">
                         <div className="active"></div>
                         <div></div>
                         <div></div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="productCard-detailsDiv">
