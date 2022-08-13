@@ -4,14 +4,13 @@ require('../models/user');
 require('../models/customer');
 require('../models/order');
 require('../models/common');
-require('../models/admin');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const orders = mongoose.model('orders');
 const Products = mongoose.model('product');
 const User = mongoose.model('user');
 const Customer = mongoose.model('customer');
-const Admin = mongoose.model('admin');
+const Admin = require('../models/admin');
 
 module.exports.getNumberOfProduct = async (req, res) => {
   const numOfProductInStoct = await Products.count({
@@ -115,7 +114,7 @@ module.exports.signup = async (req, res, next) => {
     lastname: req.body.lastname,
   };
   try {
-    if (req.admin.isHead === true) {
+    // if (req.admin.isHead === true) {
       Admin.findOne({ email: email }).then((user) => {
         if (user) {
           // email already exist in database
@@ -142,9 +141,9 @@ module.exports.signup = async (req, res, next) => {
           });
         }
       });
-    } else {
-      throw new Error('sorry you don`t have authorize');
-    }
+    // } else {
+    //   throw new Error('sorry you don`t have authorize');
+    // }
   } catch (error) {
     error.status = 500;
     next(error);
@@ -171,7 +170,7 @@ module.exports.adminLogin = function login(req, res, next) {
         // no email found
         return res.status(401).json({
           success: false,
-          message: 'invalid email or password',
+          message: 'invalid email or password1',
         });
       } else {
         bcrypt.compare(password, admin.password).then(async (isEqual) => {
@@ -179,7 +178,7 @@ module.exports.adminLogin = function login(req, res, next) {
             // password is incorrect
             return res.status(401).json({
               success: false,
-              message: 'invalid email or password',
+              message: 'invalid email or password2',
             });
           } else {
             // successful login

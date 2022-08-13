@@ -14,59 +14,52 @@ require('../models/business');
 let Business = mongoose.model('business');
 
 const {
-  getAllBusinesses,
-  getBusinessById,
-  addBusiness,
-  updateBusiness,
-  updateProfileImageLink,
-  deleteProfileImage,
-  uploadComRegImg,
+	getAllBusinesses,
+	getBusinessById,
+	addBusiness,
+	updateBusiness,
+	updateProfileImageLink,
+	deleteProfileImage,
+	uploadComRegImg,
+	getBusinessStatistics,
 } = require('../controllers/business');
 
 businessRoute
-  .route('/business')
-  .get(authMW, getAllBusinesses)
-  .put(
-    authMW,
-    [
-      param('id').notEmpty().isMongoId(),
-      body('name').optional().isString().withMessage('name should be a string'),
-      body('description')
-        .optional()
-        .isString()
-        .withMessage('description should be string'),
-    ],
-    // validationMW,
-    updateBusiness
-  );
+	.route('/business')
+	.get(authMW, getAllBusinesses)
+	.put(
+		authMW,
+		[
+			param('id').notEmpty().isMongoId(),
+			body('name').optional().isString().withMessage('name should be a string'),
+			body('description').optional().isString().withMessage('description should be string'),
+		],
+		// validationMW,
+		updateBusiness
+	);
 
 businessRoute
-  .route('/business/:id')
-  .get(
-    authMW,
-    [
-      param('id')
-        .notEmpty()
-        .isMongoId()
-        .withMessage("User'is id should be a valid MongoID"),
-    ],
-    validationMW,
-    getBusinessById
-  );
+	.route('/business/:id')
+	.get(
+		authMW,
+		[param('id').notEmpty().isMongoId().withMessage("User'is id should be a valid MongoID")],
+		validationMW,
+		getBusinessById
+	);
 
-businessRoute
-  .route('/business/updateProfileImg/:id')
-  .post(
-    // authMW,
-    deleteProfileImage,
-    uploadFileMW.single('image'),
-    updateProfileImageLink
-  );
+businessRoute.route('/business/updateProfileImg/:id').post(
+	// authMW,
+	deleteProfileImage,
+	uploadFileMW.single('image'),
+	updateProfileImageLink
+);
 
-businessRoute
-  .route('/business/uploadComReg/:id')
-  .post(
-    // authMW,
-     uploadFileMW.array('image'), uploadComRegImg);
+businessRoute.route('/business/uploadComReg/:id').post(
+	// authMW,
+	uploadFileMW.array('image'),
+	uploadComRegImg
+);
+
+businessRoute.get('/business/getBusinessStatistics/:id', getBusinessStatistics);
 
 module.exports = businessRoute;

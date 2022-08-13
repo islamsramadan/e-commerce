@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-const localUser = JSON.parse(localStorage.getItem('user')).user;
+const localUser = JSON.parse(localStorage.getItem('user'))?.user;
 
 const initialState = {
     orders: [],

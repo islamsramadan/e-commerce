@@ -4,19 +4,20 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		console.log(req.body);
-		console.log(file);
 
 		if(req.body.type == undefined || req.body.type == null){
+			console.log(file);
 			cb(new Error('Error : file type is must be provided [businessProfile , commercial , product]'))
 		}
 
 		// uploaing business profile image
 		if (req.body.type == 'businessProfile') {
+			console.log(file);
 			cb(null, path.join('images', 'business'));
 		}
 		// uploading business commercial registration image
 		else if (req.body.type == 'commercial') {
+			console.log(file);
 			const dir = path.join('images', 'commercialRegister', req.params.id);
 			if (!fs.existsSync(dir)) {
 				fs.mkdirSync(dir);
@@ -25,6 +26,7 @@ const storage = multer.diskStorage({
 		}
 		// uploading products image
 		else if (req.body.type == 'product') {
+			console.log(file);
 			const dir = path.join('images', 'products', req.params.id);
 			if (!fs.existsSync(dir)) {
 				fs.mkdirSync(dir);

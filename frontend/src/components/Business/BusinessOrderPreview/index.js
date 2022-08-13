@@ -3,9 +3,9 @@ import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-import './orderPreview.scss';
+import './businessOrderPreview.scss';
 
-export default function OrderPreview() {
+export default function BusinessOrderPreview() {
     return (
         <>
             <div className="orderPreview animate__animated animate__fadeIn">

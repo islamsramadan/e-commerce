@@ -18,6 +18,7 @@ import { logout } from './store/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import RequireAuth from './RequireAuth';
 import UnAuthorized from './Pages/UnAuthorized/UnAuthorized';
+import BusinessPage from './Pages/Business';
 
 function App() {
     const dispatch = useDispatch();
@@ -46,7 +47,10 @@ function App() {
 
                 {/*Permission role based routes */}
                 <Route path="/admin/*" element={<AdminPage />} />
-                <Route element={<RequireAuth allowedRoles={['admin']} />}></Route>
+                <Route path="/business/*" element={<BusinessPage />} />
+                <Route element={<RequireAuth allowedRoles={['admin']} />}>
+                    
+                </Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
                 <Route path="*" element={<h1>can't find this page </h1>} />
