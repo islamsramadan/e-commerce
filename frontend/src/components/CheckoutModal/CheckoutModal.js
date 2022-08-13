@@ -58,7 +58,7 @@ const CheckoutMoal = (props) => {
                                 test
                             </button>
                             <h5 className="fw-semibold text-capitalize mb-4 text-start">
-                                total price: <span className="text-danger">{totalPrice + 30}£</span>
+                                total price: <span className="text-danger">{totalPrice + 30} EGP</span>
                             </h5>
                             <div className="row">
                                 <div className="form-group col-12 col-md-3">
