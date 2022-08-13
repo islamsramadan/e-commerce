@@ -1,5 +1,6 @@
 import './CategoryPreview.style.css';
 import { IoShirtOutline } from 'react-icons/io5';
+import { CgArrowTopRightO } from 'react-icons/cg';
 import Slider from 'react-slick';
 import ProductCard from '../ProductCard/ProductCard';
 import { Link } from 'react-router-dom';
@@ -17,9 +18,6 @@ export default function CategoryPreview() {
         dispatch(getTopRatedProducts());
         dispatch(getLastAddedProducts());
     }, []);
-
-    // console.log(topRatedProducts);
-    // console.log(lastAddedProducts);
 
     const settings = {
         dots: true,

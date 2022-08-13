@@ -16,7 +16,7 @@ export default function SliderItem({ category }) {
     return (
         <div className="home-slider-item">
             <div className="row">
-                <div className="col-12 col-lg-8">
+                <div className="col-12  text-center pb-5">
                     <div className="home-slider-left align-self-center">
                         <h1 className="fw-bold text-capitalize home-slider-heading">{category.name}</h1>
                         <p className="home-slider-description fs-5">{category.description}</p>
@@ -29,11 +29,11 @@ export default function SliderItem({ category }) {
                         </button>
                     </div>
                 </div>
-                <div className="col-4 d-none d-lg-block">
+                {/* <div className="col-4 d-none d-lg-block">
                     <div className="home-slider-right">
                         <img src={productImg} alt="t-shirt" />
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Image } from 'react-bootstrap';
 
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import RateComponent from '../Rate';
@@ -14,6 +15,7 @@ import productImg3 from '../../assets/images/3.webp';
 import productImg4 from '../../assets/images/4.png';
 
 export default function ProductDetailsComponent({ product }) {
+    console.log(product);
     function displaySelectedImg(e) {
         const displayedImg = document.getElementById('displayedImg');
         displayedImg.src = e.target.src;
@@ -38,20 +40,24 @@ export default function ProductDetailsComponent({ product }) {
             <div className="product-mainData">
                 <div className="product-mainData_imgDiv">
                     <div className="product-mainData_imgDiv-imgs">
-                        <button className="topBtn">
+                        {/* <button className="topBtn">
                             <IoIosArrowUp />
                         </button>
                         <button className="bottomBtn">
                             <IoIosArrowDown />
-                        </button>
-                        <img className="active" alt="product" onClick={displaySelectedImg} src={productImg1} />
-                        <img alt="product" src={productImg2} onClick={displaySelectedImg} />
+                        </button> */}
+                        {/* <img className="active" alt="product" onClick={displaySelectedImg} src={productImg1} />
+                        <img alt="product" onClick={displaySelectedImg} />
                         <img alt="product" src={productImg3} onClick={displaySelectedImg} />
                         <img alt="product" src={productImg4} onClick={displaySelectedImg} />
                         <img alt="product" src={productImg4} onClick={displaySelectedImg} />
-                        <img alt="product" src={productImg4} onClick={displaySelectedImg} />
+                        <img alt="product" src={productImg4} onClick={displaySelectedImg} /> */}
+                        {product.images.map((image) => (
+                            <img key={image} alt={product.name} src={image} onClick={displaySelectedImg} />
+                        ))}
                     </div>
-                    <img alt="product" id="displayedImg" src={productImg1} />
+
+                    <img src={product.images[0]} alt={product.name} id="displayedImg" />
                 </div>
                 <div className="product-mainData_data">
                     <h1 className="product-mainData_data-name">{product.name}</h1>

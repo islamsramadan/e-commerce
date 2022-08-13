@@ -121,7 +121,7 @@ router.get(
   validationMW,
   controller.getRelatedProducts
 );
-
+// router.get("/images/:id", controller.getProductImages);
 router.get("/category/:id", controller.getCategoryProducts);
 
 module.exports = router;

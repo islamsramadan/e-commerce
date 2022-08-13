@@ -21,13 +21,13 @@ export default function ProductCard({ product }) {
         dispatch(getRelatedProducts(productCategoryID));
         navigate(`/product/${productID}`);
     };
-
     return (
         <div className="outer" onClick={() => onClickHandel(product._id, product.category)}>
             <div className="productCard">
                 <Link to={`/product/${product._id}`}>
                     <div className="productCard-imgDiv">
                         <img width="50" alt="product" src={productimage} />
+                        {/* <img width="50" alt="product" src={product?.images[0]} /> */}
                     </div>
                 </Link>
                 <div className="productCard-detailsDiv">

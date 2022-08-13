@@ -75,13 +75,103 @@ module.exports.getOneProduct = async (req, res, next) => {
           success: false,
           msg: "Unable to scan directory! " + err.message,
         });
-      const fullData = { ...product._doc, images: files };
+      let images = [];
+      files.forEach((file) => {
+        let bitmap = fs.readFileSync(
+          path.join(__dirname, "..", "images", "products", req.params.id, file)
+        );
+        images.push(
+          "data:image/jpeg;base64," + new Buffer(bitmap).toString("base64")
+        );
+      });
+      const fullData = { ...product._doc, images: images };
       res.json({ success: true, fullData });
     });
   } catch (error) {
     next(error);
   }
 };
+
+// module.exports.getOneProduct = async (req, res, next) => {
+//   try {
+//     const product = await Products.findOne({ _id: req.params.id }).populate(
+//       "businessId"
+//     );
+//     if (!product) throw new Error("Couldnt find a product with that id");
+//     directoryPath = path.join(
+//       __dirname,
+//       "..",
+//       "images",
+//       "products",
+//       req.params.id
+//     );
+//     fs.readdir(directoryPath, (err, files) => {
+//       if (err)
+//         return res.status(400).json({
+//           success: false,
+//           msg: "Unable to scan directory! " + err.message,
+//         });
+//       const fullData = { ...product._doc, images: files };
+//       res.json({ success: true, fullData });
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// module.exports.getOneProduct = async (req, res, next) => {
+//   try {
+//     const product = await Products.findOne({ _id: req.params.id });
+//     if (!product) throw new Error("Couldnt find a product with that id");
+//     directoryPath = path.join(
+//       __dirname,
+//       "..",
+//       "images",
+//       "products",
+//       req.params.id
+//     );
+//     fs.readdir(directoryPath, (err, files) => {
+//       if (err)
+//         return res.status(400).json({
+//           success: false,
+//           msg: "Unable to scan directory! " + err.message,
+//         });
+//       let images = [];
+//       files.forEach((file) => {
+//         images.push(
+//           path.join(__dirname, "..", "images", "products", req.params.id, file)
+//         );
+//       });
+//       const fullData = { ...product._doc, images: images };
+//       res.json({ success: true, fullData });
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// exports.getProductImages = async (req, res, next) => {
+//   try {
+//     directoryPath = path.join(
+//       __dirname,
+//       "..",
+//       "images",
+//       "products",
+//       req.params.id
+//     );
+//     fs.readdir(directoryPath, (err, files) => {
+//       if (err)
+//         return res.status(400).json({
+//           success: false,
+//           msg: "Unable to scan directory! " + err.message,
+//         });
+//       const imagesPaths = files.map((img) => `images/${req.params.id}/${img}`);
+//       res.json({ success: true, imagesPath: imagesPaths[0] });
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 module.exports.deleteOneProduct = (req, res, next) => {
   if (
@@ -236,72 +326,6 @@ exports.filterProducts = async (req, res, next) => {
   }
 };
 
-// exports.filterProducts = async (req, res, next) => {
-//   try {
-//     const searchText = req.body.searchText.trim();
-//     if (!searchText) throw new Error("Search Query must not be empty.");
-
-//     const filterKey = Object.keys(req.query)[0]?.toLowerCase().trim();
-//     if (!filterKey)
-//       throw new Error("Filter criteria must be Category, Price or Rating");
-
-//     const filterValue = req.query[filterKey];
-//     if (!filterValue) throw new Error("Filter value must not be empty");
-
-//     let matchingProducts;
-//     switch (filterKey) {
-//       case "category":
-//         const matchingCategory = await Category.findOne(
-//           { name: req.query.category },
-//           { _id: 1 }
-//         );
-//         if (!matchingCategory)
-//           throw new Error("Couldnt find category with that name!");
-
-//         matchingProducts = await Products.find(
-//           {
-//             category: matchingCategory._id.toString(),
-//             name: { $regex: new RegExp(searchText, "i") },
-//           },
-//           { name: 1, price: 1, rating: 1 }
-//         );
-//         break;
-
-//       case "price":
-//         if (isNaN(req.query.price)) throw new Error("Price must be a number!");
-//         matchingProducts = await Products.find(
-//           {
-//             price: { $lte: req.query.price },
-//             name: { $regex: new RegExp(searchText, "i") },
-//           },
-//           { name: 1, price: 1, rating: 1 }
-//         );
-//         break;
-
-//       case "rating":
-//         if (isNaN(req.query.rating))
-//           throw new Error("Rating must be a number!");
-//         matchingProducts = await Products.find(
-//           {
-//             rating: req.query.rating,
-//             name: { $regex: new RegExp(searchText, "i") },
-//           },
-//           { name: 1, price: 1, rating: 1 }
-//         );
-//     }
-
-//     if (!matchingProducts.length)
-//       throw new Error("Couldnt find products with that filter value");
-
-//     const maxPrice = findMaxPrice(matchingProducts);
-//     res.json({ data: matchingProducts, maxPrice });
-//   } catch (error) {
-//     if (error.message.includes("Couldnt find")) error.status = 404;
-//     if (error.message.includes("must be")) error.status = 400;
-//     next(error);
-//   }
-// };
-
 const findMaxPrice = (products) => {
   let maxPrice = Number.MIN_SAFE_INTEGER;
   products.forEach((product) => (maxPrice = Math.max(product.price, maxPrice)));
@@ -321,6 +345,7 @@ exports.getLastAdded = async (req, res, next) => {
     )
       .sort({ createdAt: -1 })
       .limit(5);
+
     res.json({ msg: "success", lastAdded });
   } catch (error) {
     next(error);
