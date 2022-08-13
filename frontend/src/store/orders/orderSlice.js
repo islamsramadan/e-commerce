@@ -6,6 +6,8 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
+    counter: 0,
+    back: true,
     message: '',
 };
 
@@ -43,15 +45,16 @@ export const addOrders = createAsyncThunk('orders/getOrders', async ({ values, c
     } catch (error) {
         return thunkApi.rejectWithValue(error);
     }
-    console.log(values);
-    console.log(cartItems);
-    return '';
 });
 
 const orderSlice = createSlice({
     name: 'orders',
     initialState,
-    reducers: {},
+    reducers: {
+        resetSuccess: (state) => {
+            state.counter = 1;
+        },
+    },
     extraReducers: {
         [getOrders.pending]: (state) => {
             state.isLoading = true;
@@ -59,6 +62,7 @@ const orderSlice = createSlice({
         [getOrders.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
+            state.back = false;
             state.orders = action.payload;
         },
         [getOrders.rejected]: (state, action) => {
@@ -69,5 +73,7 @@ const orderSlice = createSlice({
         },
     },
 });
+
+export const { resetSuccess } = orderSlice.actions;
 
 export default orderSlice.reducer;

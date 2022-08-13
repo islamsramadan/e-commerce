@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("../models/order");
 const orders = mongoose.model("orders");
-
+const Customer = mongoose.model("customer");
 const business = mongoose.model("business");
 
 module.exports.getOrders = (req, res, next) => {
@@ -72,7 +72,11 @@ module.exports.addOrders = async (req, res, next) => {
       orderItems,
     });
 
+    const customer = await Customer.findOne({ userId: req.body.userId });
+    customer.cart = {};
     await order.save();
+    await customer.save();
+
     res.status(201).json({ success: true, order });
   } catch (error) {
     console.log(error.message);

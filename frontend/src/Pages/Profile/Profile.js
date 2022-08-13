@@ -28,18 +28,8 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('type', 'businessProfile');
         formData.append('image', e.target.files[0]);
-        // const res = await fetch(`http://localhost:8080/business/updateProfileImg/${user?._id}`, {
-        //     method: 'PUT',
-        //     body: formData,
-        // });
-
-        // const data = await res.json();
-        // console.log('response', data);
     };
 
-    // useEffect(async () => {
-    //     // console.log('profileImg:', profileImg);
-    // }, [profileImg]);
     const localUser = JSON.parse(localStorage.getItem('user')).user;
 
     return (
@@ -80,9 +70,11 @@ const Profile = () => {
                                     console.log(data?.user?.name?.lastname);
                                 }}
                             >
-                                {user?.role == 'customer'
-                                    ? localUser.firstname || localUser.firstName || user?.name?.firstname
-                                    : localUser.name}
+                                <span className="me-1">
+                                    {user?.role == 'customer'
+                                        ? localUser.firstname || localUser.firstName || user?.name?.firstname
+                                        : localUser.name}
+                                </span>
                                 {'  '}
                                 {localUser.lastName || localUser.name.lastname}
                             </h2>
@@ -147,4 +139,5 @@ const BusinessSection = ({ user }) => {
         </>
     );
 };
+
 export default Profile;

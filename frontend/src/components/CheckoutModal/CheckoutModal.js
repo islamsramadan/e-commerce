@@ -7,7 +7,7 @@ import { editProfile } from '../../store/profile/profileSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import Loader from '../../common/Loader/Loader';
-import { getOrders, addOrders } from '../../store/orders/orderSlice';
+import { getOrders, addOrders, resetSuccess } from '../../store/orders/orderSlice';
 
 const initialValues = {
     city: '',
@@ -27,11 +27,13 @@ const schema = Yup.object({
 
 const CheckoutMoal = (props) => {
     const { cartItems, totalPrice } = useSelector((state) => state.cart);
+    const { orders, isError, isSuccess, isLoading, message, back, counter } = useSelector((state) => state.orders);
     const dispatch = useDispatch();
     const localUser = JSON.parse(localStorage.getItem('user')).user;
-    // useEffect(() => {
-    //     dispatch(getOrders());
-    // }, []);
+    const navigate = useNavigate();
+
+    useEffect(() => {}, [dispatch, cartItems, isError, isSuccess, isLoading]);
+
     console.log('local storage:', localUser);
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -45,21 +47,23 @@ const CheckoutMoal = (props) => {
                     onSubmit={(values) => {
                         // console.log('values:', values);
                         dispatch(addOrders({ values, cartItems, totalPrice }));
+                        navigate('/orders');
                     }}
                 >
                     {(props) => (
                         <Form className="p-2 p-md-4">
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    console.log('orderS:', cartItems);
-                                }}
-                            >
-                                test
-                            </button>
                             <h5 className="fw-semibold text-capitalize mb-4 text-start">
                                 total price: <span className="text-danger">{totalPrice + 30} EGP</span>
                             </h5>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    console.log('isSuccess', isSuccess);
+                                    console.log('isSuccess', cartItems);
+                                }}
+                            >
+                                show success
+                            </button>
                             <div className="row">
                                 <div className="form-group col-12 col-md-3">
                                     <label className="fw-semibold" htmlFor="city">
@@ -152,7 +156,7 @@ const CheckoutMoal = (props) => {
                             </div>
                             <div className="text-end mt-4">
                                 <Button
-                                    disabled={(props.dirty && !props.isValid) || !props.dirty}
+                                    disabled={(props.dirty && !props.isValid) || !props.dirty || !cartItems?.length}
                                     type="submit"
                                     variant="success"
                                 >

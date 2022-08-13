@@ -10,34 +10,60 @@ export default function Footer() {
                     <div className="col-12 col-lg-4 mb-3 mb-md-0">
                         <h2 className="footer-logo mb-3">logo</h2>
                         <p className="footer-description lead">
-                            Our Logo website provides selling and buying with easy and secure payment
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusantium amet
+                            omnis, ipsam consequatur maxime quo illo{' '}
                         </p>
                     </div>
                     <div className="col-12 col-lg-4 mb-3 mb-md-0 text-lg-center">
                         <h4 className="mb-3">Our talented team</h4>
                         <ul className="p-0 team-list">
                             <li className="my-2">
-                                <a href="#" className=" text-white text-decoration-none">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://www.linkedin.com/in/islam-ramadan-569700ab/"
+                                    className=" text-white text-decoration-none"
+                                >
                                     Islam Mansour
                                 </a>
                             </li>
                             <li className="my-2">
-                                <a href="#" className=" text-white text-decoration-none">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://www.linkedin.com/in/ahmed-yassen-832392239/"
+                                    className=" text-white text-decoration-none"
+                                >
                                     Ahmed Ibrahim
                                 </a>
                             </li>
                             <li className="my-2">
-                                <a href="#" className=" text-white text-decoration-none">
-                                    Ahmed Basher
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://www.linkedin.com/in/a7medbasher/"
+                                    className=" text-white text-decoration-none"
+                                >
+                                    Ahmed Pasher
                                 </a>
                             </li>
                             <li className="my-2">
-                                <a href="#" className=" text-white text-decoration-none">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://www.linkedin.com/in/moemen-said/"
+                                    className=" text-white text-decoration-none"
+                                >
                                     Mo`omen Sayed
                                 </a>
                             </li>
                             <li className="my-2">
-                                <a href="#" className=" text-white text-decoration-none">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://www.linkedin.com/in/osama-abdellateif/"
+                                    className=" text-white text-decoration-none"
+                                >
                                     Osama Abdellatif
                                 </a>
                             </li>
@@ -48,7 +74,7 @@ export default function Footer() {
                         <ul className=" ps-0 contact-list">
                             <li className="my-3 d-flex align-items-center">
                                 <AiOutlineMail className="me-2" />
-                                <p className="mb-0">logo@outlook.com</p>
+                                <p className="mb-0">amzon@outlook.com</p>
                             </li>
                             <li className="my-3 d-flex align-items-center">
                                 <AiOutlinePhone className="me-2" />

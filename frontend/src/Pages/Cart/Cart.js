@@ -32,13 +32,16 @@ const Cart = () => {
                 <div className="row">
                     <div className="col-12 col-lg-8">
                         <div className="cart-items">
-                            {cartItems.map((cartItem) => (
+                            {cartItems?.map((cartItem) => (
                                 <CartItem
                                     key={cartItem.productId._id}
                                     product={cartItem.productId}
                                     quantity={cartItem.quantity}
                                 />
                             ))}
+                            {cartItems?.length == 0 && (
+                                <p className="fw-bold fs-2 text-center text-danger mt-5">you cart is empty </p>
+                            )}
                         </div>
                     </div>
                     <div className="col-12 col-lg-4 my-3 ">
@@ -52,12 +55,12 @@ const Cart = () => {
                             <hr />
                             <p className="d-flex justify-content-between">
                                 <span>shipping: {totalItems} </span>
-                                <span>EGP {30}</span>
+                                <span>EGP {totalPrice != 0 && 30}</span>
                             </p>
                             <hr />
                             <p className="d-flex justify-content-between">
                                 <span className="fw-semibold">total: {totalItems} item(s)</span>
-                                <span className="fw-semibold">EGP {totalPrice + 30}</span>
+                                <span className="fw-semibold">EGP {totalPrice && totalPrice + 30}</span>
                             </p>
                             <div className="d-flex justify-content-center">
                                 <Button variant="primary" onClick={() => setModalShow(true)}>

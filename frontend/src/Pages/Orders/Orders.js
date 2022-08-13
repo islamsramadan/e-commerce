@@ -4,39 +4,7 @@ import ProductImg from '../../assets/images/1.jpg';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../store/orders/orderSlice';
 import { useEffect } from 'react';
-
-// const orders = [
-//     {
-//         date: '20/2/2022',
-//         status: 'delivered',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-//     {
-//         date: '20/2/2022',
-//         status: 'delivered',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-//     {
-//         date: '20/2/2022',
-//         status: 'pending',
-//         totalPrice: 500,
-//         products: [
-//             { name: 'Laptop', price: 232, imgLink: '' },
-//             { name: 'Mouse', price: 300, imgLink: '' },
-//             { name: 'Cooler', price: 100, imgLink: '' },
-//         ],
-//     },
-// ];
+import Loader from '../../common/Loader/Loader';
 
 const OrderItem = ({ order }) => {
     return (
@@ -76,10 +44,9 @@ const ProductItem = ({ product }) => {
                 <div>
                     <img width="100" className="h-100" src={ProductImg} alt="product image" />
                 </div>
-                <div className="product-details ms-2">
-                    <h4>{product.name}</h4>
-                    <h4>{product.unitPrice} $</h4>
-                    <h4 className="mb-0">business name from back end </h4>
+                <div className="product-details ms-2 d-flex flex-column justify-content-center">
+                    <h4 className="fw-bold">{product.name}</h4>
+                    <h4 className="mb-0">{product.quantity}</h4>
                 </div>
             </div>
         </div>
@@ -88,11 +55,15 @@ const ProductItem = ({ product }) => {
 
 const Orders = () => {
     const dispatch = useDispatch();
-    const { orders } = useSelector((state) => state.orders);
+    const { orders, isLoading } = useSelector((state) => state.orders);
     useEffect(() => {
         dispatch(getOrders());
     }, []);
-    // console.log(orders);
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
     return (
         <section className="orders-section my-5">
             <div className="container">
