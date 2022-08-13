@@ -19,43 +19,43 @@ export default function AdminSideNav() {
                 welcome <span> Moemen</span>
             </p>
             <Nav.Item>
-                <NavLink to="statistics" activeClassName="active">
+                <NavLink to="statistics" activeclassname="active">
                     <FcStatistics />
                     Statistics
                 </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <NavLink to="customers" activeClassName="active">
+                <NavLink to="customers" activeclassname="active">
                     <FaUsers />
                     Customers
                 </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <NavLink to="business" activeClassName="active">
+                <NavLink to="business" activeclassname="active">
                     <FaUsers />
                     Business
                 </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <NavLink to="products" activeClassName="active">
+                <NavLink to="products" activeclassname="active">
                     <MdProductionQuantityLimits />
                     Products
                 </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <NavLink to="orders" activeClassName="active">
+                <NavLink to="orders" activeclassname="active">
                     <TbTruckDelivery />
                     Orders
                 </NavLink>
             </Nav.Item>
-            <Nav.Item>
-                <NavLink to="earning" activeClassName="active">
+            {/* <Nav.Item>
+                <NavLink to="earning" activeclassname="active">
                     <GiMoneyStack />
                     Earnings
                 </NavLink>
-            </Nav.Item>
+            </Nav.Item> */}
             <Nav.Item>
-                <NavLink to="admins" activeClassName="active">
+                <NavLink to="admins" activeclassname="active">
                     <RiAdminLine />
                     Admins
                 </NavLink>

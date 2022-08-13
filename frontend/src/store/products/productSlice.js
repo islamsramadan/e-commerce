@@ -33,10 +33,11 @@ export const getOneProduct = createAsyncThunk('products/getOneProduct', async (p
     try {
         const res = await fetch(`http://localhost:8080/products/${productID}`);
         const data = await res.json();
+
         if (data) {
             localStorage.setItem('productDetails', JSON.stringify(data.fullData));
         }
-        // console.log(productDetails);
+        console.log('data ------->', data);
         return data;
     } catch (error) {
         return rejectWithValue(error.message);
@@ -223,12 +224,12 @@ const productSlice = createSlice({
         [getTopRatedProducts.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.topRatedProducts = action.payload;
+            state.topRatedProducts = action.payload.data;
         },
         [getTopRatedProducts.rejected]: (state, action) => {
             state.isLoading = false;
             state.isError = true;
-            state.message = action.payload;
+            state.message = action.payload.data;
         },
         [getLastAddedProducts.pending]: (state) => {
             state.isLoading = true;

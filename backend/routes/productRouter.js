@@ -14,7 +14,7 @@ router
   .route("/products")
   .get(controller.getAllProducts)
   .post(
-    authMW,
+    // authMW,
     [
       body("name").isString().withMessage("product name should be characters"),
       body("description")
@@ -27,17 +27,17 @@ router
       body("category")
         .isMongoId()
         .withMessage("product category should be mongo ID"),
-      body("businessId")
-        .isMongoId()
-        .withMessage("product businessId should be mongo ID"),
+      // body("businessId")
+      //   .isMongoId()
+      //   .withMessage("product businessId should be mongo ID"),
     ],
     validationMW,
     controller.addProduct
   )
   .put(
-    authMW,
+    // authMW,
     [
-      body("id")
+      body("_id")
         .notEmpty()
         .isMongoId()
         .withMessage("product id should be mongo id"),
@@ -53,7 +53,7 @@ router
         .optional()
         .isNumeric()
         .withMessage("product price should be numeric"),
-      body("quantity")
+      body("countInStock")
         .optional()
         .isNumeric()
         .withMessage("product quantity should be numeric"),
@@ -65,10 +65,6 @@ router
         .optional()
         .isMongoId()
         .withMessage("product businessId should be mongo ID"),
-      body("imageLink")
-        .optional()
-        .isString()
-        .withMessage("image link should be string"),
     ],
     validationMW,
     controller.updateProduct
@@ -100,7 +96,9 @@ router
 
 router
   .route("/products/addimages/:id")
-  .post(controller.checkForBusinessValidity, filesUpload.array("image"));
+  .post(
+    // controller.checkForBusinessValidity,
+     filesUpload.single("image"));
 
 router
   .route("/products/removeimage/:id")
@@ -121,7 +119,9 @@ router.get(
   validationMW,
   controller.getRelatedProducts
 );
-
+// router.get("/images/:id", controller.getProductImages);
 router.get("/category/:id", controller.getCategoryProducts);
+
+router.get("/businessProducts/:id", controller.getBusinessProducts);
 
 module.exports = router;

@@ -47,6 +47,7 @@ function App() {
 
                 {/*Permission role based routes */}
                 <Route path="/admin/*" element={<AdminPage />} />
+                <Route path="/business/*" element={<BusinessPage />} />
                 <Route element={<RequireAuth allowedRoles={['admin']} />}></Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />

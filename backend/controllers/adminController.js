@@ -4,14 +4,13 @@ require("../models/user");
 require("../models/customer");
 require("../models/order");
 require("../models/common");
-require("../models/admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const orders = mongoose.model("orders");
 const Products = mongoose.model("product");
 const User = mongoose.model("user");
 const Customer = mongoose.model("customer");
-const Admin = mongoose.model("admin");
+const Admin = require("../models/admin");
 
 module.exports.getNumberOfProduct = async (req, res) => {
   const numOfProductInStoct = await Products.count({
@@ -115,36 +114,36 @@ module.exports.signup = async (req, res, next) => {
     lastname: req.body.lastname,
   };
   try {
-    if (req.admin.isHead === true) {
-      Admin.findOne({ email: email }).then((user) => {
-        if (user) {
-          // email already exist in database
-          return res.status(401).json({
-            success: false,
-            message: "this email exist on our data",
-          });
-        } else {
-          // hashing password and save data in USER collection
-          bcrypt.hash(password, 10).then((hashedPassword) => {
-            return new Admin({
-              email: email,
-              password: hashedPassword,
-              name: name,
-            })
-              .save()
-              .then((userData) => {
-                res.status(201).json({
-                  success: true,
-                  message: "User created Successfully",
-                  userId: userData,
-                });
+    // if (req.admin.isHead === true) {
+    Admin.findOne({ email: email }).then((user) => {
+      if (user) {
+        // email already exist in database
+        return res.status(401).json({
+          success: false,
+          message: "this email exist on our data",
+        });
+      } else {
+        // hashing password and save data in USER collection
+        bcrypt.hash(password, 10).then((hashedPassword) => {
+          return new Admin({
+            email: email,
+            password: hashedPassword,
+            name: name,
+          })
+            .save()
+            .then((userData) => {
+              res.status(201).json({
+                success: true,
+                message: "User created Successfully",
+                userId: userData,
               });
-          });
-        }
-      });
-    } else {
-      throw new Error("sorry you don`t have authorize");
-    }
+            });
+        });
+      }
+    });
+    // } else {
+    //   throw new Error('sorry you don`t have authorize');
+    // }
   } catch (error) {
     error.status = 500;
     next(error);
