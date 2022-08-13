@@ -1,10 +1,9 @@
 import './CategoryPreview.style.css';
-import { IoShirtOutline } from 'react-icons/io5';
-import { CgArrowTopRightO } from 'react-icons/cg';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 import Slider from 'react-slick';
 import ProductCard from '../ProductCard/ProductCard';
 import { Link } from 'react-router-dom';
-import { AiOutlineRight } from 'react-icons/ai';
+import { AiOutlineFire } from 'react-icons/ai';
 import HeadingPrimary from '../HeadingPrimary';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,9 +17,9 @@ export default function CategoryPreview() {
         dispatch(getTopRatedProducts());
         dispatch(getLastAddedProducts());
     }, []);
-    
-    console.log(`topRatedProducts`,topRatedProducts);
-    console.log(`lastAddedProducts`,lastAddedProducts);
+
+    console.log(`topRatedProducts`, topRatedProducts);
+    console.log(`lastAddedProducts`, lastAddedProducts);
 
     const settings = {
         dots: true,
@@ -88,7 +87,7 @@ export default function CategoryPreview() {
             <div className="category-preview">
                 <div className="container">
                     <div className="preview-upper d-flex justify-content-between align-items-center">
-                        <HeadingPrimary title="Top Rated" icon={<IoShirtOutline className="me-2" />} />
+                        <HeadingPrimary title="Top Rated" icon={<AiOutlineFire className="me-2" />} />
                     </div>
                     <div className=" my-5">
                         <div className="container">
@@ -105,7 +104,7 @@ export default function CategoryPreview() {
             <div className="category-preview">
                 <div className="container">
                     <div className="preview-upper d-flex justify-content-between align-items-center">
-                        <HeadingPrimary title="Last Added" icon={<IoShirtOutline className="me-2" />} />
+                        <HeadingPrimary title="Last Added" icon={<AiOutlineClockCircle className="me-2" />} />
                     </div>
                     <div className=" my-5">
                         <div className="container">

@@ -1,0 +1,128 @@
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import PrimaryButton from '../../common/PrimaryButton/Button';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { login, loginAdmin, reset } from '../../store/auth/authSlice';
+import Loader from '../../common/Loader/Loader';
+
+const validationSchema = Yup.object({
+    email: Yup.string().required('this field is required').email('email format is invalid'),
+    password: Yup.string().required('this field is required'),
+});
+
+const intialValues = {
+    email: '',
+    password: '',
+};
+
+export default function AdminLogin() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const from = location.state?.from?.pathname || '/';
+    const { user, isError, isLoading, isSuccess, message } = useSelector((state) => state.auth);
+
+    // component did mount
+
+    useEffect(() => {
+        if (isError) {
+            console.log('there is an error: ' + message);
+        }
+        if (user?.success && (user?.user || user?.admin)) {
+            // navigate(from);
+            // console.log('user z->', user);
+            navigate('/business/statistics');
+        }
+
+        dispatch(reset());
+    }, [user, isError, isSuccess, message, dispatch, navigate]);
+
+    const onSubmit = async (userData) => {
+        await dispatch(loginAdmin(userData));
+        // console.log('loggedUser', user);
+    };
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
+    return (
+        <section className="login my-5">
+            <div className="container bg-white rounded-2">
+                <div className="row h-100">
+                    <div className="col-6 d-none d-lg-block p-0">
+                        <div className="login-left px-5 h-100 d-flex flex-column justify-content-center text-center">
+                            <h1 className="text-white fw-bold fs-1">Amzon Website</h1>
+                            <p className="text-white lead">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ea ullam eos, quasi dolorum
+                                odio{' '}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="col-12 col-lg-6 p-0">
+                        <Formik initialValues={intialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+                            {(props) => (
+                                <Form className="p-5">
+                                    <h1
+                                        onClick={() => {
+                                            console.log(props);
+                                        }}
+                                        className="text-center"
+                                    >
+                                        Login Admin
+                                    </h1>
+                                    <p className="lead text-center">sign in your account</p>
+                                    <div className="form-group">
+                                        <label className="my-2" htmlFor="exampleInputEmail1">
+                                            Email address
+                                        </label>
+                                        <Field
+                                            name="email"
+                                            className="form-control"
+                                            id="exampleInputEmail1"
+                                            aria-describedby="emailHelp"
+                                            placeholder="Enter email"
+                                        />
+                                        <p className="error-msg text-danger">
+                                            <ErrorMessage className="text-danger" name="email" />
+                                        </p>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="my-2" htmlFor="exampleInputEmail1">
+                                            Password
+                                        </label>
+                                        <Field
+                                            name="password"
+                                            type="password"
+                                            className="form-control"
+                                            id="exampleInputPassword1"
+                                            placeholder="Enter password"
+                                        />
+                                        <p className="error-msg text-danger">
+                                            <ErrorMessage className="text-danger" name="password" />
+                                        </p>
+                                    </div>
+                                    <p className="text-danger fst-italic text-capitalize fw-semibold">
+                                        {user?.success == false &&
+                                            user?.message == 'invalid email or password' &&
+                                            'wrong email or password !'}
+                                    </p>
+                                    <div className="form-group mt-4">
+                                        <input
+                                            type="submit"
+                                            className="rounded-2 me-3"
+                                            value="login"
+                                            disabled={(props.dirty && !props.isValid) || !props.dirty}
+                                        />
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}

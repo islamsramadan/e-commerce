@@ -193,14 +193,6 @@ const EditForm = (props) => {
                 >
                     {(props) => (
                         <Form className="">
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    console.log(profileState);
-                                }}
-                            >
-                                show localStorage
-                            </button>
                             <div className="container  rounded-2 px-5 bg-white">
                                 <div className="row">
                                     <div className="form-group col-12 col-md-6">
@@ -317,13 +309,6 @@ const EditForm = (props) => {
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
-            <button
-                onClick={() => {
-                    console.log(props);
-                }}
-            >
-                show props
-            </button>
         </Modal>
     );
 };
