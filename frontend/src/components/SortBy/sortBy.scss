@@ -1,0 +1,36 @@
+@import '../../colors';
+//  i edited this
+
+.SearchPageContainer button {
+    display: block;
+    margin: 5px !important;
+    background-color: #ccc;
+    border-radius: 5px !important;
+    padding: 3px 7px;
+    transition: all 0.2s ease-in-out;
+}
+
+.SortBy {
+    button {
+        display: block;
+        margin: 5px !important;
+        border: none;
+        background-color: #ddd;
+        border-radius: 5px !important;
+        padding: 3px 7px;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            background: rgba($color: $primary, $alpha: 0.8);
+            color: #fff;
+        }
+
+        &.active {
+            background-color: $primary;
+            color: #fff;
+            &:hover {
+                background: $primary;
+            }
+        }
+    }
+}

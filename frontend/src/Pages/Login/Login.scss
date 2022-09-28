@@ -1,0 +1,32 @@
+.login {
+    .container {
+        height: 80%;
+        box-shadow: 0 0 5px 2px rgba(153, 153, 153, 0.537);
+    }
+    &-left {
+    background-image: linear-gradient(to bottom right, #e9495cae, #f7c02aad), url(../../assets/login/cart.jpg);
+        background-size: cover;
+        background-position: center;
+    }
+    .form-group {
+        height: 104px;
+    }
+
+    input[type="submit"], input[type="button"] {
+        padding: 0.8rem 2rem;
+        color: white;
+    }
+
+        input[type="submit"] {
+            
+            background-color: rgb(76, 201, 76);
+        }
+        input[type="submit"]:disabled {
+            background-color: rgb(151, 212, 151);
+            
+}
+        input[type="button"] {
+        background-color: #2d88f8;
+    }
+
+}

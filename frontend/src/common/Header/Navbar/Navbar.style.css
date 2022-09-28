@@ -1,0 +1,3 @@
+.category-dropdown .dropdown-toggle::after {
+  display: none !important;
+}

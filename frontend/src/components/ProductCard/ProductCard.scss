@@ -1,0 +1,89 @@
+@import '../../colors';
+
+.outer {
+  width: 100%;
+  max-width: 220px;
+  margin: auto;
+  padding: 0px 10px 20px 10px;
+}
+
+.productCard {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 2px 3px 8px #ddd;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+  &-header {
+    position: relative;
+    &_imgsDiv {
+      img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: center;
+        display: none;
+        &.active {
+          display: block;
+        }
+      }
+    }
+
+    &_dotsDiv {
+      display: flex;
+      width: max-content;
+      margin: 5px auto;
+      border-radius: 5px;
+      padding: 5px;
+      div {
+        width: 7px;
+        height: 7px;
+        border-radius: 10px;
+        background-color: #aaa;
+        margin: 0px 5px;
+        &.active {
+          width: 10px;
+          background-color: #888;
+        }
+      }
+    }
+  }
+
+  &-detailsDiv {
+    padding: 10px;
+
+    button {
+      float: right;
+      border: none;
+      background: none;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      color: #333;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+}
+
+@media (max-width: 567px) {
+  .outer {
+    width: 50%;
+    max-width: unset;
+    margin: 0;
+    padding: 0px;
+  }
+  .productCard {
+    box-shadow: none;
+    border: 1px solid #eee;
+    border-radius: 0;
+    &:hover {
+      transform: none;
+    }
+  }
+}

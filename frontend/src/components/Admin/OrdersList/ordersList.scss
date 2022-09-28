@@ -1,0 +1,23 @@
+@import '../../../colors';
+
+.ordersList {
+    padding: 20px;
+    border-radius: 10px;
+
+    h1 {
+        color: $primary;
+        font-weight: 600;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        border-bottom: 2px solid $primary;
+        width: max-content;
+        margin: auto;
+    }
+
+    td{
+        a{
+            display: block;
+            margin-bottom: 10px;
+        }
+    }
+}
